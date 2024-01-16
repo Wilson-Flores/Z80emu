@@ -31,6 +31,17 @@ public:
 	uint8_t E_register = 0x00;
 	uint8_t H_register = 0x00;
 	uint8_t L_register = 0x00;
+	uint8_t flag_register = 0x00;
+
+	// Alternate Registers
+	uint8_t alt_accumulator = 0x00;
+	uint8_t alt_B_register = 0x00;
+	uint8_t alt_C_register = 0x00;
+	uint8_t alt_D_register = 0x00;
+	uint8_t alt_E_register = 0x00;
+	uint8_t alt_H_register = 0x00;
+	uint8_t alt_L_register = 0x00;
+	uint8_t alt_flag_register = 0x00;
 
 	// Index Registers
 	uint16_t index_register_x = 0x0000;
@@ -38,7 +49,7 @@ public:
 
 	uint16_t stack_pointer = 0x0000;
 	uint16_t program_counter = 0x0000;
-	uint8_t status_register = 0x00;
+
 
 	// Other Registers
 	uint8_t interrupt_vector = 0x00;
@@ -56,6 +67,7 @@ public:
 	uint8_t implied_addressing();
 	uint8_t register_indirect_addressing();
 	uint8_t bit_addressing();
+
 
 
 };
