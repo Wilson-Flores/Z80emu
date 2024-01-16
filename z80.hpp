@@ -47,13 +47,11 @@ public:
 	uint16_t index_register_x = 0x0000;
 	uint16_t index_register_y = 0x0000;
 
-	uint16_t stack_pointer = 0x0000;
-	uint16_t program_counter = 0x0000;
-
-
 	// Other Registers
 	uint8_t interrupt_vector = 0x00;
 	uint8_t refresh_counter = 0x00;
+	uint16_t stack_pointer = 0x0000;
+	uint16_t program_counter = 0x0000;
 
 
 	// Addressing Modes
@@ -69,7 +67,41 @@ public:
 	uint8_t bit_addressing();
 
 
+	// 8-bit Instructions
+	uint8_t ADC();  uint8_t ADD();  uint8_t AND();
 
+	uint8_t BIT();
+
+	uint8_t CALL(); uint8_t CCF();  uint8_t CP();   uint8_t CPD();
+	uint8_t CPDR(); uint8_t CPI();  uint8_t CPIR(); uint8_t CPL();
+	
+	uint8_t DAA();  uint8_t DEC();  uint8_t DI();   uint8_t DJNZ();
+
+	uint8_t EI();   uint8_t EX();   uint8_t EXX();
+
+	uint8_t HALT();
+
+	uint8_t IM0();  uint8_t IM1();  uint8_t IM2();  uint8_t IN();
+	uint8_t INC();  uint8_t INI();  uint8_t INIR();
+
+	uint8_t JP();   uint8_t JR();
+
+	uint8_t LD();   uint8_t LDD();  uint8_t LDDR(); uint8_t LDI();  uint8_t LDIR();
+
+	uint8_t NEG();  uint8_t NOP();
+
+	uint8_t OR();   uint8_t OTDR(); uint8_t OUT();  uint8_t OUTD(); uint8_t OUTI();
+
+	uint8_t POP();  uint8_t PUSH();
+
+	uint8_t RES();  uint8_t RET();  uint8_t RETI(); uint8_t RETN(); uint8_t RL();
+	uint8_t RLA();  uint8_t RLC();  uint8_t RLCA(); uint8_t RLD();  uint8_t RR();
+	uint8_t RRA();  uint8_t RRC();  uint8_t RRCA(); uint8_t RRD();  uint8_t RST();
+
+	uint8_t SBC();  uint8_t SCF();  uint8_t SET();  uint8_t SLA();
+	uint8_t SRA();  uint8_t SRL();  uint8_t SUB();
+
+	uint8_t XOR();
 };
 
 #endif // !z80_hpp
