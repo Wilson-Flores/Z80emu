@@ -102,6 +102,10 @@ public:
 	uint8_t SRA();  uint8_t SRL();  uint8_t SUB();
 
 	uint8_t XOR();
+
+
+	// Catch any "illegal opcodes, functions the same as NOP
+	uint8_t XXX();
 };
 
 #endif // !z80_hpp
