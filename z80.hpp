@@ -2,6 +2,8 @@
 #define z80_hpp
 
 #include <cstdint>
+#include <string>
+#include <vector>
 
 
 class z80cpu {
@@ -104,8 +106,35 @@ public:
 	uint8_t XOR();
 
 
-	// Catch any "illegal opcodes, functions the same as NOP
+	// Catch any "illegal opcodes
 	uint8_t XXX();
+
+
+	void instruction_cycle();
+
+	uint16_t address_absolute = 0x0000;
+	uint16_t address_relative = 0x0000;
+	uint8_t opcode = 0x00;
+	uint8_t t_state_cycles = 0;
+
+private:
+	// 
+	uint8_t read(uint16_t address);
+	void write(uint16_t address, uint8_t data);
+
+	uint8_t GetFlag(FLAGSZ80 flag);
+	void SetFlag(FLAGSZ80 flag, bool setFlag);
+
+	struct INSTRUCTION {
+		std::string name;
+		uint8_t(z80cpu::* instruction)(void) = nullptr;
+		uint8_t(z80cpu::* addressing_mode1)(void) = nullptr;
+		uint8_t(z80cpu::* addressing_mode2)(void) = nullptr;
+		uint8_t t_state_cycles = 0;
+	};
+
+
+	std::vector<INSTRUCTION> instruction_table;
 };
 
 #endif // !z80_hpp
