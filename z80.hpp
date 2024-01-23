@@ -4,13 +4,18 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <iostream>
+
+class Bus;
 
 
 class z80cpu {
 public:
 	z80cpu();
-	~z80cpu();
 
+
+	// connect to Bus
+	void connect_bus(Bus* n) { bus = n; }
 
 	// Status Register
 	enum FLAGSZ80 {
@@ -118,7 +123,9 @@ public:
 	uint8_t t_state_cycles = 0;
 
 private:
-	// 
+	Bus* bus = nullptr;
+
+
 	uint8_t read(uint16_t address);
 	void write(uint16_t address, uint8_t data);
 
