@@ -29,7 +29,6 @@ public:
 		SIGN_FLAG = (1 << 7)
 	};
 
-
 	// Main Registers
 	uint8_t accumulator = 0x00;
 	uint8_t B_register = 0x00;

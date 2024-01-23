@@ -47,10 +47,59 @@ void z80cpu::instruction_cycle() {
 }
 
 
+// Addressing Mode
+uint8_t z80cpu::register_addressing() {
+	std::cout << "Register Addressing Mode\n";
+	return 0;
+}
+
+uint8_t z80cpu::immediate_addressing() {
+	std::cout << "Immediate Addressing Mode\n";
+	return 0;
+}
+
+
+
+// Instructions
 uint8_t z80cpu::LD() {
 	if ((this->instruction_table[opcode].addressing_mode1) == &z80cpu::register_addressing) {
 		if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::immediate_addressing) {
-			
+			// bit mask the opcode to find the register value
+			uint8_t mask = 0x38; // 0011 1000 binary value
+			uint8_t register_bit_value = (opcode & mask) >> 3;
+
+			// Register A
+			if (register_bit_value == 0x07) {
+				//fetch data from next memory location
+				accumulator = read(program_counter);
+			}
+			// Register B
+			else if (register_bit_value == 0x00) {
+				B_register = read(program_counter);
+			}
+			// Register C
+			else if (register_bit_value == 0x01) {
+				C_register = read(program_counter);
+			}
+			// Register D
+			else if (register_bit_value == 0x02) {
+				D_register = read(program_counter);
+			}
+			// Register E
+			else if (register_bit_value == 0x03) {
+				E_register = read(program_counter);
+			}
+			// Register H
+			else if (register_bit_value == 0x04) {
+				H_register = read(program_counter);
+			}
+			// Register L
+			else if (register_bit_value == 0x05) {
+				L_register = read(program_counter);
+			}
+
+			// Increment program counter again to avoid instruction cycle from mistaking 'n' value for an opcode
+			program_counter++;
 		}
 		//else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_addressing) {
 
