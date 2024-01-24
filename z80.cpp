@@ -26,14 +26,14 @@ z80cpu::z80cpu() {
 	{ "F0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 }};
 
 	register_table = {
-		&B_register, // 0b000
-		&C_register, // 0b001
-		&D_register, // 0b010
-		&E_register, // 0b011
-		&H_register, // 0b100
-		&L_register, // 0b101
+		&B_register, // B = 0b000
+		&C_register, // C = 0b001
+		&D_register, // D = 0b010
+		&E_register, // E = 0b011
+		&H_register, // H = 0b100
+		&L_register, // L = 0b101
 		nullptr,     // No register has 0b110 for a bit value
-		&accumulator // 0b111
+		&accumulator // A = 0b111
 	};
 
 }
@@ -92,9 +92,30 @@ uint8_t z80cpu::LD() {
 
 			*register_table[destination_register_bit] = *register_table[source_register_bit];
 		}
-		//else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_indirect_addressing) {
+		else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_indirect_addressing) {
+			// LD r, (HL) opcode ends with 0b110, while LD A, (BC) and LD A, (DE) end with 0b010
+			uint8_t opcode_bit = (opcode & BIT_MASK_2);
+			uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
-		//}
+			if (opcode_bit == 0x02) {
+				if (register_bit == 0x01) {
+					// LD A, (BC)
+					address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
+					accumulator = read(address_absolute);
+
+				}
+				else {
+					// LD A, (DE)
+					address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
+					accumulator = read(address_absolute);
+				}
+			}
+			else {
+				// LD r, (HL)
+				address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
+				*register_table[register_bit] = read(address_absolute);
+			}
+		}
 		//else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::implied_addressing) {
 
 		//}
