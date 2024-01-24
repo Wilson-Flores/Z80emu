@@ -2,6 +2,9 @@
 #include "Bus.hpp"
 
 
+constexpr uint8_t BIT_MASK_1 = 0x38; // 0011 1000 binary value
+constexpr uint8_t BIT_MASK_2 = 0x07; // 0000 0111 binary value
+
 z80cpu::z80cpu() {
 	using z = z80cpu;
 	instruction_table = {
@@ -23,14 +26,14 @@ z80cpu::z80cpu() {
 	{ "F0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 }};
 
 	register_table = {
-		{0b000, &B_register},
-		{0b001, &C_register},
-		{0b010, &D_register},
-		{0b011, &E_register},
-		{0b100, &H_register},
-		{0b101, &L_register},
-		{0b110, nullptr},  // Placeholder for 0b110
-		{0b111, &accumulator}
+		&B_register, // 0b000
+		&C_register, // 0b001
+		&D_register, // 0b010
+		&E_register, // 0b011
+		&H_register, // 0b100
+		&L_register, // 0b101
+		nullptr,     // No register has 0b110 for a bit value
+		&accumulator // 0b111
 	};
 
 }
@@ -70,74 +73,24 @@ uint8_t z80cpu::immediate_addressing() {
 }
 
 
-
 // Instructions
 uint8_t z80cpu::LD() {
 	if ((this->instruction_table[opcode].addressing_mode1) == &z80cpu::register_addressing) {
 		if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::immediate_addressing) {
 			// bit mask the opcode to find the register value
-			uint8_t mask = 0x38; // 0011 1000 binary value
-			uint8_t register_bit_value = (opcode & mask) >> 3;
+			uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
 
-			// Register A
-			if (register_bit_value == 0x07) {
-				//fetch data from next memory location
-				accumulator = read(program_counter);
-				std::cout << "[Accumulator] : " << std::hex << std::uppercase <<
-					std::setw(2) << std::setfill('0') << static_cast<int>(accumulator) << '\n';
-			}
-			// Register B
-			else if (register_bit_value == 0x00) {
-				B_register = read(program_counter);
-				std::cout << "[Register B] : " << std::hex << std::uppercase <<
-					std::setw(2) << std::setfill('0') << static_cast<int>(B_register) << '\n';
-			}
-			// Register C
-			else if (register_bit_value == 0x01) {
-				C_register = read(program_counter);
-				std::cout << "[Register C] : " << std::hex << std::uppercase <<
-					std::setw(2) << std::setfill('0') << static_cast<int>(C_register) << '\n';
-			}
-			// Register D
-			else if (register_bit_value == 0x02) {
-				D_register = read(program_counter);
-				std::cout << "[Register D] : " << std::hex << std::uppercase <<
-					std::setw(2) << std::setfill('0') << static_cast<int>(D_register) << '\n';
-			}
-			// Register E
-			else if (register_bit_value == 0x03) {
-				E_register = read(program_counter);
-				std::cout << "[Register E] : " << std::hex << std::uppercase <<
-					std::setw(2) << std::setfill('0') << static_cast<int>(E_register) << '\n';
-			}
-			// Register H
-			else if (register_bit_value == 0x04) {
-				H_register = read(program_counter);
-				std::cout << "[Register H] : " << std::hex << std::uppercase <<
-					std::setw(2) << std::setfill('0') << static_cast<int>(H_register) << '\n';
-			}
-			// Register L
-			else if (register_bit_value == 0x05) {
-				L_register = read(program_counter);
-				std::cout << "[Register L] : " << std::hex << std::uppercase <<
-					std::setw(2) << std::setfill('0') << static_cast<int>(L_register) << '\n';
-			}
+			*register_table[destination_register_bit] = read(program_counter);
 
 			// Increment program counter again to avoid instruction cycle from mistaking 'n' value for an opcode
 			program_counter++;
 		}
 		else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_addressing) {
-			// bit mask the opcode to find the register destination value
-			uint8_t destination_mask = 0x38; // 0011 1000 binary value
-			uint8_t destination_register_bit = (opcode & destination_mask) >> 3;
+			// bit mask the opcode to find the register destination value and source register value
+			uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
+			uint8_t source_register_bit = (opcode & BIT_MASK_2);
 
-			uint8_t source_mask = 0x07; // 0000 0111 binary value
-			uint8_t source_register_bit = (opcode & source_mask);
-
-			*register_table[destination_register_bit].register_pointer = *register_table[source_register_bit].register_pointer;
-
-
-
+			*register_table[destination_register_bit] = *register_table[source_register_bit];
 		}
 		//else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_indirect_addressing) {
 
