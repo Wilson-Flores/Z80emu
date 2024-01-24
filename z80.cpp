@@ -72,30 +72,44 @@ uint8_t z80cpu::LD() {
 			if (register_bit_value == 0x07) {
 				//fetch data from next memory location
 				accumulator = read(program_counter);
+				std::cout << "[Accumulator] : " << std::hex << std::uppercase <<
+					std::setw(2) << std::setfill('0') << static_cast<int>(accumulator) << '\n';
 			}
 			// Register B
 			else if (register_bit_value == 0x00) {
 				B_register = read(program_counter);
+				std::cout << "[Register B] : " << std::hex << std::uppercase <<
+					std::setw(2) << std::setfill('0') << static_cast<int>(B_register) << '\n';
 			}
 			// Register C
 			else if (register_bit_value == 0x01) {
 				C_register = read(program_counter);
+				std::cout << "[Register C] : " << std::hex << std::uppercase <<
+					std::setw(2) << std::setfill('0') << static_cast<int>(C_register) << '\n';
 			}
 			// Register D
 			else if (register_bit_value == 0x02) {
 				D_register = read(program_counter);
+				std::cout << "[Register D] : " << std::hex << std::uppercase <<
+					std::setw(2) << std::setfill('0') << static_cast<int>(D_register) << '\n';
 			}
 			// Register E
 			else if (register_bit_value == 0x03) {
 				E_register = read(program_counter);
+				std::cout << "[Register E] : " << std::hex << std::uppercase <<
+					std::setw(2) << std::setfill('0') << static_cast<int>(E_register) << '\n';
 			}
 			// Register H
 			else if (register_bit_value == 0x04) {
 				H_register = read(program_counter);
+				std::cout << "[Register H] : " << std::hex << std::uppercase <<
+					std::setw(2) << std::setfill('0') << static_cast<int>(H_register) << '\n';
 			}
 			// Register L
 			else if (register_bit_value == 0x05) {
 				L_register = read(program_counter);
+				std::cout << "[Register L] : " << std::hex << std::uppercase <<
+					std::setw(2) << std::setfill('0') << static_cast<int>(L_register) << '\n';
 			}
 
 			// Increment program counter again to avoid instruction cycle from mistaking 'n' value for an opcode

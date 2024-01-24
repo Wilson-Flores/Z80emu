@@ -18,6 +18,9 @@ void LD_test() {
 			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
 	}
 
+	for (int i = 0; i < 7; i++) {
+		test.cpu.instruction_cycle();
+	}
 
 }
 
