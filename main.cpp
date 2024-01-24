@@ -6,8 +6,8 @@
 
 void LD_r_n_test(Bus& test) {
 	// LD r,n: loading the 19h into each register A,B,C,D,E,H,L
-	std::vector<uint8_t> LD_r_n_test = { 0x3E, 0x19,0x06,
-0x1A,0x0E,0x1B,0x16,0x1C,0x1E,0x1D,0x26,0x1E,0x2E,0x1F };
+	std::vector<uint8_t> LD_r_n_test = { 
+		0x3E, 0x19,0x06,0x1A,0x0E,0x1B,0x16,0x1C,0x1E,0x1D,0x26,0x1E,0x2E,0x1F };
 
 	// load LD r,n test instructions into ram
 	for (uint16_t i = 0; i < LD_r_n_test.size(); i++) {
@@ -39,7 +39,9 @@ void LD_r_r_test(Bus& test) {
 			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
 	}
 
-
+	for (int i = 0; i < LD_r_r_test.size(); i++) {
+		test.cpu.instruction_cycle();
+	}
 }
 
 

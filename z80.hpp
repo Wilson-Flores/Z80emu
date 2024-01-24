@@ -7,6 +7,15 @@
 #include <iostream>
 #include <iomanip>
 
+
+constexpr uint8_t REGISTER_A = 0b111;
+constexpr uint8_t REGISTER_B = 0b000;
+constexpr uint8_t REGISTER_C = 0b001;
+constexpr uint8_t REGISTER_D = 0b010;
+constexpr uint8_t REGISTER_E = 0b011;
+constexpr uint8_t REGISTER_H = 0b100;
+constexpr uint8_t REGISTER_L = 0b101;
+
 class Bus;
 
 
@@ -142,6 +151,14 @@ private:
 
 
 	std::vector<INSTRUCTION> instruction_table;
+
+	// Register Addressing looks at the opcode to determine what register it is working with
+	struct REGISTER {
+		uint8_t bit_value;
+		uint8_t* register_pointer;
+	};
+
+	std::vector<REGISTER> register_table;
 };
 
 #endif // !z80_hpp
