@@ -134,7 +134,7 @@ private:
 	void SetFlag(FLAGSZ80 flag, bool setFlag);
 
 	struct INSTRUCTION {
-		std::string name;
+		std::string opcode;
 		uint8_t(z80cpu::* instruction)(void) = nullptr;
 		uint8_t(z80cpu::* addressing_mode1)(void) = nullptr;
 		uint8_t(z80cpu::* addressing_mode2)(void) = nullptr;
