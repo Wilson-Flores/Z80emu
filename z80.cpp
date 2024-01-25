@@ -56,7 +56,7 @@ void z80cpu::instruction_cycle() {
 		program_counter++;
 		
 		// perform operation
-		std::cout << "OPCODE: " << this->instruction_table[opcode].name << '\n';
+		std::cout << "OPCODE: " << this->instruction_table[opcode].opcode << '\n';
 		(this->*instruction_table[opcode].instruction)();
 }
 
