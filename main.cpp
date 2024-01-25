@@ -7,9 +7,9 @@
 int main() {
 	Bus test;
 
-	LD_r_n_test(test);
-	LD_r_r_test(test);
-
+	LD_register_immediate_test(test);
+	LD_register_register_test(test);
+	LD_register_register_indirect_test(test);
 
 	return 0;
 }

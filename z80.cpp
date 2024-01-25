@@ -72,6 +72,11 @@ uint8_t z80cpu::immediate_addressing() {
 	return 0;
 }
 
+uint8_t z80cpu::register_indirect_addressing() {
+	std::cout << "Register Indirect Addressing Mode\n";
+	return 0;
+}
+
 
 // Instructions
 uint8_t z80cpu::LD() {
