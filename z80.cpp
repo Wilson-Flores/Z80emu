@@ -175,7 +175,7 @@ uint8_t z80cpu::LD() {
 			if (opcode == 0x57) {
 
 				// Sign Flag is set if I is negative, else it is reset.
-				if ((interrupt_vector >> 7) == 0x01) {
+				if ((interrupt_vector_register >> 7) == 0x01) {
 					set_flag(SIGN_FLAG, true);
 				}
 				else {
@@ -183,7 +183,7 @@ uint8_t z80cpu::LD() {
 				}
 
 				// Zero Flag is set if I equals 0, else it is reset.
-				if (interrupt_vector == 0x00) {
+				if (interrupt_vector_register == 0x00) {
 					set_flag(ZERO_FLAG, true);
 				}
 				else {
@@ -194,15 +194,17 @@ uint8_t z80cpu::LD() {
 				set_flag(HALF_CARRY_FLAG, false);
 				// Add/Subtract flag is reset.
 				set_flag(ADD_SUB_FLAG, false);
+				// P/V contains contents of IFF2
+				set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2);
 
-				//TODO: add what to do for Parity/Overflow Flag
+				//TODO: add a way to set P/V flag to 0 if interrupt occurs.
 
-				accumulator = interrupt_vector;
+				accumulator = interrupt_vector_register;
 			}
 			else {
 
 				// Sign Flag is set if I is negative, else it is reset.
-				if ((refresh_counter >> 7) == 0x01) {
+				if ((memory_refresh_register >> 7) == 0x01) {
 					set_flag(SIGN_FLAG, true);
 				}
 				else {
@@ -210,7 +212,7 @@ uint8_t z80cpu::LD() {
 				}
 
 				// Zero Flag is set if I equals 0, else it is reset.
-				if (refresh_counter == 0x00) {
+				if (memory_refresh_register == 0x00) {
 					set_flag(ZERO_FLAG, true);
 				}
 				else {
@@ -221,10 +223,12 @@ uint8_t z80cpu::LD() {
 				set_flag(HALF_CARRY_FLAG, false);
 				// Add/Subtract flag is reset.
 				set_flag(ADD_SUB_FLAG, false);
+				// P/V contains contents of IFF2
+				set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2);
 
-				//TODO: add what to do for Parity/Overflow Flag
+				//TODO: add a way to set P/V flag to 0 if interrupt occurs.
 
-				accumulator = refresh_counter;
+				accumulator = memory_refresh_register;
 			}
 		}
 		//else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::indexed_addressing) {

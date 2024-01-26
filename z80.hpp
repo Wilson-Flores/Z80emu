@@ -56,10 +56,16 @@ public:
 	uint16_t index_register_y = 0x0000;
 
 	// Other Registers
-	uint8_t interrupt_vector = 0x00;
-	uint8_t refresh_counter = 0x00;
+	uint8_t interrupt_vector_register = 0x00;
+	uint8_t memory_refresh_register = 0x00;
 	uint16_t stack_pointer = 0x0000;
 	uint16_t program_counter = 0x0000;
+
+	// Interrupts
+	bool interrupt_enable_flip_flop_1 = false;
+	bool interrupt_enable_flip_flop_2 = false;
+	void software_maskable_interrupt(); // INT
+	void nonmaskable_interrupt(); // NMI
 
 
 	// Addressing Modes
