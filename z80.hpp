@@ -131,7 +131,7 @@ private:
 	void write(uint16_t address, uint8_t data);
 
 	uint8_t GetFlag(FLAGSZ80 flag);
-	void SetFlag(FLAGSZ80 flag, bool setFlag);
+	void set_flag(FLAGSZ80 flag, bool setFlag);
 
 	struct INSTRUCTION {
 		std::string opcode;
@@ -139,10 +139,12 @@ private:
 		uint8_t(z80cpu::* addressing_mode1)(void) = nullptr;
 		uint8_t(z80cpu::* addressing_mode2)(void) = nullptr;
 		uint8_t t_state_cycles = 0;
+		//std::vector<INSTRUCTION>* table = nullptr;
 	};
 
 
 	std::vector<INSTRUCTION> instruction_table;
+	std::vector<INSTRUCTION> ED_table;
 
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
 	std::vector<uint8_t*> register_table;
