@@ -76,6 +76,11 @@ void z80cpu::set_flag(FLAGSZ80 flag, bool set_flag) {
 void z80cpu::instruction_cycle() {
 	// when t cycles reach 0, we are ready to read next instruction
 		opcode = read(program_counter);
+		
+		// everytime we fetch an instruction increase memory refresh register. this operation doesnt touch the 8th bit.
+		if (memory_refresh_register < 0x80) {
+			memory_refresh_register++;
+		}
 
 		// increment program counter
 		program_counter++;
@@ -89,6 +94,11 @@ void z80cpu::instruction_cycle() {
 		}
 		else if (opcode == 0xED) {
 			opcode = read(program_counter);
+
+			// everytime we fetch an instruction increase memory refresh register. this operation doesnt touch the 8th bit.
+			if (memory_refresh_register < 0x80) {
+				memory_refresh_register++;
+			}
 
 			program_counter++;
 
