@@ -42,11 +42,11 @@ void LD_register_register_test(Bus& test) {
 
 	for (uint16_t i = 0; i < memory.size(); i++) {
 		test.ram[i] = memory[i];
-		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i + 14 << "] : " <<
-			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i + 14]) << '\n';
+		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
 	}
 
-	for (int i = 0; i < memory.size(); i++) {
+	for (int i = 0; i < 56; i++) {
 		test.cpu.instruction_cycle();
 	}
 }
@@ -54,9 +54,10 @@ void LD_register_register_test(Bus& test) {
 
 void LD_register_register_indirect_test(Bus& test) {
 	std::vector<uint8_t> memory = {
-	0x26, 0x00, 0x2E, 0x01, 0x7E, 0x46, 0x4E, 0x56,
-	0x5E, 0x66, 0x6E, 0x06, 0x00, 0x0E, 0x03, 0x16,
-	0x00, 0x1E, 0x0D, 0x0A, 0x1A
+		0x3E, 0x19, 0x3E, 0x00, 0x26, 0x00, 0x2E, 0x01,
+		0x7E, 0x46, 0x4E, 0x56, 0x5E, 0x66, 0x26, 0x00,
+		0x6E, 0x06, 0x00, 0x0E, 0x01, 0x16, 0x00, 0x1E,
+		0x01, 0x3E, 0x00, 0x0A, 0x3E, 0x00, 0x1A
 	};
 
 	// clear RAM
@@ -65,11 +66,11 @@ void LD_register_register_indirect_test(Bus& test) {
 
 	for (uint16_t i = 0; i < memory.size(); i++) {
 		test.ram[i] = memory[i];
-		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i + 63 << "] : " <<
-			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i + 63]) << '\n';
+		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
 	}
 
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < 20; i++) {
 		test.cpu.instruction_cycle();
 	}
 }

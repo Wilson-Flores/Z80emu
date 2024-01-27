@@ -29,4 +29,6 @@ void Bus::reset() {
 		i = 0x00;
 	}
 	std::cout << "Memmory Cleared!\n";
+	cpu.program_counter = 0x00;
+
 }
