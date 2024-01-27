@@ -22,3 +22,11 @@ uint8_t Bus::read(uint16_t address) {
 
 	return 0x00;
 }
+
+
+void Bus::reset() {
+	for (uint8_t& i : ram) {
+		i = 0x00;
+	}
+	std::cout << "Memmory Cleared!\n";
+}
