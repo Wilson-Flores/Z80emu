@@ -77,6 +77,8 @@ void z80cpu::instruction_cycle() {
 	// when t cycles reach 0, we are ready to read next instruction
 		opcode = read(program_counter);
 		
+
+		// TODO: check if even if the 8th bit is set that the register continues to increment
 		// everytime we fetch an instruction increase memory refresh register. this operation doesnt touch the 8th bit.
 		if (memory_refresh_register < 0x80) {
 			memory_refresh_register++;
@@ -137,7 +139,7 @@ uint8_t z80cpu::implied_addressing() {
 	return 0;
 }
 
-
+// TODO: fix function pointer table!!!!!!
 // Instructions
 uint8_t z80cpu::LD() {
 	if ((this->instruction_table[opcode].addressing_mode1) == &z80cpu::register_addressing) {
@@ -182,7 +184,7 @@ uint8_t z80cpu::LD() {
 			}
 		}
 		else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::implied_addressing) {
-			if (opcode == 0x57) {
+			if (opcode == 0x57) { // LD A, I
 
 				// Sign Flag is set if I is negative, else it is reset.
 				if ((interrupt_vector_register >> 7) == 0x01) {
@@ -211,7 +213,7 @@ uint8_t z80cpu::LD() {
 
 				accumulator = interrupt_vector_register;
 			}
-			else {
+			else { // LD A, R
 
 				// Sign Flag is set if I is negative, else it is reset.
 				if ((memory_refresh_register >> 7) == 0x01) {
