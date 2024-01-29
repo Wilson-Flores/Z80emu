@@ -68,58 +68,13 @@ public:
 	void nonmaskable_interrupt(); // NMI
 
 
-	// Addressing Modes
-	uint8_t immediate_addressing();
-	uint8_t immediate_extended_addressing();
-	uint8_t modified_page_zero_addressing();
-	uint8_t relative_addressing();
-	uint8_t extended_addressing();
-	uint8_t indexed_addressing();
-	uint8_t register_addressing();
-	uint8_t implied_addressing();
-	uint8_t register_indirect_addressing();
-	uint8_t bit_addressing();
-
 
 	// 8-bit Instructions
-	uint8_t ADC();  uint8_t ADD();  uint8_t AND();
-
-	uint8_t BIT();
-
-	uint8_t CALL(); uint8_t CCF();  uint8_t CP();   uint8_t CPD();
-	uint8_t CPDR(); uint8_t CPI();  uint8_t CPIR(); uint8_t CPL();
-	
-	uint8_t DAA();  uint8_t DEC();  uint8_t DI();   uint8_t DJNZ();
-
-	uint8_t EI();   uint8_t EX();   uint8_t EXX();
-
-	uint8_t HALT();
-
-	uint8_t IM0();  uint8_t IM1();  uint8_t IM2();  uint8_t IN();
-	uint8_t INC();  uint8_t INI();  uint8_t INIR();
-
-	uint8_t JP();   uint8_t JR();
-
-	uint8_t LD();   uint8_t LDD();  uint8_t LDDR(); uint8_t LDI();  uint8_t LDIR();
-
-	uint8_t NEG();  uint8_t NOP();
-
-	uint8_t OR();   uint8_t OTDR(); uint8_t OUT();  uint8_t OUTD(); uint8_t OUTI();
-
-	uint8_t POP();  uint8_t PUSH();
-
-	uint8_t RES();  uint8_t RET();  uint8_t RETI(); uint8_t RETN(); uint8_t RL();
-	uint8_t RLA();  uint8_t RLC();  uint8_t RLCA(); uint8_t RLD();  uint8_t RR();
-	uint8_t RRA();  uint8_t RRC();  uint8_t RRCA(); uint8_t RRD();  uint8_t RST();
-
-	uint8_t SBC();  uint8_t SCF();  uint8_t SET();  uint8_t SLA();
-	uint8_t SRA();  uint8_t SRL();  uint8_t SUB();
-
-	uint8_t XOR();
-
-
-	// Catch any "illegal opcodes
-	uint8_t XXX();
+	// LD Instructions
+	void LD_register_immediate();                 // [LD r, n]
+	void LD_register_register();                  // [LD r, r']
+	void LD_register_register_indirect();         // [LD r, (HL)], [LD A, (BC)], [LD A, (DE)]
+	void LD_register_implied();                   // [LD A, R], [LD A, I]
 
 
 	void instruction_cycle();
@@ -141,16 +96,25 @@ private:
 
 	struct INSTRUCTION {
 		std::string opcode;
-		uint8_t(z80cpu::* instruction)(void) = nullptr;
-		uint8_t(z80cpu::* addressing_mode1)(void) = nullptr;
-		uint8_t(z80cpu::* addressing_mode2)(void) = nullptr;
-		uint8_t t_state_cycles = 0;
-		//std::vector<INSTRUCTION>* table = nullptr;
+		void(z80cpu::* instruction)(void) = nullptr;
 	};
 
 
-	std::vector<INSTRUCTION> instruction_table;
-	std::vector<INSTRUCTION> ED_table;
+	//Function tables
+	void bit_instructions();
+	void ix_instructions();
+	void ix_bit_instructions();
+	void misc_instructions();
+	void iy_instructions();
+	void iy_bit_instructions();
+
+
+	std::vector<INSTRUCTION> main_instruction_table;
+	std::vector<INSTRUCTION> ix_instruction_table;
+	std::vector<INSTRUCTION> ix_bit_instruction_table;
+	std::vector<INSTRUCTION> misc_instruction_table;
+	std::vector<INSTRUCTION> iy_instruction_table;
+	std::vector<INSTRUCTION> iy_bit_instruction_table;
 
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
 	std::vector<uint8_t*> register_table;

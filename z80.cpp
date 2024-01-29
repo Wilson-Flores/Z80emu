@@ -7,39 +7,40 @@ constexpr uint8_t BIT_MASK_2 = 0x07; // 0000 0111 binary value
 
 z80cpu::z80cpu() {
 	using z = z80cpu;
-	instruction_table = {
-	{ "00", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "01", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "02", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "03", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "04", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "05", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "06", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "07", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "08", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "09", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "0A", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "0B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "0C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "0D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "0E", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "0F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "10", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "11", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "12", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "13", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "14", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "15", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "16", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "17", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "18", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "19", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "1A", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "1B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "1C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "1D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "1E", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "1F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "20", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "21", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "22", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "23", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "24", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "25", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "26", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "27", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "28", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "29", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2A", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2E", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "2F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "30", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "31", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "32", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "33", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "34", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "35", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "36", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "37", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "38", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "39", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3A", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3E", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "3F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "40", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "41", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "42", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "43", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "44", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "45", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "46", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "47", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "48", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "49", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4A", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4B", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4C", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4D", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4E", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "4F", &z::LD, &z::register_addressing, &z::register_addressing, 4 },
-	{ "50", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "51", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "52", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "53", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "54", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "55", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "56", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "57", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "58", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "59", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5A", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5B", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5C", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5D", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5E", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "5F", &z::LD, &z::register_addressing, &z::register_addressing, 4 },
-	{ "60", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "61", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "62", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "63", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "64", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "65", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "66", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "67", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "68", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "69", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6A", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6B", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6C", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6D", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6E", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "6F", &z::LD, &z::register_addressing, &z::register_addressing, 4 },
-	{ "70", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "71", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "72", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "73", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "74", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "75", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "76", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "77", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "78", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "79", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7A", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7B", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7C", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7D", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7E", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "7F", &z::LD, &z::register_addressing, &z::register_addressing, 4 },
-	{ "80", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "81", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "82", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "83", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "84", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "85", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "86", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "87", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "88", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "89", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8A", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8E", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "90", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "91", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "92", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "93", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "94", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "95", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "96", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "97", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "98", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "99", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9A", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9E", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "A0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "B0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "C0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "C9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "CA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "CB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "CC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "CD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "CE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "CF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "D0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "D9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "DA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "DB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "DC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "DD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "DE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "DF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "E0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "E9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "EA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "EB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "EC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "ED", nullptr, nullptr, nullptr, 0},{ "EE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "EF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "F0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "F9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "FF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 }};
+	main_instruction_table = {
+		{ "00", nullptr },{ "01", nullptr },{ "02", nullptr },{ "03", nullptr },{ "04", nullptr },{ "05", nullptr },{ "06", nullptr },{ "07", nullptr },{ "08", nullptr },{ "09", nullptr },{ "0A", nullptr },{ "0B", nullptr },{ "0C", nullptr },{ "0D", nullptr },{ "0E", nullptr },{ "0F", nullptr },
+		{ "10", nullptr },{ "11", nullptr },{ "12", nullptr },{ "13", nullptr },{ "14", nullptr },{ "15", nullptr },{ "16", nullptr },{ "17", nullptr },{ "18", nullptr },{ "19", nullptr },{ "1A", nullptr },{ "1B", nullptr },{ "1C", nullptr },{ "1D", nullptr },{ "1E", nullptr },{ "1F", nullptr },
+		{ "20", nullptr },{ "21", nullptr },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
+		{ "30", nullptr },{ "31", nullptr },{ "32", nullptr },{ "33", nullptr },{ "34", nullptr },{ "35", nullptr },{ "36", nullptr },{ "37", nullptr },{ "38", nullptr },{ "39", nullptr },{ "3A", nullptr },{ "3B", nullptr },{ "3C", nullptr },{ "3D", nullptr },{ "3E", &z::misc_instructions },{ "3F", nullptr },
+		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", nullptr },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", nullptr },{ "4F", nullptr },
+		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", nullptr },{ "57", nullptr },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", nullptr },{ "5F", nullptr },
+		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", nullptr },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", nullptr },{ "6F", nullptr },
+		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", nullptr },{ "7F", nullptr },
+		{ "80", nullptr },{ "81", nullptr },{ "82", nullptr },{ "83", nullptr },{ "84", nullptr },{ "85", nullptr },{ "86", nullptr },{ "87", nullptr },{ "88", nullptr },{ "89", nullptr },{ "8A", nullptr },{ "8B", nullptr },{ "8C", nullptr },{ "8D", nullptr },{ "8E", nullptr },{ "8F", nullptr },
+		{ "90", nullptr },{ "91", nullptr },{ "92", nullptr },{ "93", nullptr },{ "94", nullptr },{ "95", nullptr },{ "96", nullptr },{ "97", nullptr },{ "98", nullptr },{ "99", nullptr },{ "9A", nullptr },{ "9B", nullptr },{ "9C", nullptr },{ "9D", nullptr },{ "9E", nullptr },{ "9F", nullptr },
+		{ "A0", nullptr },{ "A1", nullptr },{ "A2", nullptr },{ "A3", nullptr },{ "A4", nullptr },{ "A5", nullptr },{ "A6", nullptr },{ "A7", nullptr },{ "A8", nullptr },{ "A9", nullptr },{ "AA", nullptr },{ "AB", nullptr },{ "AC", nullptr },{ "AD", nullptr },{ "AE", nullptr },{ "AF", nullptr },
+		{ "B0", nullptr },{ "B1", nullptr },{ "B2", nullptr },{ "B3", nullptr },{ "B4", nullptr },{ "B5", nullptr },{ "B6", nullptr },{ "B7", nullptr },{ "B8", nullptr },{ "B9", nullptr },{ "BA", nullptr },{ "BB", nullptr },{ "BC", nullptr },{ "BD", nullptr },{ "BE", nullptr },{ "BF", nullptr },
+		{ "C0", nullptr },{ "C1", nullptr },{ "C2", nullptr },{ "C3", nullptr },{ "C4", nullptr },{ "C5", nullptr },{ "C6", nullptr },{ "C7", nullptr },{ "C8", nullptr },{ "C9", nullptr },{ "CA", nullptr },{ "CB", nullptr },{ "CC", nullptr },{ "CD", nullptr },{ "CE", nullptr },{ "CF", nullptr },
+		{ "D0", nullptr },{ "D1", nullptr },{ "D2", nullptr },{ "D3", nullptr },{ "D4", nullptr },{ "D5", nullptr },{ "D6", nullptr },{ "D7", nullptr },{ "D8", nullptr },{ "D9", nullptr },{ "DA", nullptr },{ "DB", nullptr },{ "DC", nullptr },{ "DD", nullptr },{ "DE", nullptr },{ "DF", nullptr },
+		{ "E0", nullptr },{ "E1", nullptr },{ "E2", nullptr },{ "E3", nullptr },{ "E4", nullptr },{ "E5", nullptr },{ "E6", nullptr },{ "E7", nullptr },{ "E8", nullptr },{ "E9", nullptr },{ "EA", nullptr },{ "EB", nullptr },{ "EC", nullptr },{ "ED", nullptr },{ "EE", nullptr },{ "EF", nullptr },
+		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", nullptr },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", nullptr },{ "FE", nullptr },{ "FF", nullptr } 
+	};
 
 
-	ED_table = {
-	{ "00", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "01", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "02", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "03", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "04", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "05", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "06", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "07", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "08", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "09", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "0A", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "0B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "0C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "0D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "0E", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "0F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "10", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "11", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "12", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "13", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "14", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "15", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "16", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "17", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "18", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "19", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "1A", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "1B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "1C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "1D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "1E", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "1F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "20", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "21", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "22", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "23", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "24", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "25", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "26", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "27", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "28", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "29", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2A", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "2E", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "2F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "30", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "31", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "32", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "33", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "34", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "35", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "36", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "37", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "38", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "39", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3A", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "3E", &z::LD, &z::register_addressing, &z::immediate_addressing, 7 },{ "3F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "40", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "41", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "42", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "43", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "44", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "45", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "46", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "47", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "48", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "49", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4A", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4B", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4C", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4D", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "4E", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "4F", &z::LD, &z::register_addressing, &z::register_addressing, 4 },
-	{ "50", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "51", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "52", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "53", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "54", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "55", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "56", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "57", &z::LD, &z::register_addressing, &z::implied_addressing, 9 },{ "58", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "59", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5A", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5B", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5C", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5D", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "5E", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "5F", &z::LD, &z::register_addressing, &z::implied_addressing, 9 },
-	{ "60", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "61", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "62", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "63", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "64", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "65", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "66", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "67", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "68", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "69", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6A", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6B", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6C", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6D", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "6E", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "6F", &z::LD, &z::register_addressing, &z::register_addressing, 4 },
-	{ "70", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "71", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "72", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "73", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "74", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "75", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "76", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "77", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "78", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "79", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7A", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7B", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7C", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7D", &z::LD, &z::register_addressing, &z::register_addressing, 4 },{ "7E", &z::LD, &z::register_addressing, &z::register_indirect_addressing, 7 },{ "7F", &z::LD, &z::register_addressing, &z::register_addressing, 4 },
-	{ "80", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "81", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "82", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "83", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "84", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "85", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "86", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "87", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "88", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "89", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8A", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8E", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "8F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "90", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "91", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "92", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "93", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "94", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "95", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "96", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "97", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "98", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "99", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9A", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9B", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9C", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9D", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9E", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "9F", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "A0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "A9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "AF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },
-	{ "B0", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B1", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B2", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B3", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B4", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B5", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B6", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B7", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B8", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "B9", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BA", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BB", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BC", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BD", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BE", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 },{ "BF", &z::LD, &z::register_addressing, &z::immediate_addressing, 0 } };
-
+	misc_instruction_table = {
+		{ "00", nullptr },{ "01", nullptr },{ "02", nullptr },{ "03", nullptr },{ "04", nullptr },{ "05", nullptr },{ "06", nullptr },{ "07", nullptr },{ "08", nullptr },{ "09", nullptr },{ "0A", nullptr },{ "0B", nullptr },{ "0C", nullptr },{ "0D", nullptr },{ "0E", nullptr },{ "0F", nullptr },
+		{ "10", nullptr },{ "11", nullptr },{ "12", nullptr },{ "13", nullptr },{ "14", nullptr },{ "15", nullptr },{ "16", nullptr },{ "17", nullptr },{ "18", nullptr },{ "19", nullptr },{ "1A", nullptr },{ "1B", nullptr },{ "1C", nullptr },{ "1D", nullptr },{ "1E", nullptr },{ "1F", nullptr },
+		{ "20", nullptr },{ "21", nullptr },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
+		{ "30", nullptr },{ "31", nullptr },{ "32", nullptr },{ "33", nullptr },{ "34", nullptr },{ "35", nullptr },{ "36", nullptr },{ "37", nullptr },{ "38", nullptr },{ "39", nullptr },{ "3A", nullptr },{ "3B", nullptr },{ "3C", nullptr },{ "3D", nullptr },{ "3E", nullptr },{ "3F", nullptr },
+		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", nullptr },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", nullptr },{ "4F", nullptr },
+		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", nullptr },{ "57", nullptr },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", nullptr },{ "5F", nullptr },
+		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", nullptr },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", nullptr },{ "6F", nullptr },
+		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", nullptr },{ "7F", nullptr },
+		{ "80", nullptr },{ "81", nullptr },{ "82", nullptr },{ "83", nullptr },{ "84", nullptr },{ "85", nullptr },{ "86", nullptr },{ "87", nullptr },{ "88", nullptr },{ "89", nullptr },{ "8A", nullptr },{ "8B", nullptr },{ "8C", nullptr },{ "8D", nullptr },{ "8E", nullptr },{ "8F", nullptr },
+		{ "90", nullptr },{ "91", nullptr },{ "92", nullptr },{ "93", nullptr },{ "94", nullptr },{ "95", nullptr },{ "96", nullptr },{ "97", nullptr },{ "98", nullptr },{ "99", nullptr },{ "9A", nullptr },{ "9B", nullptr },{ "9C", nullptr },{ "9D", nullptr },{ "9E", nullptr },{ "9F", nullptr },
+		{ "A0", nullptr },{ "A1", nullptr },{ "A2", nullptr },{ "A3", nullptr },{ "A4", nullptr },{ "A5", nullptr },{ "A6", nullptr },{ "A7", nullptr },{ "A8", nullptr },{ "A9", nullptr },{ "AA", nullptr },{ "AB", nullptr },{ "AC", nullptr },{ "AD", nullptr },{ "AE", nullptr },{ "AF", nullptr },
+		{ "B0", nullptr },{ "B1", nullptr },{ "B2", nullptr },{ "B3", nullptr },{ "B4", nullptr },{ "B5", nullptr },{ "B6", nullptr },{ "B7", nullptr },{ "B8", nullptr },{ "B9", nullptr },{ "BA", nullptr },{ "BB", nullptr },{ "BC", nullptr },{ "BD", nullptr },{ "BE", nullptr },{ "BF", nullptr } 
+	};
 
 	register_table = {
 		&B_register, // B = 0b000
@@ -72,6 +73,17 @@ void z80cpu::set_flag(FLAGSZ80 flag, bool set_flag) {
 	}
 }
 
+void z80cpu::misc_instructions() {
+	if (memory_refresh_register < 0x80) {
+		memory_refresh_register++;
+	}
+
+	opcode = read(program_counter);
+	program_counter++;
+
+	(this->*misc_instruction_table[opcode].instruction)();
+}
+
 
 void z80cpu::instruction_cycle() {
 	// when t cycles reach 0, we are ready to read next instruction
@@ -87,197 +99,107 @@ void z80cpu::instruction_cycle() {
 		// increment program counter
 		program_counter++;
 
-		// If opcode belongs to: CB, DD, ED, FD
-		if (opcode == 0xCB) {
-			std::cout << "COMING SOON\n";
-		}
-		else if (opcode == 0xDD) {
-			std::cout << "COMING SOON\n";
-		}
-		else if (opcode == 0xED) {
-			opcode = read(program_counter);
+		// begin going through the main instruction table
+		(this->*main_instruction_table[opcode].instruction)();
+}
 
-			// everytime we fetch an instruction increase memory refresh register. this operation doesnt touch the 8th bit.
-			if (memory_refresh_register < 0x80) {
-				memory_refresh_register++;
-			}
 
-			program_counter++;
 
-			std::cout << "OPCODE: " << this->instruction_table[opcode].opcode << '\n';
-			(this->*ED_table[opcode].instruction)();
-		}
-		else if (opcode == 0xFD) {
-			std::cout << "COMING SOON\n";
+// LD Instructions
+void z80cpu::LD_register_immediate() {
+	// bit mask the opcode to find the register value
+	uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
+
+	*register_table[destination_register_bit] = read(program_counter);
+
+	// Increment program counter again to avoid instruction cycle from mistaking 'n' value for an opcode
+	program_counter++;
+}
+
+
+void z80cpu::LD_register_register() {
+	// bit mask the opcode to find the register destination value and source register value
+	uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
+	uint8_t source_register_bit = (opcode & BIT_MASK_2);
+
+	*register_table[destination_register_bit] = *register_table[source_register_bit];
+}
+
+
+void z80cpu::LD_register_register_indirect() {
+	// LD r, (HL) opcode ends with 0b110, while LD A, (BC) and LD A, (DE) end with 0b010
+	uint8_t opcode_bit = (opcode & BIT_MASK_2);
+	uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
+
+	if (opcode_bit == 0x02) {
+		if (register_bit == 0x01) {
+			// LD A, (BC)
+			address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
+			accumulator = read(address_absolute);
+
 		}
 		else {
-			// perform operation
-			std::cout << "OPCODE: " << this->instruction_table[opcode].opcode << '\n';
-			(this->*instruction_table[opcode].instruction)();
+			// LD A, (DE)
+			address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
+			accumulator = read(address_absolute);
 		}
-}
-
-
-// Addressing Mode
-uint8_t z80cpu::register_addressing() {
-	std::cout << "Register Addressing Mode\n";
-	return 0;
-}
-
-uint8_t z80cpu::immediate_addressing() {
-	std::cout << "Immediate Addressing Mode\n";
-	return 0;
-}
-
-uint8_t z80cpu::register_indirect_addressing() {
-	std::cout << "Register Indirect Addressing Mode\n";
-	return 0;
-}
-
-uint8_t z80cpu::implied_addressing() {
-	std::cout << "Implied Addressing Mode\n";
-	return 0;
-}
-
-// TODO: fix function pointer table!!!!!!
-// Instructions
-uint8_t z80cpu::LD() {
-	if ((this->instruction_table[opcode].addressing_mode1) == &z80cpu::register_addressing) {
-		if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::immediate_addressing) {
-			// bit mask the opcode to find the register value
-			uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
-
-			*register_table[destination_register_bit] = read(program_counter);
-
-			// Increment program counter again to avoid instruction cycle from mistaking 'n' value for an opcode
-			program_counter++;
-		}
-		else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_addressing) {
-			// bit mask the opcode to find the register destination value and source register value
-			uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
-			uint8_t source_register_bit = (opcode & BIT_MASK_2);
-
-			*register_table[destination_register_bit] = *register_table[source_register_bit];
-		}
-		else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_indirect_addressing) {
-			// LD r, (HL) opcode ends with 0b110, while LD A, (BC) and LD A, (DE) end with 0b010
-			uint8_t opcode_bit = (opcode & BIT_MASK_2);
-			uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
-
-			if (opcode_bit == 0x02) {
-				if (register_bit == 0x01) {
-					// LD A, (BC)
-					address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
-					accumulator = read(address_absolute);
-
-				}
-				else {
-					// LD A, (DE)
-					address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
-					accumulator = read(address_absolute);
-				}
-			}
-			else {
-				// LD r, (HL)
-				address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-				*register_table[register_bit] = read(address_absolute);
-			}
-		}
-		else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::implied_addressing) {
-			if (opcode == 0x57) { // LD A, I
-
-				// Sign Flag is set if I is negative, else it is reset.
-				if ((interrupt_vector_register >> 7) == 0x01) {
-					set_flag(SIGN_FLAG, true);
-				}
-				else {
-					set_flag(SIGN_FLAG, false);
-				}
-
-				// Zero Flag is set if I equals 0, else it is reset.
-				if (interrupt_vector_register == 0x00) {
-					set_flag(ZERO_FLAG, true);
-				}
-				else {
-					set_flag(ZERO_FLAG, false);
-				}
-
-				// Half Carry flag is reset.
-				set_flag(HALF_CARRY_FLAG, false);
-				// Add/Subtract flag is reset.
-				set_flag(ADD_SUB_FLAG, false);
-				// P/V contains contents of IFF2
-				set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2);
-
-				//TODO: add a way to set P/V flag to 0 if interrupt occurs.
-
-				accumulator = interrupt_vector_register;
-			}
-			else { // LD A, R
-
-				// Sign Flag is set if I is negative, else it is reset.
-				if ((memory_refresh_register >> 7) == 0x01) {
-					set_flag(SIGN_FLAG, true);
-				}
-				else {
-					set_flag(SIGN_FLAG, false);
-				}
-
-				// Zero Flag is set if I equals 0, else it is reset.
-				if (memory_refresh_register == 0x00) {
-					set_flag(ZERO_FLAG, true);
-				}
-				else {
-					set_flag(ZERO_FLAG, false);
-				}
-
-				// Half Carry flag is reset.
-				set_flag(HALF_CARRY_FLAG, false);
-				// Add/Subtract flag is reset.
-				set_flag(ADD_SUB_FLAG, false);
-				// P/V contains contents of IFF2
-				set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2);
-
-				//TODO: add a way to set P/V flag to 0 if interrupt occurs.
-
-				accumulator = memory_refresh_register;
-			}
-		}
-		//else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::indexed_addressing) {
-
-		//}
-		//else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::extended_addressing) {
-
-		//}
 	}
-	//else if ((this->instruction_table[opcode].addressing_mode1) == &z80cpu::register_indirect_addressing) {
-	//	if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::immediate_addressing) {
-
-	//	}
-	//	else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_addressing) {
-
-	//	}
-	//}
-	//else if ((this->instruction_table[opcode].addressing_mode1) == &z80cpu::indexed_addressing) {
-	//	if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::immediate_addressing) {
-
-	//	}
-	//	else if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_addressing) {
-
-	//	}
-	//}
-	//else if ((this->instruction_table[opcode].addressing_mode1) == &z80cpu::extended_addressing) {
-	//	if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_addressing) {
-	//	
-	//	}
-	//}
-	//else if ((this->instruction_table[opcode].addressing_mode1) == &z80cpu::implied_addressing) {
-	//	if ((this->instruction_table[opcode].addressing_mode2) == &z80cpu::register_addressing) {
-
-	//	}
-	//}
-
-	return 0;
+	else {
+		// LD r, (HL)
+		address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
+		*register_table[register_bit] = read(address_absolute);
+	}
 }
 
 
+void z80cpu::LD_register_implied() {
+	// Half Carry flag is reset.
+	set_flag(HALF_CARRY_FLAG, false);
+	// Add/Subtract flag is reset.
+	set_flag(ADD_SUB_FLAG, false);
+	// P/V contains contents of IFF2
+	set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2);
+
+	//TODO: add a way to set P/V flag to 0 if interrupt occurs.
+
+	if (opcode == 0x57) { // LD A, I
+
+		// Sign Flag is set if I is negative, else it is reset.
+		if ((interrupt_vector_register >> 7) == 0x01) {
+			set_flag(SIGN_FLAG, true);
+		}
+		else {
+			set_flag(SIGN_FLAG, false);
+		}
+
+		// Zero Flag is set if I equals 0, else it is reset.
+		if (interrupt_vector_register == 0x00) {
+			set_flag(ZERO_FLAG, true);
+		}
+		else {
+			set_flag(ZERO_FLAG, false);
+		}
+
+		accumulator = interrupt_vector_register;
+	}
+	else { // LD A, R
+
+		// Sign Flag is set if I is negative, else it is reset.
+		if ((memory_refresh_register >> 7) == 0x01) {
+			set_flag(SIGN_FLAG, true);
+		}
+		else {
+			set_flag(SIGN_FLAG, false);
+		}
+
+		// Zero Flag is set if I equals 0, else it is reset.
+		if (memory_refresh_register == 0x00) {
+			set_flag(ZERO_FLAG, true);
+		}
+		else {
+			set_flag(ZERO_FLAG, false);
+		}
+
+		accumulator = memory_refresh_register;
+	}
+}
