@@ -107,6 +107,8 @@ void z80cpu::instruction_cycle() {
 
 // LD Instructions
 void z80cpu::LD_register_immediate() {
+	t_state_cycles = 7;
+
 	// bit mask the opcode to find the register value
 	uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
 
@@ -118,6 +120,8 @@ void z80cpu::LD_register_immediate() {
 
 
 void z80cpu::LD_register_register() {
+	t_state_cycles = 4;
+
 	// bit mask the opcode to find the register destination value and source register value
 	uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
 	uint8_t source_register_bit = (opcode & BIT_MASK_2);
@@ -127,6 +131,8 @@ void z80cpu::LD_register_register() {
 
 
 void z80cpu::LD_register_register_indirect() {
+	t_state_cycles = 7;
+
 	// LD r, (HL) opcode ends with 0b110, while LD A, (BC) and LD A, (DE) end with 0b010
 	uint8_t opcode_bit = (opcode & BIT_MASK_2);
 	uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
@@ -153,6 +159,8 @@ void z80cpu::LD_register_register_indirect() {
 
 
 void z80cpu::LD_register_implied() {
+	t_state_cycles = 9;
+
 	// Half Carry flag is reset.
 	set_flag(HALF_CARRY_FLAG, false);
 	// Add/Subtract flag is reset.
