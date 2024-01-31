@@ -13,6 +13,7 @@ int main() {
 	//LD_register_implied_test(test);
 	//LD_register_indexed_test(test);
 	LD_register_extended_test(test);
+	LD_register_indirect_immediate(test);
 
 	return 0;
 }

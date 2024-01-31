@@ -80,6 +80,7 @@ public:
 	void LD_register_indexed_ix();                // [LD r, (IX+d)]
 	void LD_register_indexed_iy();                // [LD r, (IY+d)]
 	void LD_register_extended();				  // [LD A, (nn)]
+	void LD_register_indirect_immediate();		  // [LD (HL), n]
 
 	
 	// 16-bit Instructions
