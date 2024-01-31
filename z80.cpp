@@ -111,12 +111,20 @@ void z80cpu::set_flag(FLAGSZ80 flag, bool set_flag) {
 	}
 }
 
-void z80cpu::misc_instructions() {
-	if (memory_refresh_register < 0x80) {
+
+void z80cpu::memory_refresh_counter() {
+	if (((memory_refresh_register + 1) & 0x7F) < 0x7F) {
 		memory_refresh_register++;
 	}
+	else {
+		memory_refresh_register &= 0x80;
+	}
+}
 
+
+void z80cpu::misc_instructions() {
 	opcode = read(program_counter);
+	memory_refresh_counter();
 	program_counter++;
 
 	std::cout << "OPCODE: " << this->misc_instruction_table[opcode].opcode << '\n';
@@ -125,11 +133,8 @@ void z80cpu::misc_instructions() {
 
 
 void z80cpu::ix_instructions() {
-	if (memory_refresh_register < 0x80) {
-		memory_refresh_register++;
-	}
-
 	opcode = read(program_counter);
+	memory_refresh_counter();
 	program_counter++;
 
 	std::cout << "OPCODE: " << this->ix_instruction_table[opcode].opcode << '\n';
@@ -138,11 +143,8 @@ void z80cpu::ix_instructions() {
 
 
 void z80cpu::iy_instructions() {
-	if (memory_refresh_register < 0x80) {
-		memory_refresh_register++;
-	}
-
 	opcode = read(program_counter);
+	memory_refresh_counter();
 	program_counter++;
 
 	std::cout << "OPCODE: " << this->iy_instruction_table[opcode].opcode << '\n';
@@ -154,12 +156,8 @@ void z80cpu::instruction_cycle() {
 	// when t cycles reach 0, we are ready to read next instruction
 		opcode = read(program_counter);
 		
-
-		// TODO: check if even if the 8th bit is set that the register continues to increment
-		// everytime we fetch an instruction increase memory refresh register. this operation doesnt touch the 8th bit.
-		if (memory_refresh_register < 0x80) {
-			memory_refresh_register++;
-		}
+		//memory refresh register increments after pulling an opcode
+		memory_refresh_counter();
 
 		// increment program counter
 		program_counter++;

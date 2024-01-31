@@ -58,6 +58,8 @@ public:
 	// Other Registers
 	uint8_t interrupt_vector_register = 0x00;
 	uint8_t memory_refresh_register = 0x00;
+	void memory_refresh_counter();
+
 	uint16_t stack_pointer = 0x0000;
 	uint16_t program_counter = 0x0000;
 
