@@ -120,11 +120,13 @@ private:
 
 
 	std::vector<INSTRUCTION> main_instruction_table;
-	std::vector<INSTRUCTION> ix_instruction_table;
-	std::vector<INSTRUCTION> ix_bit_instruction_table;
-	std::vector<INSTRUCTION> misc_instruction_table;
-	std::vector<INSTRUCTION> iy_instruction_table;
-	std::vector<INSTRUCTION> iy_bit_instruction_table;
+	std::vector<INSTRUCTION> bit_instruction_table;			// opcode: CB
+	std::vector<INSTRUCTION> ix_instruction_table;			// opcode: DD
+	std::vector<INSTRUCTION> ix_bit_instruction_table;		// opcode: DD CB
+	std::vector<INSTRUCTION> misc_instruction_table;		// opcode: ED
+	std::vector<INSTRUCTION> iy_instruction_table;			// opcode: FD
+	std::vector<INSTRUCTION> iy_bit_instruction_table;		// opcode: FD CB
+
 
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
 	std::vector<uint8_t*> register_table;

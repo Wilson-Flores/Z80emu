@@ -44,12 +44,12 @@ z80cpu::z80cpu() {
 	ix_instruction_table = {
 		{ "00", nullptr },{ "01", nullptr },{ "02", nullptr },{ "03", nullptr },{ "04", nullptr },{ "05", nullptr },{ "06", nullptr },{ "07", nullptr },{ "08", nullptr },{ "09", nullptr },{ "0A", nullptr },{ "0B", nullptr },{ "0C", nullptr },{ "0D", nullptr },{ "0E", nullptr },{ "0F", nullptr },
 		{ "10", nullptr },{ "11", nullptr },{ "12", nullptr },{ "13", nullptr },{ "14", nullptr },{ "15", nullptr },{ "16", nullptr },{ "17", nullptr },{ "18", nullptr },{ "19", nullptr },{ "1A", nullptr },{ "1B", nullptr },{ "1C", nullptr },{ "1D", nullptr },{ "1E", nullptr },{ "1F", nullptr },
-		{ "20", nullptr },{ "21", nullptr },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
+		{ "20", nullptr },{ "21", &z::LD_register_immediate_extended_ix },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
 		{ "30", nullptr },{ "31", nullptr },{ "32", nullptr },{ "33", nullptr },{ "34", nullptr },{ "35", nullptr },{ "36", nullptr },{ "37", nullptr },{ "38", nullptr },{ "39", nullptr },{ "3A", nullptr },{ "3B", nullptr },{ "3C", nullptr },{ "3D", nullptr },{ "3E", nullptr },{ "3F", nullptr },
-		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", nullptr },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", nullptr },{ "4F", nullptr },
-		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", nullptr },{ "57", nullptr },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", nullptr },{ "5F", nullptr },
-		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", nullptr },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", nullptr },{ "6F", nullptr },
-		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", nullptr },{ "7F", nullptr },
+		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", &z::LD_register_indexed_ix },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", &z::LD_register_indexed_ix },{ "4F", nullptr },
+		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", &z::LD_register_indexed_ix },{ "57", nullptr },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", &z::LD_register_indexed_ix },{ "5F", nullptr },
+		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", &z::LD_register_indexed_ix },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", &z::LD_register_indexed_ix },{ "6F", nullptr },
+		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", &z::LD_register_indexed_ix },{ "7F", nullptr },
 		{ "80", nullptr },{ "81", nullptr },{ "82", nullptr },{ "83", nullptr },{ "84", nullptr },{ "85", nullptr },{ "86", nullptr },{ "87", nullptr },{ "88", nullptr },{ "89", nullptr },{ "8A", nullptr },{ "8B", nullptr },{ "8C", nullptr },{ "8D", nullptr },{ "8E", nullptr },{ "8F", nullptr },
 		{ "90", nullptr },{ "91", nullptr },{ "92", nullptr },{ "93", nullptr },{ "94", nullptr },{ "95", nullptr },{ "96", nullptr },{ "97", nullptr },{ "98", nullptr },{ "99", nullptr },{ "9A", nullptr },{ "9B", nullptr },{ "9C", nullptr },{ "9D", nullptr },{ "9E", nullptr },{ "9F", nullptr },
 		{ "A0", nullptr },{ "A1", nullptr },{ "A2", nullptr },{ "A3", nullptr },{ "A4", nullptr },{ "A5", nullptr },{ "A6", nullptr },{ "A7", nullptr },{ "A8", nullptr },{ "A9", nullptr },{ "AA", nullptr },{ "AB", nullptr },{ "AC", nullptr },{ "AD", nullptr },{ "AE", nullptr },{ "AF", nullptr },
@@ -63,12 +63,12 @@ z80cpu::z80cpu() {
 	iy_instruction_table = {
 		{ "00", nullptr },{ "01", nullptr },{ "02", nullptr },{ "03", nullptr },{ "04", nullptr },{ "05", nullptr },{ "06", nullptr },{ "07", nullptr },{ "08", nullptr },{ "09", nullptr },{ "0A", nullptr },{ "0B", nullptr },{ "0C", nullptr },{ "0D", nullptr },{ "0E", nullptr },{ "0F", nullptr },
 		{ "10", nullptr },{ "11", nullptr },{ "12", nullptr },{ "13", nullptr },{ "14", nullptr },{ "15", nullptr },{ "16", nullptr },{ "17", nullptr },{ "18", nullptr },{ "19", nullptr },{ "1A", nullptr },{ "1B", nullptr },{ "1C", nullptr },{ "1D", nullptr },{ "1E", nullptr },{ "1F", nullptr },
-		{ "20", nullptr },{ "21", nullptr },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
+		{ "20", nullptr },{ "21", &z::LD_register_immediate_extended_iy },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
 		{ "30", nullptr },{ "31", nullptr },{ "32", nullptr },{ "33", nullptr },{ "34", nullptr },{ "35", nullptr },{ "36", nullptr },{ "37", nullptr },{ "38", nullptr },{ "39", nullptr },{ "3A", nullptr },{ "3B", nullptr },{ "3C", nullptr },{ "3D", nullptr },{ "3E", nullptr },{ "3F", nullptr },
-		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", nullptr },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", nullptr },{ "4F", nullptr },
-		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", nullptr },{ "57", nullptr },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", nullptr },{ "5F", nullptr },
-		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", nullptr },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", nullptr },{ "6F", nullptr },
-		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", nullptr },{ "7F", nullptr },
+		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", &z::LD_register_indexed_iy },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", &z::LD_register_indexed_iy },{ "4F", nullptr },
+		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", &z::LD_register_indexed_iy },{ "57", nullptr },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", &z::LD_register_indexed_iy },{ "5F", nullptr },
+		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", &z::LD_register_indexed_iy },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", &z::LD_register_indexed_iy },{ "6F", nullptr },
+		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", &z::LD_register_indexed_iy },{ "7F", nullptr },
 		{ "80", nullptr },{ "81", nullptr },{ "82", nullptr },{ "83", nullptr },{ "84", nullptr },{ "85", nullptr },{ "86", nullptr },{ "87", nullptr },{ "88", nullptr },{ "89", nullptr },{ "8A", nullptr },{ "8B", nullptr },{ "8C", nullptr },{ "8D", nullptr },{ "8E", nullptr },{ "8F", nullptr },
 		{ "90", nullptr },{ "91", nullptr },{ "92", nullptr },{ "93", nullptr },{ "94", nullptr },{ "95", nullptr },{ "96", nullptr },{ "97", nullptr },{ "98", nullptr },{ "99", nullptr },{ "9A", nullptr },{ "9B", nullptr },{ "9C", nullptr },{ "9D", nullptr },{ "9E", nullptr },{ "9F", nullptr },
 		{ "A0", nullptr },{ "A1", nullptr },{ "A2", nullptr },{ "A3", nullptr },{ "A4", nullptr },{ "A5", nullptr },{ "A6", nullptr },{ "A7", nullptr },{ "A8", nullptr },{ "A9", nullptr },{ "AA", nullptr },{ "AB", nullptr },{ "AC", nullptr },{ "AD", nullptr },{ "AE", nullptr },{ "AF", nullptr },
@@ -98,9 +98,11 @@ uint8_t z80cpu::read(uint16_t address) {
 	return bus->read(address);
 }
 
+
 void z80cpu::write(uint16_t address, uint8_t data) {
 	bus->write(address, data);
 }
+
 
 void z80cpu::set_flag(FLAGSZ80 flag, bool set_flag) {
 	if (set_flag) {
@@ -122,6 +124,23 @@ void z80cpu::memory_refresh_counter() {
 }
 
 
+void z80cpu::instruction_cycle() {
+	// when t cycles reach 0, we are ready to read next instruction
+	opcode = read(program_counter);
+
+	//memory refresh register increments after pulling an opcode
+	memory_refresh_counter();
+
+	// increment program counter
+	program_counter++;
+
+	// begin going through the main instruction table
+	std::cout << "OPCODE: " << this->main_instruction_table[opcode].opcode << '\n';
+	(this->*main_instruction_table[opcode].instruction)();
+}
+
+
+// Function Tables
 void z80cpu::misc_instructions() {
 	opcode = read(program_counter);
 	memory_refresh_counter();
@@ -152,24 +171,7 @@ void z80cpu::iy_instructions() {
 }
 
 
-void z80cpu::instruction_cycle() {
-	// when t cycles reach 0, we are ready to read next instruction
-		opcode = read(program_counter);
-		
-		//memory refresh register increments after pulling an opcode
-		memory_refresh_counter();
-
-		// increment program counter
-		program_counter++;
-
-		// begin going through the main instruction table
-		std::cout << "OPCODE: " << this->main_instruction_table[opcode].opcode << '\n';
-		(this->*main_instruction_table[opcode].instruction)();
-}
-
-
-
-// LD Instructions
+// 8-bit LD Instructions
 void z80cpu::LD_register_immediate() {
 	t_state_cycles = 7;
 
@@ -304,5 +306,33 @@ void z80cpu::LD_register_indexed_iy() {
 
 	program_counter++;
 }
+
+
+// 16-bit LD Instructions
+void z80cpu::LD_register_immediate_extended_ix() {
+	t_state_cycles = 14;
+
+	uint8_t high_byte = read(program_counter);
+	program_counter++;
+	uint8_t low_byte = read(program_counter);
+	program_counter++;
+
+	uint16_t value = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+	index_register_x = value;
+}
+
+
+void z80cpu::LD_register_immediate_extended_iy() {
+	t_state_cycles = 14;
+
+	uint8_t high_byte = read(program_counter);
+	program_counter++;
+	uint8_t low_byte = read(program_counter);
+	program_counter++;
+
+	uint16_t value = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+	index_register_y = value;
+}
+
 
 
