@@ -47,7 +47,7 @@ void LD_register_register_test(Bus& test) {
 	}
 
 	for (int i = 0; i < 56; i++) {
-		test.cpu.instruction_cycle();
+ 		test.cpu.instruction_cycle();
 	}
 }
 

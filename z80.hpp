@@ -75,6 +75,8 @@ public:
 	void LD_register_register();                  // [LD r, r']
 	void LD_register_register_indirect();         // [LD r, (HL)], [LD A, (BC)], [LD A, (DE)]
 	void LD_register_implied();                   // [LD A, R], [LD A, I]
+	void LD_register_indexed_ix();                // [LD r, (IX+d)]
+	void LD_register_indexed_iy();                // [LD r, (IY+d)]
 
 
 	void instruction_cycle();
@@ -91,7 +93,7 @@ private:
 	uint8_t read(uint16_t address);
 	void write(uint16_t address, uint8_t data);
 
-	uint8_t GetFlag(FLAGSZ80 flag);
+	uint8_t get_flag(FLAGSZ80 flag);
 	void set_flag(FLAGSZ80 flag, bool setFlag);
 
 	struct INSTRUCTION {
