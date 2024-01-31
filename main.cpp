@@ -11,7 +11,8 @@ int main() {
 	//LD_register_register_test(test);
 	//LD_register_register_indirect_test(test);
 	//LD_register_implied_test(test);
-	LD_register_indexed_test(test);
+	//LD_register_indexed_test(test);
+	LD_register_extended_test(test);
 
 	return 0;
 }

@@ -79,6 +79,7 @@ public:
 	void LD_register_implied();                   // [LD A, R], [LD A, I]
 	void LD_register_indexed_ix();                // [LD r, (IX+d)]
 	void LD_register_indexed_iy();                // [LD r, (IY+d)]
+	void LD_register_extended();				  // [LD A, (nn)]
 
 	
 	// 16-bit Instructions
