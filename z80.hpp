@@ -78,6 +78,12 @@ public:
 	void LD_register_indexed_ix();                // [LD r, (IX+d)]
 	void LD_register_indexed_iy();                // [LD r, (IY+d)]
 
+	
+	// 16-bit Instructions
+	// LD Instructions
+	void LD_register_immediate_extended_ix();     // [LD IX, nn]
+	void LD_register_immediate_extended_iy();     // [LD IY, nn]
+
 
 	void instruction_cycle();
 

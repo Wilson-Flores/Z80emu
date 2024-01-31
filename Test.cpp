@@ -96,3 +96,10 @@ void LD_register_implied_test(Bus& test) {
 }
 
 
+void LD_register_indexed_test(Bus& test) {
+	
+}
+
+
+
+

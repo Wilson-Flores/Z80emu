@@ -21,11 +21,10 @@ z80cpu::z80cpu() {
 		{ "A0", nullptr },{ "A1", nullptr },{ "A2", nullptr },{ "A3", nullptr },{ "A4", nullptr },{ "A5", nullptr },{ "A6", nullptr },{ "A7", nullptr },{ "A8", nullptr },{ "A9", nullptr },{ "AA", nullptr },{ "AB", nullptr },{ "AC", nullptr },{ "AD", nullptr },{ "AE", nullptr },{ "AF", nullptr },
 		{ "B0", nullptr },{ "B1", nullptr },{ "B2", nullptr },{ "B3", nullptr },{ "B4", nullptr },{ "B5", nullptr },{ "B6", nullptr },{ "B7", nullptr },{ "B8", nullptr },{ "B9", nullptr },{ "BA", nullptr },{ "BB", nullptr },{ "BC", nullptr },{ "BD", nullptr },{ "BE", nullptr },{ "BF", nullptr },
 		{ "C0", nullptr },{ "C1", nullptr },{ "C2", nullptr },{ "C3", nullptr },{ "C4", nullptr },{ "C5", nullptr },{ "C6", nullptr },{ "C7", nullptr },{ "C8", nullptr },{ "C9", nullptr },{ "CA", nullptr },{ "CB", nullptr },{ "CC", nullptr },{ "CD", nullptr },{ "CE", nullptr },{ "CF", nullptr },
-		{ "D0", nullptr },{ "D1", nullptr },{ "D2", nullptr },{ "D3", nullptr },{ "D4", nullptr },{ "D5", nullptr },{ "D6", nullptr },{ "D7", nullptr },{ "D8", nullptr },{ "D9", nullptr },{ "DA", nullptr },{ "DB", nullptr },{ "DC", nullptr },{ "DD", nullptr },{ "DE", nullptr },{ "DF", nullptr },
+		{ "D0", nullptr },{ "D1", nullptr },{ "D2", nullptr },{ "D3", nullptr },{ "D4", nullptr },{ "D5", nullptr },{ "D6", nullptr },{ "D7", nullptr },{ "D8", nullptr },{ "D9", nullptr },{ "DA", nullptr },{ "DB", nullptr },{ "DC", nullptr },{ "DD", &z::ix_instructions },{ "DE", nullptr },{ "DF", nullptr },
 		{ "E0", nullptr },{ "E1", nullptr },{ "E2", nullptr },{ "E3", nullptr },{ "E4", nullptr },{ "E5", nullptr },{ "E6", nullptr },{ "E7", nullptr },{ "E8", nullptr },{ "E9", nullptr },{ "EA", nullptr },{ "EB", nullptr },{ "EC", nullptr },{ "ED", &z::misc_instructions },{ "EE", nullptr },{ "EF", nullptr },
-		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", nullptr },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", nullptr },{ "FE", nullptr },{ "FF", nullptr } 
+		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", nullptr },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", &z::iy_instructions },{ "FE", nullptr },{ "FF", nullptr } 
 	};
-
 
 	misc_instruction_table = {
 		{ "00", nullptr },{ "01", nullptr },{ "02", nullptr },{ "03", nullptr },{ "04", nullptr },{ "05", nullptr },{ "06", nullptr },{ "07", nullptr },{ "08", nullptr },{ "09", nullptr },{ "0A", nullptr },{ "0B", nullptr },{ "0C", nullptr },{ "0D", nullptr },{ "0E", nullptr },{ "0F", nullptr },
@@ -41,6 +40,45 @@ z80cpu::z80cpu() {
 		{ "A0", nullptr },{ "A1", nullptr },{ "A2", nullptr },{ "A3", nullptr },{ "A4", nullptr },{ "A5", nullptr },{ "A6", nullptr },{ "A7", nullptr },{ "A8", nullptr },{ "A9", nullptr },{ "AA", nullptr },{ "AB", nullptr },{ "AC", nullptr },{ "AD", nullptr },{ "AE", nullptr },{ "AF", nullptr },
 		{ "B0", nullptr },{ "B1", nullptr },{ "B2", nullptr },{ "B3", nullptr },{ "B4", nullptr },{ "B5", nullptr },{ "B6", nullptr },{ "B7", nullptr },{ "B8", nullptr },{ "B9", nullptr },{ "BA", nullptr },{ "BB", nullptr },{ "BC", nullptr },{ "BD", nullptr },{ "BE", nullptr },{ "BF", nullptr } 
 	};
+
+	ix_instruction_table = {
+		{ "00", nullptr },{ "01", nullptr },{ "02", nullptr },{ "03", nullptr },{ "04", nullptr },{ "05", nullptr },{ "06", nullptr },{ "07", nullptr },{ "08", nullptr },{ "09", nullptr },{ "0A", nullptr },{ "0B", nullptr },{ "0C", nullptr },{ "0D", nullptr },{ "0E", nullptr },{ "0F", nullptr },
+		{ "10", nullptr },{ "11", nullptr },{ "12", nullptr },{ "13", nullptr },{ "14", nullptr },{ "15", nullptr },{ "16", nullptr },{ "17", nullptr },{ "18", nullptr },{ "19", nullptr },{ "1A", nullptr },{ "1B", nullptr },{ "1C", nullptr },{ "1D", nullptr },{ "1E", nullptr },{ "1F", nullptr },
+		{ "20", nullptr },{ "21", nullptr },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
+		{ "30", nullptr },{ "31", nullptr },{ "32", nullptr },{ "33", nullptr },{ "34", nullptr },{ "35", nullptr },{ "36", nullptr },{ "37", nullptr },{ "38", nullptr },{ "39", nullptr },{ "3A", nullptr },{ "3B", nullptr },{ "3C", nullptr },{ "3D", nullptr },{ "3E", nullptr },{ "3F", nullptr },
+		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", nullptr },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", nullptr },{ "4F", nullptr },
+		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", nullptr },{ "57", nullptr },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", nullptr },{ "5F", nullptr },
+		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", nullptr },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", nullptr },{ "6F", nullptr },
+		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", nullptr },{ "7F", nullptr },
+		{ "80", nullptr },{ "81", nullptr },{ "82", nullptr },{ "83", nullptr },{ "84", nullptr },{ "85", nullptr },{ "86", nullptr },{ "87", nullptr },{ "88", nullptr },{ "89", nullptr },{ "8A", nullptr },{ "8B", nullptr },{ "8C", nullptr },{ "8D", nullptr },{ "8E", nullptr },{ "8F", nullptr },
+		{ "90", nullptr },{ "91", nullptr },{ "92", nullptr },{ "93", nullptr },{ "94", nullptr },{ "95", nullptr },{ "96", nullptr },{ "97", nullptr },{ "98", nullptr },{ "99", nullptr },{ "9A", nullptr },{ "9B", nullptr },{ "9C", nullptr },{ "9D", nullptr },{ "9E", nullptr },{ "9F", nullptr },
+		{ "A0", nullptr },{ "A1", nullptr },{ "A2", nullptr },{ "A3", nullptr },{ "A4", nullptr },{ "A5", nullptr },{ "A6", nullptr },{ "A7", nullptr },{ "A8", nullptr },{ "A9", nullptr },{ "AA", nullptr },{ "AB", nullptr },{ "AC", nullptr },{ "AD", nullptr },{ "AE", nullptr },{ "AF", nullptr },
+		{ "B0", nullptr },{ "B1", nullptr },{ "B2", nullptr },{ "B3", nullptr },{ "B4", nullptr },{ "B5", nullptr },{ "B6", nullptr },{ "B7", nullptr },{ "B8", nullptr },{ "B9", nullptr },{ "BA", nullptr },{ "BB", nullptr },{ "BC", nullptr },{ "BD", nullptr },{ "BE", nullptr },{ "BF", nullptr },
+		{ "C0", nullptr },{ "C1", nullptr },{ "C2", nullptr },{ "C3", nullptr },{ "C4", nullptr },{ "C5", nullptr },{ "C6", nullptr },{ "C7", nullptr },{ "C8", nullptr },{ "C9", nullptr },{ "CA", nullptr },{ "CB", nullptr },{ "CC", nullptr },{ "CD", nullptr },{ "CE", nullptr },{ "CF", nullptr },
+		{ "D0", nullptr },{ "D1", nullptr },{ "D2", nullptr },{ "D3", nullptr },{ "D4", nullptr },{ "D5", nullptr },{ "D6", nullptr },{ "D7", nullptr },{ "D8", nullptr },{ "D9", nullptr },{ "DA", nullptr },{ "DB", nullptr },{ "DC", nullptr },{ "DD", nullptr },{ "DE", nullptr },{ "DF", nullptr },
+		{ "E0", nullptr },{ "E1", nullptr },{ "E2", nullptr },{ "E3", nullptr },{ "E4", nullptr },{ "E5", nullptr },{ "E6", nullptr },{ "E7", nullptr },{ "E8", nullptr },{ "E9", nullptr },{ "EA", nullptr },{ "EB", nullptr },{ "EC", nullptr },{ "ED", nullptr },{ "EE", nullptr },{ "EF", nullptr },
+		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", nullptr },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", nullptr },{ "FE", nullptr },{ "FF", nullptr }
+	};
+
+	iy_instruction_table = {
+		{ "00", nullptr },{ "01", nullptr },{ "02", nullptr },{ "03", nullptr },{ "04", nullptr },{ "05", nullptr },{ "06", nullptr },{ "07", nullptr },{ "08", nullptr },{ "09", nullptr },{ "0A", nullptr },{ "0B", nullptr },{ "0C", nullptr },{ "0D", nullptr },{ "0E", nullptr },{ "0F", nullptr },
+		{ "10", nullptr },{ "11", nullptr },{ "12", nullptr },{ "13", nullptr },{ "14", nullptr },{ "15", nullptr },{ "16", nullptr },{ "17", nullptr },{ "18", nullptr },{ "19", nullptr },{ "1A", nullptr },{ "1B", nullptr },{ "1C", nullptr },{ "1D", nullptr },{ "1E", nullptr },{ "1F", nullptr },
+		{ "20", nullptr },{ "21", nullptr },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
+		{ "30", nullptr },{ "31", nullptr },{ "32", nullptr },{ "33", nullptr },{ "34", nullptr },{ "35", nullptr },{ "36", nullptr },{ "37", nullptr },{ "38", nullptr },{ "39", nullptr },{ "3A", nullptr },{ "3B", nullptr },{ "3C", nullptr },{ "3D", nullptr },{ "3E", nullptr },{ "3F", nullptr },
+		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", nullptr },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", nullptr },{ "4F", nullptr },
+		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", nullptr },{ "57", nullptr },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", nullptr },{ "5F", nullptr },
+		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", nullptr },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", nullptr },{ "6F", nullptr },
+		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", nullptr },{ "7F", nullptr },
+		{ "80", nullptr },{ "81", nullptr },{ "82", nullptr },{ "83", nullptr },{ "84", nullptr },{ "85", nullptr },{ "86", nullptr },{ "87", nullptr },{ "88", nullptr },{ "89", nullptr },{ "8A", nullptr },{ "8B", nullptr },{ "8C", nullptr },{ "8D", nullptr },{ "8E", nullptr },{ "8F", nullptr },
+		{ "90", nullptr },{ "91", nullptr },{ "92", nullptr },{ "93", nullptr },{ "94", nullptr },{ "95", nullptr },{ "96", nullptr },{ "97", nullptr },{ "98", nullptr },{ "99", nullptr },{ "9A", nullptr },{ "9B", nullptr },{ "9C", nullptr },{ "9D", nullptr },{ "9E", nullptr },{ "9F", nullptr },
+		{ "A0", nullptr },{ "A1", nullptr },{ "A2", nullptr },{ "A3", nullptr },{ "A4", nullptr },{ "A5", nullptr },{ "A6", nullptr },{ "A7", nullptr },{ "A8", nullptr },{ "A9", nullptr },{ "AA", nullptr },{ "AB", nullptr },{ "AC", nullptr },{ "AD", nullptr },{ "AE", nullptr },{ "AF", nullptr },
+		{ "B0", nullptr },{ "B1", nullptr },{ "B2", nullptr },{ "B3", nullptr },{ "B4", nullptr },{ "B5", nullptr },{ "B6", nullptr },{ "B7", nullptr },{ "B8", nullptr },{ "B9", nullptr },{ "BA", nullptr },{ "BB", nullptr },{ "BC", nullptr },{ "BD", nullptr },{ "BE", nullptr },{ "BF", nullptr },
+		{ "C0", nullptr },{ "C1", nullptr },{ "C2", nullptr },{ "C3", nullptr },{ "C4", nullptr },{ "C5", nullptr },{ "C6", nullptr },{ "C7", nullptr },{ "C8", nullptr },{ "C9", nullptr },{ "CA", nullptr },{ "CB", nullptr },{ "CC", nullptr },{ "CD", nullptr },{ "CE", nullptr },{ "CF", nullptr },
+		{ "D0", nullptr },{ "D1", nullptr },{ "D2", nullptr },{ "D3", nullptr },{ "D4", nullptr },{ "D5", nullptr },{ "D6", nullptr },{ "D7", nullptr },{ "D8", nullptr },{ "D9", nullptr },{ "DA", nullptr },{ "DB", nullptr },{ "DC", nullptr },{ "DD", nullptr },{ "DE", nullptr },{ "DF", nullptr },
+		{ "E0", nullptr },{ "E1", nullptr },{ "E2", nullptr },{ "E3", nullptr },{ "E4", nullptr },{ "E5", nullptr },{ "E6", nullptr },{ "E7", nullptr },{ "E8", nullptr },{ "E9", nullptr },{ "EA", nullptr },{ "EB", nullptr },{ "EC", nullptr },{ "ED", nullptr },{ "EE", nullptr },{ "EF", nullptr },
+		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", nullptr },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", nullptr },{ "FE", nullptr },{ "FF", nullptr }
+	};
+
 
 	register_table = {
 		&B_register, // B = 0b000
@@ -83,6 +121,32 @@ void z80cpu::misc_instructions() {
 
 	std::cout << "OPCODE: " << this->misc_instruction_table[opcode].opcode << '\n';
 	(this->*misc_instruction_table[opcode].instruction)();
+}
+
+
+void z80cpu::ix_instructions() {
+	if (memory_refresh_register < 0x80) {
+		memory_refresh_register++;
+	}
+
+	opcode = read(program_counter);
+	program_counter++;
+
+	std::cout << "OPCODE: " << this->ix_instruction_table[opcode].opcode << '\n';
+	(this->*iy_instruction_table[opcode].instruction)();
+}
+
+
+void z80cpu::iy_instructions() {
+	if (memory_refresh_register < 0x80) {
+		memory_refresh_register++;
+	}
+
+	opcode = read(program_counter);
+	program_counter++;
+
+	std::cout << "OPCODE: " << this->iy_instruction_table[opcode].opcode << '\n';
+	(this->*iy_instruction_table[opcode].instruction)();
 }
 
 
