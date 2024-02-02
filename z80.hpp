@@ -108,7 +108,7 @@ private:
 
 	struct INSTRUCTION {
 		std::string opcode;
-		void(z80cpu::* instruction)(void) = nullptr;
+		void(z80cpu::* instruction)() = nullptr;
 	};
 
 

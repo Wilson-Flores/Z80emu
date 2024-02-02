@@ -283,7 +283,8 @@ void z80cpu::LD_register_indexed_ix() {
 	uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
 	// one-byte signed integer (-128 to +127)
-	int8_t displacement = read(program_counter);
+    int8_t displacement;
+    displacement = static_cast<int8_t>(read(program_counter));
 	
 	// add the value in index register x with the twos-complement signed value
 	address_absolute = index_register_x + static_cast<int16_t>(displacement);
@@ -298,7 +299,8 @@ void z80cpu::LD_register_indexed_iy() {
 	uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
 	// one-byte signed integer (-128 to +127)
-	int8_t displacement = read(program_counter);
+    int8_t displacement;
+    displacement = static_cast<int8_t>(read(program_counter));
 
 	// add the value in index register x with the twos-complement signed value
 	address_absolute = index_register_y + static_cast<int16_t>(displacement);

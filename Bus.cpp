@@ -28,7 +28,7 @@ void Bus::reset() {
 	for (uint8_t& i : ram) {
 		i = 0x00;
 	}
-	std::cout << "Memmory Cleared!\n";
+	std::cout << "Memory Cleared!\n";
 	cpu.accumulator = 0x00;
 	cpu.B_register = 0x00;
 	cpu.C_register = 0x00;
