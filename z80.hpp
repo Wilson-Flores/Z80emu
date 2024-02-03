@@ -67,7 +67,7 @@ public:
 	bool interrupt_enable_flip_flop_1 = false;
 	bool interrupt_enable_flip_flop_2 = false;
 	void software_maskable_interrupt(); // INT
-	void nonmaskable_interrupt(); // NMI
+	void non_maskable_interrupt(); // NMI
 
 
 
