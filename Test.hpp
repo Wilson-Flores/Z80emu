@@ -19,4 +19,6 @@ void LD_register_extended_test(Bus& test);
 
 void LD_register_indirect_immediate(Bus& test);
 
+void LD_register_indirect_register(Bus& test);
+
 #endif // !Test_hpp

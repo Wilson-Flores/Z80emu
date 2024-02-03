@@ -32,6 +32,9 @@ int main() {
         case 7:
             LD_register_indirect_immediate(test);
             break;
+        case 8:
+            LD_register_indirect_register(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
     }

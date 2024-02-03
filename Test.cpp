@@ -158,3 +158,23 @@ void LD_register_indirect_immediate(Bus& test) {
 		test.cpu.instruction_cycle();
 	}
 }
+
+
+void LD_register_indirect_register(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x3E, 0x19, 0x06, 0x1A, 0x0E, 0x1B, 0x16, 0x1C, 0x1E, 0x1D, 0x26, 0x00, 0x2E, 0x1F, 0x77, 0x70,
+            0x71, 0x72, 0x73, 0x74, 0x75, 0x06, 0x00, 0x0E, 0x20, 0x16, 0x00, 0x1E, 0x21, 0x02, 0x12
+    };
+
+    test.reset();
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.ram[i] = memory[i];
+        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+    }
+
+    for (int i = 0; i < 20; i++) {
+        test.cpu.instruction_cycle();
+    }
+}
