@@ -2,10 +2,7 @@
 #include "Test.hpp"
 
 
-
-int main() {
-	Bus test;
-
+void LD_test(Bus& test){
     int test_choice;
     std::cout << "Enter a number: ";
     std::cin >> test_choice;
@@ -38,7 +35,16 @@ int main() {
         default:
             std::cout << "Invalid choice.\n";
     }
-	return 0;
+}
+
+
+
+int main() {
+	Bus test;
+
+    LD_test(test);
+
+    return 0;
 }
 
 

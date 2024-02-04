@@ -76,12 +76,18 @@ public:
 	void LD_register_immediate();                 // [LD r, n]
 	void LD_register_register();                  // [LD r, r']
 	void LD_register_register_indirect();         // [LD r, (HL)], [LD A, (BC)], [LD A, (DE)]
-	void LD_register_implied();                   // [LD A, R], [LD A, I]
+	void LD_register_implied();                   // [LD A, I], [LD A, R]
 	void LD_register_indexed_ix();                // [LD r, (IX+d)]
 	void LD_register_indexed_iy();                // [LD r, (IY+d)]
 	void LD_register_extended();				  // [LD A, (nn)]
 	void LD_register_indirect_immediate();		  // [LD (HL), n]
-    void LD_register_indirect_register();         // [LD (HL), r]
+    void LD_register_indirect_register();         // [LD (HL), r], [LD (BC), A], [LD (DE), A]
+    void LD_indexed_ix_immediate();               // [LD (IX+d), n]
+    void LD_indexed_iy_immediate();               // [LD (IY+d), n]
+    void LD_indexed_ix_register();                // [LD (IX+d), r]
+    void LD_indexed_iy_register();                // [LD (IY+d), r]
+    void LD_extended_register();                  // [LD (nn), A]
+    void LD_implied_register();                   // [LD I, A], [LD R, A]
 
 	
 	// 16-bit Instructions

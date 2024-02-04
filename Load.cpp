@@ -190,15 +190,18 @@ void z80cpu::LD_register_indirect_immediate() {
 void z80cpu::LD_register_indirect_register() {
     t_state_cycles = 7;
 
-    if (opcode == 0x02){              // [LD (BC), A]
+    // [LD (BC), A]
+    if (opcode == 0x02){
         address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
         write(address_absolute,accumulator);
     }
-    else if(opcode == 0x12){          // [LD (DE), A]
+    // [LD (DE), A]
+    else if(opcode == 0x12){
         address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
         write(address_absolute,accumulator);
     }
-    else{                             // [LD (HL), r]
+    // [LD (HL), r]
+    else{
         uint8_t register_bit = (opcode & BIT_MASK_2);
 
         address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
@@ -206,6 +209,11 @@ void z80cpu::LD_register_indirect_register() {
         // the data from the register will be written to the address location
         write(address_absolute, *register_table[register_bit]);
     }
+
+}
+
+
+void z80cpu::LD_indexed_ix_immediate(){
 
 }
 
