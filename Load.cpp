@@ -154,12 +154,11 @@ void z80cpu::LD_register_indexed_iy() {
     // one-byte signed integer (-128 to +127)
     int8_t displacement;
     displacement = static_cast<int8_t>(read(program_counter));
+    program_counter++;
 
     // add the value in index register x with the twos-complement signed value
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
     *register_table[register_bit] = read(address_absolute);
-
-    program_counter++;
 }
 
 
@@ -214,7 +213,34 @@ void z80cpu::LD_register_indirect_register() {
 
 
 void z80cpu::LD_indexed_ix_immediate(){
+    t_state_cycles = 19;
 
+    int8_t displacement;
+    displacement = static_cast<int8_t>(read(program_counter));
+    program_counter++;
+
+    uint8_t value = read(program_counter);
+    program_counter++;
+
+    address_absolute = index_register_x + static_cast<int16_t>(displacement);
+
+    write(address_absolute, value);
+}
+
+
+void z80cpu::LD_indexed_iy_immediate() {
+    t_state_cycles = 19;
+
+    int8_t displacement;
+    displacement = static_cast<int8_t>(read(program_counter));
+    program_counter++;
+
+    uint8_t value = read(program_counter);
+    program_counter++;
+
+    address_absolute = index_register_y + static_cast<int16_t>(displacement);
+
+    write(address_absolute, value);
 }
 
 

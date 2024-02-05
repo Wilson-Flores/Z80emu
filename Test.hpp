@@ -21,4 +21,6 @@ void LD_register_indirect_immediate(Bus& test);
 
 void LD_register_indirect_register(Bus& test);
 
+void LD_indexed_immediate_test(Bus& test);
+
 #endif // !Test_hpp
