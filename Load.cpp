@@ -244,6 +244,34 @@ void z80cpu::LD_indexed_iy_immediate() {
 }
 
 
+void z80cpu::LD_indexed_ix_register(){
+    t_state_cycles = 19;
+
+    uint8_t register_bit = (opcode & BIT_MASK_2);
+
+    int8_t displacement;
+    displacement = static_cast<int8_t>(read(program_counter));
+    program_counter++;
+
+    address_absolute = index_register_x + static_cast<int16_t>(displacement);
+    write(address_absolute, *register_table[register_bit]);
+}
+
+
+void z80cpu::LD_indexed_iy_register(){
+    t_state_cycles = 19;
+
+    uint8_t register_bit = (opcode & BIT_MASK_2);
+
+    int8_t displacement;
+    displacement = static_cast<int8_t>(read(program_counter));
+    program_counter++;
+
+    address_absolute = index_register_y + static_cast<int16_t>(displacement);
+    write(address_absolute, *register_table[register_bit]);
+}
+
+
 // 16-bit LD Instructions
 void z80cpu::LD_register_immediate_extended_ix() {
     t_state_cycles = 14;
@@ -269,8 +297,6 @@ void z80cpu::LD_register_immediate_extended_iy() {
     uint16_t value = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
     index_register_y = value;
 }
-
-
 
 
 
