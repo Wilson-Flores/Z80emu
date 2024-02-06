@@ -243,3 +243,21 @@ void LD_extended_register_test(Bus& test){
     }
 }
 
+
+void LD_implied_register_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x3E, 0x19, 0xED, 0x47, 0xED, 0x4F
+    };
+
+    test.reset();
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.ram[i] = memory[i];
+        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+    }
+
+    for (int i = 0; i < number_of_instructions[5]; i++) {
+        test.cpu.instruction_cycle();
+    }
+}

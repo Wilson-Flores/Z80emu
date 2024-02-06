@@ -28,7 +28,7 @@ z80cpu::z80cpu() {
 		{ "10", nullptr },{ "11", nullptr },{ "12", nullptr },{ "13", nullptr },{ "14", nullptr },{ "15", nullptr },{ "16", nullptr },{ "17", nullptr },{ "18", nullptr },{ "19", nullptr },{ "1A", nullptr },{ "1B", nullptr },{ "1C", nullptr },{ "1D", nullptr },{ "1E", nullptr },{ "1F", nullptr },
 		{ "20", nullptr },{ "21", nullptr },{ "22", nullptr },{ "23", nullptr },{ "24", nullptr },{ "25", nullptr },{ "26", nullptr },{ "27", nullptr },{ "28", nullptr },{ "29", nullptr },{ "2A", nullptr },{ "2B", nullptr },{ "2C", nullptr },{ "2D", nullptr },{ "2E", nullptr },{ "2F", nullptr },
 		{ "30", nullptr },{ "31", nullptr },{ "32", nullptr },{ "33", nullptr },{ "34", nullptr },{ "35", nullptr },{ "36", nullptr },{ "37", nullptr },{ "38", nullptr },{ "39", nullptr },{ "3A", nullptr },{ "3B", nullptr },{ "3C", nullptr },{ "3D", nullptr },{ "3E", nullptr },{ "3F", nullptr },
-		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", nullptr },{ "47", nullptr },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", nullptr },{ "4F", nullptr },
+		{ "40", nullptr },{ "41", nullptr },{ "42", nullptr },{ "43", nullptr },{ "44", nullptr },{ "45", nullptr },{ "46", nullptr },{ "47", &z::LD_implied_register },{ "48", nullptr },{ "49", nullptr },{ "4A", nullptr },{ "4B", nullptr },{ "4C", nullptr },{ "4D", nullptr },{ "4E", nullptr },{ "4F", &z::LD_implied_register },
 		{ "50", nullptr },{ "51", nullptr },{ "52", nullptr },{ "53", nullptr },{ "54", nullptr },{ "55", nullptr },{ "56", nullptr },{ "57", &z::LD_register_implied },{ "58", nullptr },{ "59", nullptr },{ "5A", nullptr },{ "5B", nullptr },{ "5C", nullptr },{ "5D", nullptr },{ "5E", nullptr },{ "5F", &z::LD_register_implied },
 		{ "60", nullptr },{ "61", nullptr },{ "62", nullptr },{ "63", nullptr },{ "64", nullptr },{ "65", nullptr },{ "66", nullptr },{ "67", nullptr },{ "68", nullptr },{ "69", nullptr },{ "6A", nullptr },{ "6B", nullptr },{ "6C", nullptr },{ "6D", nullptr },{ "6E", nullptr },{ "6F", nullptr },
 		{ "70", nullptr },{ "71", nullptr },{ "72", nullptr },{ "73", nullptr },{ "74", nullptr },{ "75", nullptr },{ "76", nullptr },{ "77", nullptr },{ "78", nullptr },{ "79", nullptr },{ "7A", nullptr },{ "7B", nullptr },{ "7C", nullptr },{ "7D", nullptr },{ "7E", nullptr },{ "7F", nullptr },
@@ -145,4 +145,24 @@ void z80cpu::misc_instructions() {
 
 	std::cout << "OPCODE: " << this->misc_instruction_table[opcode].opcode << '\n';
 	(this->*misc_instruction_table[opcode].instruction)();
+}
+
+
+void z80cpu::ix_instructions() {
+    opcode = read(program_counter);
+    memory_refresh_counter();
+    program_counter++;
+
+    std::cout << "OPCODE: " << this->ix_instruction_table[opcode].opcode << '\n';
+    (this->*iy_instruction_table[opcode].instruction)();
+}
+
+
+void z80cpu::iy_instructions() {
+    opcode = read(program_counter);
+    memory_refresh_counter();
+    program_counter++;
+
+    std::cout << "OPCODE: " << this->iy_instruction_table[opcode].opcode << '\n';
+    (this->*iy_instruction_table[opcode].instruction)();
 }

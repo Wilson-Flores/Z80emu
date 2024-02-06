@@ -4,26 +4,6 @@ constexpr uint8_t BIT_MASK_1 = 0x38; // 0011 1000 binary value
 constexpr uint8_t BIT_MASK_2 = 0x07; // 0000 0111 binary value
 
 
-void z80cpu::ix_instructions() {
-    opcode = read(program_counter);
-    memory_refresh_counter();
-    program_counter++;
-
-    std::cout << "OPCODE: " << this->ix_instruction_table[opcode].opcode << '\n';
-    (this->*iy_instruction_table[opcode].instruction)();
-}
-
-
-void z80cpu::iy_instructions() {
-    opcode = read(program_counter);
-    memory_refresh_counter();
-    program_counter++;
-
-    std::cout << "OPCODE: " << this->iy_instruction_table[opcode].opcode << '\n';
-    (this->*iy_instruction_table[opcode].instruction)();
-}
-
-
 // 8-bit LD Instructions
 void z80cpu::LD_register_immediate() {
     t_state_cycles = 7;
@@ -282,6 +262,18 @@ void z80cpu::LD_extended_register() {
 
     address_absolute = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
     write(address_absolute, accumulator);
+}
+
+
+void z80cpu::LD_implied_register() {
+    t_state_cycles = 9;
+
+    if (opcode == 0x47) { // LD I, A
+        interrupt_vector_register = accumulator;
+    }
+    else { // LD R, A
+        memory_refresh_register = accumulator;
+    }
 }
 
 
