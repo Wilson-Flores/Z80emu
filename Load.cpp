@@ -29,7 +29,7 @@ void z80cpu::LD_register_register() {
 }
 
 
-void z80cpu::LD_register_register_indirect() {
+void z80cpu::LD_register_register_indirect_8_bit() {
     t_state_cycles = 7;
 
     // LD r, (HL) opcode ends with 0b110, while LD A, (BC) and LD A, (DE) end with 0b010
