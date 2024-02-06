@@ -25,4 +25,6 @@ void LD_indexed_immediate_test(Bus& test);
 
 void LD_indexed_register_test(Bus& test);
 
+void LD_extended_register_test(Bus& test);
+
 #endif // !Test_hpp

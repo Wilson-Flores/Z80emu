@@ -272,6 +272,19 @@ void z80cpu::LD_indexed_iy_register(){
 }
 
 
+void z80cpu::LD_extended_register() {
+    t_state_cycles = 13;
+
+    uint8_t high_byte = read(program_counter);
+    program_counter++;
+    uint8_t low_byte = read(program_counter);
+    program_counter++;
+
+    address_absolute = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+    write(address_absolute, accumulator);
+}
+
+
 // 16-bit LD Instructions
 void z80cpu::LD_register_immediate_extended_ix() {
     t_state_cycles = 14;
