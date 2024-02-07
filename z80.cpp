@@ -5,10 +5,10 @@
 z80cpu::z80cpu() {
 	using z = z80cpu;
 	main_instruction_table = {
-            {"00", nullptr }, {"01", nullptr }, {"02", &z::LD_register_indirect_register }, {"03", nullptr }, {"04", nullptr }, {"05", nullptr }, {"06", &z::LD_register_immediate }, {"07", nullptr }, {"08", nullptr }, {"09", nullptr }, {"0A", &z::LD_register_register_indirect }, {"0B", nullptr }, {"0C", nullptr }, {"0D", nullptr }, {"0E", &z::LD_register_immediate }, {"0F", nullptr },
-            {"10", nullptr }, {"11", nullptr }, {"12", &z::LD_register_indirect_register }, {"13", nullptr }, {"14", nullptr }, {"15", nullptr }, {"16", &z::LD_register_immediate }, {"17", nullptr }, {"18", nullptr }, {"19", nullptr }, {"1A", &z::LD_register_register_indirect }, {"1B", nullptr }, {"1C", nullptr }, {"1D", nullptr }, {"1E", &z::LD_register_immediate }, {"1F", nullptr },
-            {"20", nullptr }, {"21", nullptr }, {"22", nullptr }, {"23", nullptr }, {"24", nullptr }, {"25", nullptr }, {"26", &z::LD_register_immediate }, {"27", nullptr }, {"28", nullptr }, {"29", nullptr }, {"2A", nullptr }, {"2B", nullptr }, {"2C", nullptr }, {"2D", nullptr }, {"2E", &z::LD_register_immediate }, {"2F", nullptr },
-            {"30", nullptr }, {"31", nullptr }, {"32", &z::LD_extended_register }, {"33", nullptr }, {"34", nullptr }, {"35", nullptr }, {"36", &z::LD_register_indirect_immediate }, {"37", nullptr }, {"38", nullptr }, {"39", nullptr }, {"3A", &z::LD_register_extended }, {"3B", nullptr }, {"3C", nullptr }, {"3D", nullptr }, {"3E", &z::LD_register_immediate }, {"3F", nullptr },
+            {"00", nullptr }, {"01", &z::LD_register_immediate_extended_16_bit }, {"02", &z::LD_register_indirect_register }, {"03", nullptr }, {"04", nullptr }, {"05", nullptr }, {"06", &z::LD_register_immediate }, {"07", nullptr }, {"08", nullptr }, {"09", nullptr }, {"0A", &z::LD_register_register_indirect }, {"0B", nullptr }, {"0C", nullptr }, {"0D", nullptr }, {"0E", &z::LD_register_immediate }, {"0F", nullptr },
+            {"10", nullptr }, {"11", &z::LD_register_immediate_extended_16_bit }, {"12", &z::LD_register_indirect_register }, {"13", nullptr }, {"14", nullptr }, {"15", nullptr }, {"16", &z::LD_register_immediate }, {"17", nullptr }, {"18", nullptr }, {"19", nullptr }, {"1A", &z::LD_register_register_indirect }, {"1B", nullptr }, {"1C", nullptr }, {"1D", nullptr }, {"1E", &z::LD_register_immediate }, {"1F", nullptr },
+            {"20", nullptr }, {"21", &z::LD_register_immediate_extended_16_bit }, {"22", nullptr }, {"23", nullptr }, {"24", nullptr }, {"25", nullptr }, {"26", &z::LD_register_immediate }, {"27", nullptr }, {"28", nullptr }, {"29", nullptr }, {"2A", nullptr }, {"2B", nullptr }, {"2C", nullptr }, {"2D", nullptr }, {"2E", &z::LD_register_immediate }, {"2F", nullptr },
+            {"30", nullptr }, {"31", &z::LD_register_immediate_extended_16_bit }, {"32", &z::LD_extended_register }, {"33", nullptr }, {"34", nullptr }, {"35", nullptr }, {"36", &z::LD_register_indirect_immediate }, {"37", nullptr }, {"38", nullptr }, {"39", nullptr }, {"3A", &z::LD_register_extended }, {"3B", nullptr }, {"3C", nullptr }, {"3D", nullptr }, {"3E", &z::LD_register_immediate }, {"3F", nullptr },
             {"40", &z::LD_register_register }, {"41", &z::LD_register_register }, {"42", &z::LD_register_register }, {"43", &z::LD_register_register }, {"44", &z::LD_register_register }, {"45", &z::LD_register_register }, {"46", &z::LD_register_register_indirect }, {"47", &z::LD_register_register }, {"48", &z::LD_register_register }, {"49", &z::LD_register_register }, {"4A", &z::LD_register_register }, {"4B", &z::LD_register_register }, {"4C", &z::LD_register_register }, {"4D", &z::LD_register_register }, {"4E", &z::LD_register_register_indirect }, {"4F", &z::LD_register_register },
             {"50", &z::LD_register_register }, {"51", &z::LD_register_register }, {"52", &z::LD_register_register }, {"53", &z::LD_register_register }, {"54", &z::LD_register_register }, {"55", &z::LD_register_register }, {"56", &z::LD_register_register_indirect }, {"57", &z::LD_register_register }, {"58", &z::LD_register_register }, {"59", &z::LD_register_register }, {"5A", &z::LD_register_register }, {"5B", &z::LD_register_register }, {"5C", &z::LD_register_register }, {"5D", &z::LD_register_register }, {"5E", &z::LD_register_register_indirect }, {"5F", &z::LD_register_register },
             {"60", &z::LD_register_register }, {"61", &z::LD_register_register }, {"62", &z::LD_register_register }, {"63", &z::LD_register_register }, {"64", &z::LD_register_register }, {"65", &z::LD_register_register }, {"66", &z::LD_register_register_indirect }, {"67", &z::LD_register_register }, {"68", &z::LD_register_register }, {"69", &z::LD_register_register }, {"6A", &z::LD_register_register }, {"6B", &z::LD_register_register }, {"6C", &z::LD_register_register }, {"6D", &z::LD_register_register }, {"6E", &z::LD_register_register_indirect }, {"6F", &z::LD_register_register },
@@ -87,6 +87,12 @@ z80cpu::z80cpu() {
 		nullptr,     // No register has 0b110 for a bit value
 		&accumulator // A = 0b111
 	};
+
+    register_pair_table = {
+            {&B_register, &C_register}, // BC = 0b00
+            {&D_register, &E_register}, // DE = 0b01
+            {&H_register, &L_register}  // HL = 0b10
+    };
 
 }
 

@@ -44,6 +44,9 @@ void LD_test(Bus& test){
         case 12:
             LD_implied_register_test(test);
             break;
+        case 13:
+            LD_register_immediate_extended(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
     }

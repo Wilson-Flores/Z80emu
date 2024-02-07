@@ -2,6 +2,7 @@
 
 constexpr uint8_t BIT_MASK_1 = 0x38; // 0011 1000 binary value
 constexpr uint8_t BIT_MASK_2 = 0x07; // 0000 0111 binary value
+constexpr uint8_t BIT_MASK_3 = 0x30; // 0011 0000 binary value
 
 
 // 8-bit LD Instructions
@@ -278,9 +279,25 @@ void z80cpu::LD_implied_register() {
 
 
 // 16-bit LD Instructions
+void z80cpu::LD_register_immediate_extended_16_bit() {
+    t_state_cycles = 10;
 
+    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
 
+    uint8_t high_byte = read(program_counter);
+    program_counter++;
+    uint8_t low_byte = read(program_counter);
+    program_counter++;
 
+    if(register_pair_bit == 0x03){
+        stack_pointer = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+    }
+    else{
+        *register_pair_table[register_pair_bit].high_byte_register = high_byte;
+        *register_pair_table[register_pair_bit].low_byte_register = low_byte;
+    }
+
+}
 
 
 void z80cpu::LD_register_immediate_extended_ix() {

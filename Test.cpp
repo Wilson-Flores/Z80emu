@@ -2,7 +2,7 @@
 
 
 
-constexpr int number_of_instructions[] = {7, 56, 20, 4, 50, 3, 23, 2};
+constexpr int number_of_instructions[] = {7, 56, 20, 4, 50, 3, 23, 2, 6};
 
 void LD_register_immediate_test(Bus& test) {
 	// LD r,n: loading the 19h into each register A,B,C,D,E,H,L
@@ -258,6 +258,26 @@ void LD_implied_register_test(Bus& test){
     }
 
     for (int i = 0; i < number_of_instructions[5]; i++) {
+        test.cpu.instruction_cycle();
+    }
+}
+
+
+void LD_register_immediate_extended(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x01, 0x19, 0x1A, 0x11, 0x1B, 0x1C, 0x21, 0x1D, 0x1E, 0x31, 0x1F, 0x20,
+            0xDD, 0x21, 0x21, 0x22, 0xFD, 0x21, 0x23, 0x24
+    };
+
+    test.reset();
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.ram[i] = memory[i];
+        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+    }
+
+    for (int i = 0; i < number_of_instructions[8]; i++) {
         test.cpu.instruction_cycle();
     }
 }

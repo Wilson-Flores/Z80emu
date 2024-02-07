@@ -152,7 +152,17 @@ private:
 
 
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
-	std::vector<uint8_t*> register_table;
+    std::vector<uint8_t*> register_table;
+
+
+    // each register pair has a correlating bit value
+    struct REGISTER_PAIR{
+        uint8_t* high_byte_register;
+        uint8_t* low_byte_register;
+    };
+
+	std::vector<REGISTER_PAIR> register_pair_table;
+
 };
 
 #endif // !z80_hpp
