@@ -263,7 +263,7 @@ void LD_implied_register_test(Bus& test){
 }
 
 
-void LD_register_immediate_extended(Bus& test){
+void LD_register_immediate_extended_test(Bus& test){
     std::vector<uint8_t> memory = {
             0x01, 0x19, 0x1A, 0x11, 0x1B, 0x1C, 0x21, 0x1D, 0x1E, 0x31, 0x1F, 0x20,
             0xDD, 0x21, 0x21, 0x22, 0xFD, 0x21, 0x23, 0x24
@@ -278,6 +278,30 @@ void LD_register_immediate_extended(Bus& test){
     }
 
     for (int i = 0; i < number_of_instructions[8]; i++) {
+        test.cpu.instruction_cycle();
+    }
+}
+
+
+void LD_register_extended_16_bit_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0xED, 0x4B, 0x00, 0x1B, 0xED, 0x5B, 0x00, 0x1D,
+            0xED, 0x6B, 0x00, 0x1F, 0xED, 0x7B, 0x00, 0x21,
+            0xDD, 0x2A, 0x00, 0x23, 0xFD, 0x2A, 0x00, 0x25,
+            0x2A, 0x00, 0x27, 0x19, 0x1A, 0x1B, 0x1C, 0x1D,
+            0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25,
+            0x26
+    };
+
+    test.reset();
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.ram[i] = memory[i];
+        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+    }
+
+    for (int i = 0; i < number_of_instructions[0]; i++) {
         test.cpu.instruction_cycle();
     }
 }

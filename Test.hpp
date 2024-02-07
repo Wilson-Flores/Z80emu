@@ -29,6 +29,8 @@ void LD_extended_register_test(Bus& test);
 
 void LD_implied_register_test(Bus& test);
 
-void LD_register_immediate_extended(Bus& test);
+void LD_register_immediate_extended_test(Bus& test);
+
+void LD_register_extended_16_bit_test(Bus& test);
 
 #endif // !Test_hpp

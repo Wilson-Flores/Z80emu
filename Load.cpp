@@ -326,4 +326,62 @@ void z80cpu::LD_register_immediate_extended_iy() {
 }
 
 
+void z80cpu::LD_register_extended_16_bit() {
+    t_state_cycles = 20;
 
+    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
+
+    uint8_t high_byte = read(program_counter);
+    program_counter++;
+    uint8_t low_byte = read(program_counter);
+    program_counter++;
+    address_absolute = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+
+    if(register_pair_bit == 0x03){
+        stack_pointer = (static_cast<uint16_t>(read(address_absolute + 1))) << 8 | read(address_absolute);
+    }
+    else{
+        *register_pair_table[register_pair_bit].high_byte_register = read(address_absolute + 1);
+        *register_pair_table[register_pair_bit].low_byte_register = read(address_absolute);
+    }
+}
+
+
+void z80cpu::LD_register_extended_hl() {
+    t_state_cycles = 16;
+
+    uint8_t high_byte = read(program_counter);
+    program_counter++;
+    uint8_t low_byte = read(program_counter);
+    program_counter++;
+    address_absolute = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+
+    H_register = read(address_absolute + 1);
+    L_register = read(address_absolute);
+}
+
+
+void z80cpu::LD_register_extended_ix() {
+    t_state_cycles = 20;
+
+    uint8_t high_byte = read(program_counter);
+    program_counter++;
+    uint8_t low_byte = read(program_counter);
+    program_counter++;
+    address_absolute = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+
+    index_register_x = (static_cast<uint16_t>(read(address_absolute + 1))) << 8 | read(address_absolute);
+}
+
+
+void z80cpu::LD_register_extended_iy() {
+    t_state_cycles = 20;
+
+    uint8_t high_byte = read(program_counter);
+    program_counter++;
+    uint8_t low_byte = read(program_counter);
+    program_counter++;
+    address_absolute = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+
+    index_register_y = (static_cast<uint16_t>(read(address_absolute + 1))) << 8 | read(address_absolute);
+}
