@@ -385,3 +385,26 @@ void z80cpu::LD_register_extended_iy() {
 
     index_register_y = (static_cast<uint16_t>(read(address_absolute + 1))) << 8 | read(address_absolute);
 }
+
+
+void z80cpu::LD_register_register_hl() {
+    t_state_cycles = 6;
+
+    stack_pointer = (static_cast<uint16_t>(H_register)) << 8 | L_register;
+}
+
+
+void z80cpu::LD_register_register_ix() {
+    t_state_cycles = 10;
+
+    stack_pointer = index_register_x;
+}
+
+
+void z80cpu::LD_register_register_iy() {
+    t_state_cycles = 10;
+
+    stack_pointer = index_register_y;
+}
+
+

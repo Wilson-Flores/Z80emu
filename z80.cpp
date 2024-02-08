@@ -20,7 +20,7 @@ z80cpu::z80cpu() {
             {"C0", nullptr }, {"C1", nullptr }, {"C2", nullptr }, {"C3", nullptr }, {"C4", nullptr }, {"C5", nullptr }, {"C6", nullptr }, {"C7", nullptr }, {"C8", nullptr }, {"C9", nullptr }, {"CA", nullptr }, {"CB", nullptr }, {"CC", nullptr }, {"CD", nullptr }, {"CE", nullptr }, {"CF", nullptr },
             {"D0", nullptr }, {"D1", nullptr }, {"D2", nullptr }, {"D3", nullptr }, {"D4", nullptr }, {"D5", nullptr }, {"D6", nullptr }, {"D7", nullptr }, {"D8", nullptr }, {"D9", nullptr }, {"DA", nullptr }, {"DB", nullptr }, {"DC", nullptr }, {"DD", &z::ix_instructions }, {"DE", nullptr }, {"DF", nullptr },
             {"E0", nullptr }, {"E1", nullptr }, {"E2", nullptr }, {"E3", nullptr }, {"E4", nullptr }, {"E5", nullptr }, {"E6", nullptr }, {"E7", nullptr }, {"E8", nullptr }, {"E9", nullptr }, {"EA", nullptr }, {"EB", nullptr }, {"EC", nullptr }, {"ED", &z::misc_instructions }, {"EE", nullptr }, {"EF", nullptr },
-            {"F0", nullptr }, {"F1", nullptr }, {"F2", nullptr }, {"F3", nullptr }, {"F4", nullptr }, {"F5", nullptr }, {"F6", nullptr }, {"F7", nullptr }, {"F8", nullptr }, {"F9", nullptr }, {"FA", nullptr }, {"FB", nullptr }, {"FC", nullptr }, {"FD", &z::iy_instructions }, {"FE", nullptr }, {"FF", nullptr }
+            {"F0", nullptr }, {"F1", nullptr }, {"F2", nullptr }, {"F3", nullptr }, {"F4", nullptr }, {"F5", nullptr }, {"F6", nullptr }, {"F7", nullptr }, {"F8", nullptr }, {"F9", &z::LD_register_register_hl }, {"FA", nullptr }, {"FB", nullptr }, {"FC", nullptr }, {"FD", &z::iy_instructions }, {"FE", nullptr }, {"FF", nullptr }
 	};
 
 	misc_instruction_table = {
@@ -54,7 +54,7 @@ z80cpu::z80cpu() {
 		{ "C0", nullptr },{ "C1", nullptr },{ "C2", nullptr },{ "C3", nullptr },{ "C4", nullptr },{ "C5", nullptr },{ "C6", nullptr },{ "C7", nullptr },{ "C8", nullptr },{ "C9", nullptr },{ "CA", nullptr },{ "CB", nullptr },{ "CC", nullptr },{ "CD", nullptr },{ "CE", nullptr },{ "CF", nullptr },
 		{ "D0", nullptr },{ "D1", nullptr },{ "D2", nullptr },{ "D3", nullptr },{ "D4", nullptr },{ "D5", nullptr },{ "D6", nullptr },{ "D7", nullptr },{ "D8", nullptr },{ "D9", nullptr },{ "DA", nullptr },{ "DB", nullptr },{ "DC", nullptr },{ "DD", nullptr },{ "DE", nullptr },{ "DF", nullptr },
 		{ "E0", nullptr },{ "E1", nullptr },{ "E2", nullptr },{ "E3", nullptr },{ "E4", nullptr },{ "E5", nullptr },{ "E6", nullptr },{ "E7", nullptr },{ "E8", nullptr },{ "E9", nullptr },{ "EA", nullptr },{ "EB", nullptr },{ "EC", nullptr },{ "ED", nullptr },{ "EE", nullptr },{ "EF", nullptr },
-		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", nullptr },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", nullptr },{ "FE", nullptr },{ "FF", nullptr }
+		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", &z::LD_register_register_ix },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", nullptr },{ "FE", nullptr },{ "FF", nullptr }
 	};
 
 	iy_instruction_table = {
@@ -73,7 +73,7 @@ z80cpu::z80cpu() {
 		{ "C0", nullptr },{ "C1", nullptr },{ "C2", nullptr },{ "C3", nullptr },{ "C4", nullptr },{ "C5", nullptr },{ "C6", nullptr },{ "C7", nullptr },{ "C8", nullptr },{ "C9", nullptr },{ "CA", nullptr },{ "CB", nullptr },{ "CC", nullptr },{ "CD", nullptr },{ "CE", nullptr },{ "CF", nullptr },
 		{ "D0", nullptr },{ "D1", nullptr },{ "D2", nullptr },{ "D3", nullptr },{ "D4", nullptr },{ "D5", nullptr },{ "D6", nullptr },{ "D7", nullptr },{ "D8", nullptr },{ "D9", nullptr },{ "DA", nullptr },{ "DB", nullptr },{ "DC", nullptr },{ "DD", nullptr },{ "DE", nullptr },{ "DF", nullptr },
 		{ "E0", nullptr },{ "E1", nullptr },{ "E2", nullptr },{ "E3", nullptr },{ "E4", nullptr },{ "E5", nullptr },{ "E6", nullptr },{ "E7", nullptr },{ "E8", nullptr },{ "E9", nullptr },{ "EA", nullptr },{ "EB", nullptr },{ "EC", nullptr },{ "ED", nullptr },{ "EE", nullptr },{ "EF", nullptr },
-		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", nullptr },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", nullptr },{ "FE", nullptr },{ "FF", nullptr }
+		{ "F0", nullptr },{ "F1", nullptr },{ "F2", nullptr },{ "F3", nullptr },{ "F4", nullptr },{ "F5", nullptr },{ "F6", nullptr },{ "F7", nullptr },{ "F8", nullptr },{ "F9", &z::LD_register_register_iy },{ "FA", nullptr },{ "FB", nullptr },{ "FC", nullptr },{ "FD", nullptr },{ "FE", nullptr },{ "FF", nullptr }
 	};
 
 
@@ -160,7 +160,7 @@ void z80cpu::ix_instructions() {
     program_counter++;
 
     std::cout << "OPCODE: " << this->ix_instruction_table[opcode].opcode << '\n';
-    (this->*iy_instruction_table[opcode].instruction)();
+    (this->*ix_instruction_table[opcode].instruction)();
 }
 
 
