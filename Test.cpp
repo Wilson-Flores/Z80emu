@@ -2,7 +2,7 @@
 
 
 
-constexpr int number_of_instructions[] = {7, 56, 20, 4, 50, 3, 23, 2, 6};
+constexpr int number_of_instructions[] = {7, 56, 20, 4, 50, 3, 23, 2, 6, 13};
 
 void LD_register_immediate_test(Bus& test) {
 	// LD r,n: loading the 19h into each register A,B,C,D,E,H,L
@@ -328,3 +328,26 @@ void LD_register_register_16_bit_test(Bus& test) {
 
 }
 
+
+void LD_extended_register_16_bit_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x01, 0x19, 0x1A, 0x11, 0x1B, 0x1C, 0x21, 0x1D,
+            0x1E, 0x31, 0x1F, 0x20, 0xDD, 0x21, 0x21, 0x22,
+            0xFD, 0x21, 0x23, 0x24, 0xED, 0x43, 0x00, 0x2F,
+            0xED, 0x53, 0x00, 0x31, 0xED, 0x63, 0x00, 0x33,
+            0xED, 0x73, 0x00, 0x35, 0x22, 0x00, 0x37, 0xDD,
+            0x22, 0x00, 0x39, 0xFD, 0x22, 0x00, 0x3B
+    };
+
+    test.reset();
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.ram[i] = memory[i];
+        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+    }
+
+    for (int i = 0; i < number_of_instructions[9]; i++) {
+        test.cpu.instruction_cycle();
+    }
+}

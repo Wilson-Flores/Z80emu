@@ -35,4 +35,6 @@ void LD_register_extended_16_bit_test(Bus& test);
 
 void LD_register_register_16_bit_test(Bus& test);
 
+void LD_extended_register_16_bit_test(Bus& test);
+
 #endif // !Test_hpp
