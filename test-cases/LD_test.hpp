@@ -1,9 +1,12 @@
 #ifndef Test_hpp
 #define Test_hpp
 
-#include "Bus.hpp"
+#include "../Bus.hpp"
 #include <iomanip>
 #include <iostream>
+
+
+void LD_test(Bus& test);
 
 void LD_register_immediate_test(Bus& test);
 

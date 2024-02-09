@@ -1,11 +1,5 @@
 #include "z80.hpp"
 
-constexpr uint8_t BIT_MASK_1 = 0x38;      // 0011 1000 binary value
-constexpr uint8_t BIT_MASK_2 = 0x07;      // 0000 0111 binary value
-constexpr uint8_t BIT_MASK_3 = 0x30;      // 0011 0000 binary value
-constexpr uint8_t LOW_BYTE_MASK = 0xFF;   // 1111 1111 binary value
-
-
 // 8-bit LD Instructions
 void z80cpu::LD_register_immediate() {
     t_state_cycles = 7;

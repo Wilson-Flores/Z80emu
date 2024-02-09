@@ -6,4 +6,6 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(z80emu "main.cpp" "z80.cpp" "Bus.cpp" "Test.cpp" "Load.cpp")
+add_executable(z80emu "main.cpp" "z80.cpp" "Bus.cpp" "test-cases/LD_test.cpp" "Load.cpp"
+        Push.cpp
+        Pop.cpp)
