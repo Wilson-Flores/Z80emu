@@ -1,9 +1,9 @@
-#include "z80.hpp"
+#include "../z80.hpp"
 
 void z80cpu::POP_register_indirect_register() {
     t_state_cycles = 10;
 
-    uint8_t register_pair_bit = (opcode & BIT_MASK_3);
+    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
 
     *register_pair_table[register_pair_bit].low_byte_register = read(stack_pointer);
 

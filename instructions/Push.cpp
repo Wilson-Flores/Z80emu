@@ -1,9 +1,9 @@
-#include "z80.hpp"
+#include "../z80.hpp"
 
 void z80cpu::PUSH_register_indirect_register() {
     t_state_cycles = 11;
 
-    uint8_t register_pair_bit = (opcode & BIT_MASK_3);
+    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
 
     // allow the stack point to wrap around once it reaches 0
     if(stack_pointer == 0x0000){
@@ -58,9 +58,9 @@ void z80cpu::PUSH_register_indirect_register_iy() {
     t_state_cycles = 15;
 
     uint8_t iy_high_byte;
-    iy_high_byte = static_cast<uint8_t>(index_register_x >> 8);
+    iy_high_byte = static_cast<uint8_t>(index_register_y >> 8);
     uint8_t iy_low_byte;
-    iy_low_byte = static_cast<uint8_t>(index_register_x & LOW_BYTE_MASK);
+    iy_low_byte = static_cast<uint8_t>(index_register_y & LOW_BYTE_MASK);
 
     if(stack_pointer == 0x0000){
         stack_pointer = 0xFFFF;

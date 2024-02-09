@@ -1,4 +1,4 @@
-#include "z80.hpp"
+#include "../z80.hpp"
 
 // 8-bit LD Instructions
 void z80cpu::LD_register_immediate() {
