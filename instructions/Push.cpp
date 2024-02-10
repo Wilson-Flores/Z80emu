@@ -32,7 +32,7 @@ void z80cpu::PUSH_register_indirect_register_ix() {
     uint8_t ix_high_byte;
     ix_high_byte = static_cast<uint8_t>(index_register_x >> 8);
     uint8_t ix_low_byte;
-    ix_low_byte = static_cast<uint8_t>(index_register_x & LOW_BYTE_MASK);
+    ix_low_byte = static_cast<uint8_t>(index_register_x);
 
     if(stack_pointer == 0x0000){
         stack_pointer = 0xFFFF;
@@ -60,7 +60,7 @@ void z80cpu::PUSH_register_indirect_register_iy() {
     uint8_t iy_high_byte;
     iy_high_byte = static_cast<uint8_t>(index_register_y >> 8);
     uint8_t iy_low_byte;
-    iy_low_byte = static_cast<uint8_t>(index_register_y & LOW_BYTE_MASK);
+    iy_low_byte = static_cast<uint8_t>(index_register_y);
 
     if(stack_pointer == 0x0000){
         stack_pointer = 0xFFFF;
