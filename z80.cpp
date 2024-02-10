@@ -88,6 +88,17 @@ z80cpu::z80cpu() {
 		&accumulator // A = 0b111
 	};
 
+    alt_register_table = {
+        &alt_B_register,
+        &alt_C_register,
+        &alt_D_register,
+        &alt_E_register,
+        &alt_H_register,
+        &alt_L_register,
+        nullptr,
+        &alt_accumulator
+    };
+
     // Be aware: some instructions have 0b11 set as the stack counter, others use AF register instead.
     register_pair_table = {
             {&B_register, &C_register}, // BC = 0b00

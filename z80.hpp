@@ -117,9 +117,17 @@ public:
     void PUSH_register_indirect_register_iy();    // [PUSH IY]
 
     // POP Instructions
-    void POP_register_indirect_register();       // [POP qq]
-    void POP_register_indirect_register_ix();    // [POP IX]
-    void POP_register_indirect_register_iy();    // [POP IY]
+    void POP_register_indirect_register();        // [POP qq]
+    void POP_register_indirect_register_ix();     // [POP IX]
+    void POP_register_indirect_register_iy();     // [POP IY]
+
+    // EX Instructions
+    void EX_implied_implied_af();                 // [EX AF, AF']
+    void EXX_implied_implied();                   // [EXX]
+    void EX_implied_implied();                    // [EX DE, HL]
+    void EX_register_indirect_implied_hl();       // [EX (SP), HL]
+    void EX_register_indirect_implied_ix();       // [EX (SP), IX]
+    void EX_register_indirect_implied_iy();       // [EX (SP), IY]
 
 
 	void instruction_cycle();
@@ -165,6 +173,7 @@ private:
 
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
     std::vector<uint8_t*> register_table;
+    std::vector<uint8_t*> alt_register_table;
 
 
     // each register pair has a correlating bit value
@@ -174,6 +183,7 @@ private:
     };
 
 	std::vector<REGISTER_PAIR> register_pair_table;
+
 
 };
 
