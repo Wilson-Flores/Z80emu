@@ -25,6 +25,7 @@ void z80cpu::EXX_implied_implied() {
     }
 }
 
+
 void z80cpu::EX_implied_implied() {
     t_state_cycles = 4;
 
@@ -58,12 +59,24 @@ void z80cpu::EX_register_indirect_implied_hl() {
 void z80cpu::EX_register_indirect_implied_ix() {
     t_state_cycles = 19;
 
-    uint16_t data = static_cast<uint16_t>(read(stack_pointer) << 8) | read(stack_pointer + 1);
+    uint16_t data = static_cast<uint16_t>(read(stack_pointer + 1) << 8) | read(stack_pointer);
     index_register_x ^= data;
     data ^= index_register_x;
     index_register_x ^= data;
 
-    write(stack_pointer, static_cast<uint8_t>(data >> 8));
-    write(stack_pointer + 1, static_cast<uint8_t>(data));
+    write(stack_pointer + 1, static_cast<uint8_t>(data >> 8));
+    write(stack_pointer, static_cast<uint8_t>(data));
+}
 
+
+void z80cpu::EX_register_indirect_implied_iy() {
+    t_state_cycles = 19;
+
+    uint16_t data = static_cast<uint16_t>(read(stack_pointer + 1) << 8) | read(stack_pointer);
+    index_register_y ^= data;
+    data ^= index_register_y;
+    index_register_y ^= data;
+
+    write(stack_pointer + 1, static_cast<uint8_t>(data >> 8));
+    write(stack_pointer, static_cast<uint8_t>(data));
 }
