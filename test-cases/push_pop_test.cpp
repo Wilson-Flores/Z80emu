@@ -10,7 +10,7 @@ void push_pop_test(Bus& test){
             0xDD, 0xE1, 0xFD, 0xE1
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
         test.ram[i] = memory[i];

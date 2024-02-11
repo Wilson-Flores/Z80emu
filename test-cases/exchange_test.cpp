@@ -10,7 +10,7 @@ void EX_test(Bus& test) {
             0xE3, 0x00, 0x00
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
         test.ram[i] = memory[i];

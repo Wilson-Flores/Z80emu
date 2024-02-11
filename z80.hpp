@@ -74,6 +74,9 @@ public:
 	void non_maskable_interrupt(); // NMI
 
 
+    // extra flag to help with setting P/V in LDIR function
+    bool recursive_flag = false;
+
 
 	// 8-bit Instructions
 	// LD Instructions
@@ -138,10 +141,11 @@ public:
 	void instruction_cycle();
 
 	uint16_t address_absolute = 0x0000;
-	uint16_t address_relative = 0x0000;
 	uint8_t opcode = 0x00;
 	uint8_t t_state_cycles = 0;
 
+
+    int8_t displacement = 0x00;
 
 private:
 	Bus* bus = nullptr;
@@ -149,6 +153,8 @@ private:
 
 	uint8_t read(uint16_t address);
 	void write(uint16_t address, uint8_t data);
+    uint16_t data = 0x0000;
+
 
 	uint8_t get_flag(FLAGSZ80 flag);
 	void set_flag(FLAGSZ80 flag, bool setFlag);

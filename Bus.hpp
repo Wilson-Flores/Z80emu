@@ -15,12 +15,13 @@ public:
 	z80cpu cpu;
 
 	std::array<uint8_t, MEMORY_SIZE> ram{};
+    std::array<uint8_t, MEMORY_SIZE> rom{};
 
 	void write(uint16_t address, uint8_t data);
 
 	uint8_t read(uint16_t address);
 
-	void reset();
+	void rom_reset();
 
 };
 

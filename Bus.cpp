@@ -6,6 +6,10 @@ Bus::Bus() {
 		i = 0x00;
 	}
 
+    for (uint8_t& i : rom) {
+        i = 0x00;
+    }
+
 	cpu.connect_bus(this);
 }
 
@@ -24,8 +28,8 @@ uint8_t Bus::read(uint16_t address) {
 }
 
 
-void Bus::reset() {
-	for (uint8_t& i : ram) {
+void Bus::rom_reset() {
+	for (uint8_t& i : rom) {
 		i = 0x00;
 	}
 	std::cout << "Memory Cleared!\n";

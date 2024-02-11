@@ -58,6 +58,9 @@ void LD_test(Bus& test){
         case 16:
             LD_extended_register_16_bit_test(test);
             break;
+        case 17:
+            LDIR_test(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
     }
@@ -70,14 +73,14 @@ void LD_register_immediate_test(Bus& test) {
 		0x3E, 0x19, 0x06, 0x1A, 0x0E, 0x1B, 0x16,
 		0x1C, 0x1E, 0x1D, 0x26, 0x1E, 0x2E, 0x1F };
 
-	// clear RAM
-	test.reset();
+	// clear rom
+    test.rom_reset();
 
-	// load LD r,n test instructions into ram
+	// load LD r,n test instructions into rom
 	for (int i = 0; i < memory.size(); i++) {
-		test.ram[i] = memory[i];
-		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+		test.rom[i] = memory[i];
+		std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+			std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
 	}
 
 
@@ -100,13 +103,13 @@ void LD_register_register_test(Bus& test) {
 	0x67, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65,
 	0x6F, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D };
 
-	// clear RAM
-	test.reset();
+	// clear rom
+    test.rom_reset();
 
 	for (int i = 0; i < memory.size(); i++) {
-		test.ram[i] = memory[i];
-		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+		test.rom[i] = memory[i];
+		std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+			std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
 	}
 
 	for (int i = 0; i < number_of_instructions[1]; i++) {
@@ -123,14 +126,14 @@ void LD_register_register_indirect_test(Bus& test) {
 		0x01, 0x3E, 0x00, 0x0A, 0x3E, 0x00, 0x1A
 	};
 
-	// clear RAM
-	test.reset();
+	// clear rom
+    test.rom_reset();
 
 
 	for (int i = 0; i < memory.size(); i++) {
-		test.ram[i] = memory[i];
-		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+		test.rom[i] = memory[i];
+		std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+			std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
 	}
 
 	for (int i = 0; i < number_of_instructions[2]; i++) {
@@ -143,14 +146,14 @@ void LD_register_register_indirect_test(Bus& test) {
 void LD_register_implied_test(Bus& test) {
 	std::vector<uint8_t> memory = { 0x3E, 0x19, 0xED, 0x57, 0x3E, 0x19, 0xED, 0x5F };
 
-	// clear RAM
-	test.reset();
+	// clear rom
+    test.rom_reset();
 
 
 	for (int i = 0; i < memory.size(); i++) {
-		test.ram[i] = memory[i];
-		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+		test.rom[i] = memory[i];
+		std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+			std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
 	}
 
 	for (int i = 0; i < number_of_instructions[3]; i++) {
@@ -171,12 +174,12 @@ void LD_register_indexed_test(Bus& test) {
 	0x56, 0xF9, 0xDD, 0x5E, 0xF7, 0xDD, 0x66, 0xF5, 0xDD, 0x6E, 0xF3
 	};
 
-	test.reset();
+    test.rom_reset();
 
 	for (int i = 0; i < memory.size(); i++) {
-		test.ram[i] = memory[i];
-		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+		test.rom[i] = memory[i];
+		std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+			std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
 	}
 
 	for (int i = 0; i < number_of_instructions[4]; i++) {
@@ -190,12 +193,12 @@ void LD_register_extended_test(Bus& test) {
 		0x3E, 0x19, 0x3E, 0x00, 0x3A, 0x00, 0x01 
 	};
 
-	test.reset();
+    test.rom_reset();
 
 	for (int i = 0; i < memory.size(); i++) {
-		test.ram[i] = memory[i];
-		std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-			std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+		test.rom[i] = memory[i];
+		std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+			std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
 	}
 
 	for (int i = 0; i < number_of_instructions[5]; i++) {
@@ -209,12 +212,12 @@ void LD_register_indirect_immediate(Bus& test) {
 	0x26, 0x00, 0x2E, 0x06, 0x36, 0x19
 	};
 
-	test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
 	for (int i = 0; i < number_of_instructions[5]; i++) {
@@ -229,12 +232,12 @@ void LD_register_indirect_register(Bus& test){
             0x71, 0x72, 0x73, 0x74, 0x75, 0x06, 0x00, 0x0E, 0x20, 0x16, 0x00, 0x1E, 0x21, 0x02, 0x12
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[2]; i++) {
@@ -248,12 +251,12 @@ void LD_indexed_immediate_test(Bus& test){
             0xDD, 0x36, 0x0C, 0x19, 0xFD, 0x21, 0x00, 0x21, 0xFD, 0x36, 0xEC, 0x1A
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[5]; i++) {
@@ -271,12 +274,12 @@ void LD_indexed_register_test(Bus& test){
             0x74, 0xFA, 0xFD, 0x75, 0xFA
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[6]; i++) {
@@ -290,12 +293,12 @@ void LD_extended_register_test(Bus& test){
             0x3E, 0x19, 0x32, 0x00, 0x05
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[7]; i++) {
@@ -309,12 +312,12 @@ void LD_implied_register_test(Bus& test){
             0x3E, 0x19, 0xED, 0x47, 0xED, 0x4F
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[5]; i++) {
@@ -329,12 +332,12 @@ void LD_register_immediate_extended_test(Bus& test){
             0xDD, 0x21, 0x21, 0x22, 0xFD, 0x21, 0x23, 0x24
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[8]; i++) {
@@ -353,12 +356,12 @@ void LD_register_extended_16_bit_test(Bus& test) {
             0x26
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[0]; i++) {
@@ -374,12 +377,12 @@ void LD_register_register_16_bit_test(Bus& test) {
             0xF9
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[0]; i++) {
@@ -399,15 +402,35 @@ void LD_extended_register_16_bit_test(Bus& test){
             0x22, 0x00, 0x39, 0xFD, 0x22, 0x00, 0x3B
     };
 
-    test.reset();
+    test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.ram[i] = memory[i];
-        std::cout << "ram[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.ram[i]) << '\n';
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
     for (int i = 0; i < number_of_instructions[9]; i++) {
         test.cpu.instruction_cycle();
     }
+}
+
+
+void LDIR_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x01, 0x01, 0x00, 0xED, 0xB0
+    };
+
+    test.rom_reset();
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+    for (int i = 0; i < number_of_instructions[9]; i++) {
+        test.cpu.instruction_cycle();
+    }
+
 }

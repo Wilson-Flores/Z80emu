@@ -112,7 +112,6 @@ void z80cpu::LD_register_indexed_ix() {
     uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
     // one-byte signed integer (-128 to +127)
-    int8_t displacement;
     displacement = static_cast<int8_t>(read(program_counter));
 
     // add the value in index register x with the twos-complement signed value
@@ -128,7 +127,6 @@ void z80cpu::LD_register_indexed_iy() {
     uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
     // one-byte signed integer (-128 to +127)
-    int8_t displacement;
     displacement = static_cast<int8_t>(read(program_counter));
     program_counter++;
 
@@ -191,7 +189,6 @@ void z80cpu::LD_register_indirect_register() {
 void z80cpu::LD_indexed_ix_immediate(){
     t_state_cycles = 19;
 
-    int8_t displacement;
     displacement = static_cast<int8_t>(read(program_counter));
     program_counter++;
 
@@ -207,7 +204,6 @@ void z80cpu::LD_indexed_ix_immediate(){
 void z80cpu::LD_indexed_iy_immediate() {
     t_state_cycles = 19;
 
-    int8_t displacement;
     displacement = static_cast<int8_t>(read(program_counter));
     program_counter++;
 
@@ -225,7 +221,6 @@ void z80cpu::LD_indexed_ix_register(){
 
     uint8_t register_bit = (opcode & BIT_MASK_2);
 
-    int8_t displacement;
     displacement = static_cast<int8_t>(read(program_counter));
     program_counter++;
 
@@ -239,7 +234,6 @@ void z80cpu::LD_indexed_iy_register(){
 
     uint8_t register_bit = (opcode & BIT_MASK_2);
 
-    int8_t displacement;
     displacement = static_cast<int8_t>(read(program_counter));
     program_counter++;
 
@@ -492,7 +486,7 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // We get the data from the address location of HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = read(address_absolute);
+    data = read(address_absolute);
 
     // Next we write that data into the address location of DE register pair
     address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
@@ -528,4 +522,58 @@ void z80cpu::LDI_register_indirect_register_indirect() {
     else{
         set_flag(PARITY_OVERFLOW_FLAG, false);
     }
+}
+
+
+void z80cpu::LDIR_register_indirect_register_indirect() {
+    t_state_cycles = 16;
+
+    // we are reading the data from address at HL register pair
+    address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data = read(address_absolute);
+    L_register++;
+    if(L_register == 0x00){
+        H_register++;
+    }
+
+    // we are writing the data to address at DE register pair
+    address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
+    write(address_absolute, data);
+    E_register++;
+    if(E_register == 0x00){
+        D_register++;
+    }
+
+    // decrementing BC register pair
+    C_register--;
+    if(C_register == 0xFF){
+        B_register--;
+    }
+
+    // checking if byte counter has reached 0 or not
+    address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
+
+    if(!recursive_flag){
+        if(address_absolute != 0){
+            set_flag(PARITY_OVERFLOW_FLAG, true);
+        }
+        else{
+            set_flag(PARITY_OVERFLOW_FLAG, false);
+        }
+    }
+
+    if(address_absolute > 0) {
+        recursive_flag = true;
+
+        t_state_cycles += 5; // 5 extra clock cycles are added at the end when the program_counter decrements by 2
+
+        // we set the program_counter back 2 opcodes and start this instruction over again until byte_counter = 0
+        program_counter -= 2;
+        instruction_cycle();
+    }
+
+    set_flag(HALF_CARRY_FLAG, false);
+    set_flag(ADD_SUB_FLAG, false);
+
+
 }
