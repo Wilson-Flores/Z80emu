@@ -144,11 +144,12 @@ void z80cpu::instruction_cycle() {
 	// when t cycles reach 0, we are ready to read next instruction
 	opcode = read(program_counter);
 
+
+    // increment program counter
+    program_counter++;
+
 	//memory refresh register increments after pulling an opcode
 	memory_refresh_counter();
-
-	// increment program counter
-	program_counter++;
 
 	// begin going through the main instruction table
 	std::cout << "OPCODE: " << this->main_instruction_table[opcode].opcode << '\n';
@@ -159,8 +160,9 @@ void z80cpu::instruction_cycle() {
 // Function Tables
 void z80cpu::misc_instructions() {
 	opcode = read(program_counter);
-	memory_refresh_counter();
-	program_counter++;
+    program_counter++;
+    memory_refresh_counter();
+
 
 	std::cout << "OPCODE: " << this->misc_instruction_table[opcode].opcode << '\n';
 	(this->*misc_instruction_table[opcode].instruction)();
@@ -169,8 +171,8 @@ void z80cpu::misc_instructions() {
 
 void z80cpu::ix_instructions() {
     opcode = read(program_counter);
-    memory_refresh_counter();
     program_counter++;
+    memory_refresh_counter();
 
     std::cout << "OPCODE: " << this->ix_instruction_table[opcode].opcode << '\n';
     (this->*ix_instruction_table[opcode].instruction)();
@@ -179,8 +181,8 @@ void z80cpu::ix_instructions() {
 
 void z80cpu::iy_instructions() {
     opcode = read(program_counter);
-    memory_refresh_counter();
     program_counter++;
+    memory_refresh_counter();
 
     std::cout << "OPCODE: " << this->iy_instruction_table[opcode].opcode << '\n';
     (this->*iy_instruction_table[opcode].instruction)();

@@ -25,14 +25,14 @@ public:
 
 	// Status Register
 	enum FLAGSZ80 {
-		CARRY_FLAG = (1 << 0),
-		ADD_SUB_FLAG = (1 << 1),
-		PARITY_OVERFLOW_FLAG = (1 << 2),
-		UNUSED1 = (1 << 3),
-		HALF_CARRY_FLAG = (1 << 4),
-		UNUSED2 = (1 << 5),
-		ZERO_FLAG = (1 << 6),
-		SIGN_FLAG = (1 << 7)
+		CARRY_FLAG = (1 << 0),                    // C
+		ADD_SUB_FLAG = (1 << 1),                  // N
+		PARITY_OVERFLOW_FLAG = (1 << 2),          // P/V
+		UNUSED1 = (1 << 3),                       // X
+		HALF_CARRY_FLAG = (1 << 4),               // H
+		UNUSED2 = (1 << 5),                       // X
+		ZERO_FLAG = (1 << 6),                     // Z
+		SIGN_FLAG = (1 << 7)                      // S
 	};
 
 	// Main Registers
@@ -77,57 +77,62 @@ public:
 
 	// 8-bit Instructions
 	// LD Instructions
-	void LD_register_immediate();                 // [LD r, n]
-	void LD_register_register();                  // [LD r, r']
-	void LD_register_register_indirect();         // [LD r, (HL)], [LD A, (BC)], [LD A, (DE)]
-	void LD_register_implied();                   // [LD A, I], [LD A, R]
-	void LD_register_indexed_ix();                // [LD r, (IX+d)]
-	void LD_register_indexed_iy();                // [LD r, (IY+d)]
-	void LD_register_extended();				  // [LD A, (nn)]
-	void LD_register_indirect_immediate();		  // [LD (HL), n]
-    void LD_register_indirect_register();         // [LD (HL), r], [LD (BC), A], [LD (DE), A]
-    void LD_indexed_ix_immediate();               // [LD (IX+d), n]
-    void LD_indexed_iy_immediate();               // [LD (IY+d), n]
-    void LD_indexed_ix_register();                // [LD (IX+d), r]
-    void LD_indexed_iy_register();                // [LD (IY+d), r]
-    void LD_extended_register();                  // [LD (nn), A]
-    void LD_implied_register();                   // [LD I, A], [LD R, A]
+	void LD_register_immediate();                                           // [LD r, n]
+	void LD_register_register();                                            // [LD r, r']
+	void LD_register_register_indirect();                                   // [LD r, (HL)], [LD A, (BC)], [LD A, (DE)]
+	void LD_register_implied();                                             // [LD A, I], [LD A, R]
+	void LD_register_indexed_ix();                                          // [LD r, (IX+d)]
+	void LD_register_indexed_iy();                                          // [LD r, (IY+d)]
+	void LD_register_extended();                                            // [LD A, (nn)]
+	void LD_register_indirect_immediate();                                  // [LD (HL), n]
+    void LD_register_indirect_register();                                   // [LD (HL), r], [LD (BC), A], [LD (DE), A]
+    void LD_indexed_ix_immediate();                                         // [LD (IX+d), n]
+    void LD_indexed_iy_immediate();                                         // [LD (IY+d), n]
+    void LD_indexed_ix_register();                                          // [LD (IX+d), r]
+    void LD_indexed_iy_register();                                          // [LD (IY+d), r]
+    void LD_extended_register();                                            // [LD (nn), A]
+    void LD_implied_register();                                             // [LD I, A], [LD R, A]
 
+    // Block Transfer Instructions
+    void LDI_register_indirect_register_indirect();                         // [LDI]
+    void LDIR_register_indirect_register_indirect();                        // [LDIR]
+    void LDD_register_indirect_register_indirect();                         // [LDD]
+    void LDDR_register_indirect_register_indirect();                        // [LDDR]
 	
 	// 16-bit Instructions
 	// LD Instructions
-    void LD_register_immediate_extended_16_bit(); // [LD dd, nn]
-	void LD_register_immediate_extended_ix();     // [LD IX, nn]
-	void LD_register_immediate_extended_iy();     // [LD IY, nn]
-    void LD_register_extended_16_bit();           // [LD dd, (nn)]
-    void LD_register_extended_hl();               // [LD HL, (nn)]
-    void LD_register_extended_ix();               // [LD IX, (nn)]
-    void LD_register_extended_iy();               // [LD IY, (nn)]
-    void LD_register_register_hl();               // [LD SP, HL]
-    void LD_register_register_ix();               // [LD SP, IX]
-    void LD_register_register_iy();               // [LD SP, IY]
-    void LD_extended_register_16_bit();           // [LD (nn), dd]
-    void LD_extended_register_hl();               // [LD (nn), HL]
-    void LD_extended_register_ix();               // [LD (nn), IX]
-    void LD_extended_register_iy();               // [LD (nn), IY]
+    void LD_register_immediate_extended_16_bit();                           // [LD dd, nn]
+	void LD_register_immediate_extended_ix();                               // [LD IX, nn]
+	void LD_register_immediate_extended_iy();                               // [LD IY, nn]
+    void LD_register_extended_16_bit();                                     // [LD dd, (nn)]
+    void LD_register_extended_hl();                                         // [LD HL, (nn)]
+    void LD_register_extended_ix();                                         // [LD IX, (nn)]
+    void LD_register_extended_iy();                                         // [LD IY, (nn)]
+    void LD_register_register_hl();                                         // [LD SP, HL]
+    void LD_register_register_ix();                                         // [LD SP, IX]
+    void LD_register_register_iy();                                         // [LD SP, IY]
+    void LD_extended_register_16_bit();                                     // [LD (nn), dd]
+    void LD_extended_register_hl();                                         // [LD (nn), HL]
+    void LD_extended_register_ix();                                         // [LD (nn), IX]
+    void LD_extended_register_iy();                                         // [LD (nn), IY]
 
     // PUSH Instructions
-    void PUSH_register_indirect_register();       // [PUSH qq]
-    void PUSH_register_indirect_register_ix();    // [PUSH IX]
-    void PUSH_register_indirect_register_iy();    // [PUSH IY]
+    void PUSH_register_indirect_register();                                 // [PUSH qq]
+    void PUSH_register_indirect_register_ix();                              // [PUSH IX]
+    void PUSH_register_indirect_register_iy();                              // [PUSH IY]
 
     // POP Instructions
-    void POP_register_indirect_register();        // [POP qq]
-    void POP_register_indirect_register_ix();     // [POP IX]
-    void POP_register_indirect_register_iy();     // [POP IY]
+    void POP_register_indirect_register();                                  // [POP qq]
+    void POP_register_indirect_register_ix();                               // [POP IX]
+    void POP_register_indirect_register_iy();                               // [POP IY]
 
     // EX Instructions
-    void EX_implied_implied_af();                 // [EX AF, AF']
-    void EXX_implied_implied();                   // [EXX]
-    void EX_implied_implied();                    // [EX DE, HL]
-    void EX_register_indirect_implied_hl();       // [EX (SP), HL]
-    void EX_register_indirect_implied_ix();       // [EX (SP), IX]
-    void EX_register_indirect_implied_iy();       // [EX (SP), IY]
+    void EX_implied_implied_af();                                           // [EX AF, AF']
+    void EXX_implied_implied();                                             // [EXX]
+    void EX_implied_implied();                                              // [EX DE, HL]
+    void EX_register_indirect_implied_hl();                                 // [EX (SP), HL]
+    void EX_register_indirect_implied_ix();                                 // [EX (SP), IX]
+    void EX_register_indirect_implied_iy();                                 // [EX (SP), IY]
 
 
 	void instruction_cycle();
@@ -136,6 +141,7 @@ public:
 	uint16_t address_relative = 0x0000;
 	uint8_t opcode = 0x00;
 	uint8_t t_state_cycles = 0;
+
 
 private:
 	Bus* bus = nullptr;

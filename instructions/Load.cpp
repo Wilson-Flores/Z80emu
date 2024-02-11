@@ -484,3 +484,48 @@ void z80cpu::LD_extended_register_iy() {
     write(address_absolute, iy_low_byte);
     write(address_absolute + 1, iy_high_byte);
 }
+
+
+// Block Transfer Instructions - The concept is the same as an LD instruction.
+void z80cpu::LDI_register_indirect_register_indirect() {
+    t_state_cycles = 16;
+
+    // We get the data from the address location of HL register pair
+    address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    uint8_t data = read(address_absolute);
+
+    // Next we write that data into the address location of DE register pair
+    address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
+    write(address_absolute, data);
+
+    // we are taking DE register and incrementing by 1
+    E_register++;
+    if(E_register == 0x00){
+        D_register++;
+    }
+
+    // we are taking HL register and incrementing by 1
+    L_register++;
+    if(L_register == 0x00){
+        H_register++;
+    }
+
+    // The byte counter (BC register) is decremented
+    C_register--;
+    if(C_register == 0xFF){
+        B_register--;
+    }
+
+    // H is reset.
+    set_flag(HALF_CARRY_FLAG, false);
+    // N is reset.
+    set_flag(ADD_SUB_FLAG, false);
+    // P/V is set if BC-1 != 0, else it is reset.
+    address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    if((address_absolute) != 0){
+        set_flag(PARITY_OVERFLOW_FLAG, true);
+    }
+    else{
+        set_flag(PARITY_OVERFLOW_FLAG, false);
+    }
+}
