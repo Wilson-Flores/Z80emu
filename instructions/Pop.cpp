@@ -5,7 +5,7 @@ void z80cpu::POP_register_indirect_register() {
 
     uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
 
-    *register_pair_table[register_pair_bit].low_byte_register = rom_read(stack_pointer);
+    *register_pair_table[register_pair_bit].low_byte_register = ram_read(stack_pointer);
 
     if(stack_pointer == 0xFFFF){
         stack_pointer = 0x0000;
@@ -14,7 +14,7 @@ void z80cpu::POP_register_indirect_register() {
         stack_pointer++;
     }
 
-    *register_pair_table[register_pair_bit].high_byte_register = rom_read(stack_pointer);
+    *register_pair_table[register_pair_bit].high_byte_register = ram_read(stack_pointer);
 
     if(stack_pointer == 0xFFFF){
         stack_pointer = 0x0000;
@@ -28,7 +28,7 @@ void z80cpu::POP_register_indirect_register() {
 void z80cpu::POP_register_indirect_register_ix() {
     t_state_cycles = 14;
 
-    uint8_t ix_low_byte = rom_read(stack_pointer);
+    uint8_t ix_low_byte = ram_read(stack_pointer);
 
     if(stack_pointer == 0xFFFF){
         stack_pointer = 0x0000;
@@ -37,7 +37,7 @@ void z80cpu::POP_register_indirect_register_ix() {
         stack_pointer++;
     }
 
-    uint8_t ix_high_byte = rom_read(stack_pointer);
+    uint8_t ix_high_byte = ram_read(stack_pointer);
 
     if(stack_pointer == 0xFFFF){
         stack_pointer = 0x0000;
@@ -53,7 +53,7 @@ void z80cpu::POP_register_indirect_register_ix() {
 void z80cpu::POP_register_indirect_register_iy() {
     t_state_cycles = 14;
 
-    uint8_t iy_low_byte = rom_read(stack_pointer);
+    uint8_t iy_low_byte = ram_read(stack_pointer);
 
     if(stack_pointer == 0xFFFF){
         stack_pointer = 0x0000;
