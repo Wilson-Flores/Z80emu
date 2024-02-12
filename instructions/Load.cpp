@@ -569,11 +569,10 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
 
         // we set the program_counter back 2 opcodes and start this instruction over again until byte_counter = 0
         program_counter -= 2;
-        instruction_cycle();
+        return;
     }
 
     set_flag(HALF_CARRY_FLAG, false);
     set_flag(ADD_SUB_FLAG, false);
-
-
+    recursive_flag = false;
 }

@@ -418,7 +418,7 @@ void LD_extended_register_16_bit_test(Bus& test){
 
 void LDIR_test(Bus& test){
     std::vector<uint8_t> memory = {
-            0x01, 0x01, 0x00, 0xED, 0xB0
+            0xED, 0xB0
     };
 
     test.rom_reset();
@@ -429,7 +429,8 @@ void LDIR_test(Bus& test){
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
-    for (int i = 0; i < number_of_instructions[9]; i++) {
+    // test full byte range 64KB
+    for(uint16_t byte_counter = 0; byte_counter < 0xFFFF; byte_counter++){
         test.cpu.instruction_cycle();
     }
 
