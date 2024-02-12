@@ -42,41 +42,41 @@ void z80cpu::EX_implied_implied() {
 void z80cpu::EX_register_indirect_implied_hl() {
     t_state_cycles = 19;
 
-    data = read(stack_pointer);  // low byte in HL is swapped with memory at stack pointer address
+    data = ram_read(stack_pointer);  // low byte in HL is swapped with memory at stack pointer address
     L_register ^= data;
     data ^= L_register;
     L_register ^= data;
-    write(stack_pointer, data);
+    ram_write(stack_pointer, data);
 
-    data = read(stack_pointer + 1);     // high byte in HL is swapped with memory at (stack pointer + 1) address
+    data = ram_read(stack_pointer + 1);     // high byte in HL is swapped with memory at (stack pointer + 1) address
     H_register ^= data;
     data ^= H_register;
     H_register ^= data;
-    write(stack_pointer + 1, data);
+    ram_write(stack_pointer + 1, data);
 }
 
 
 void z80cpu::EX_register_indirect_implied_ix() {
     t_state_cycles = 19;
 
-    data = static_cast<uint16_t>(read(stack_pointer + 1) << 8) | read(stack_pointer);
+    data = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
     index_register_x ^= data;
     data ^= index_register_x;
     index_register_x ^= data;
 
-    write(stack_pointer + 1, static_cast<uint8_t>(data >> 8));
-    write(stack_pointer, static_cast<uint8_t>(data));
+    ram_write(stack_pointer + 1, static_cast<uint8_t>(data >> 8));
+    ram_write(stack_pointer, static_cast<uint8_t>(data));
 }
 
 
 void z80cpu::EX_register_indirect_implied_iy() {
     t_state_cycles = 19;
 
-    data = static_cast<uint16_t>(read(stack_pointer + 1) << 8) | read(stack_pointer);
+    data = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
     index_register_y ^= data;
     data ^= index_register_y;
     index_register_y ^= data;
 
-    write(stack_pointer + 1, static_cast<uint8_t>(data >> 8));
-    write(stack_pointer, static_cast<uint8_t>(data));
+    ram_write(stack_pointer + 1, static_cast<uint8_t>(data >> 8));
+    ram_write(stack_pointer, static_cast<uint8_t>(data));
 }

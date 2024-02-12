@@ -17,10 +17,12 @@ public:
 	std::array<uint8_t, MEMORY_SIZE> ram{};
     std::array<uint8_t, MEMORY_SIZE> rom{};
 
-	void write(uint16_t address, uint8_t data);
+	void ram_write(uint16_t address, uint8_t data);
+	uint8_t ram_read(uint16_t address);
 
-	uint8_t read(uint16_t address);
 
+    void rom_write(uint16_t address, uint8_t data);
+    uint8_t rom_read(uint16_t address);
 	void rom_reset();
 
 };

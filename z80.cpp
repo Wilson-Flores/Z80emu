@@ -110,13 +110,23 @@ z80cpu::z80cpu() {
 }
 
 
-uint8_t z80cpu::read(uint16_t address) {
-	return bus->read(address);
+uint8_t z80cpu::rom_read(uint16_t address) {
+	return bus->rom_read(address);
 }
 
 
-void z80cpu::write(uint16_t address, uint8_t data) {
-	bus->write(address, data);
+void z80cpu::rom_write(uint16_t address, uint8_t data) {
+    bus->rom_write(address, data);
+}
+
+
+uint8_t z80cpu::ram_read(uint16_t address) {
+    return bus->ram_read(address);
+}
+
+
+void z80cpu::ram_write(uint16_t address, uint8_t data) {
+    bus->ram_write(address, data);
 }
 
 
@@ -142,7 +152,7 @@ void z80cpu::memory_refresh_counter() {
 
 void z80cpu::instruction_cycle() {
 	// when t cycles reach 0, we are ready to read next instruction
-	opcode = read(program_counter);
+	opcode = rom_read(program_counter);
 
 
     // increment program counter
@@ -159,7 +169,7 @@ void z80cpu::instruction_cycle() {
 
 // Function Tables
 void z80cpu::misc_instructions() {
-	opcode = read(program_counter);
+	opcode = rom_read(program_counter);
     program_counter++;
     memory_refresh_counter();
 
@@ -170,7 +180,7 @@ void z80cpu::misc_instructions() {
 
 
 void z80cpu::ix_instructions() {
-    opcode = read(program_counter);
+    opcode = rom_read(program_counter);
     program_counter++;
     memory_refresh_counter();
 
@@ -180,7 +190,7 @@ void z80cpu::ix_instructions() {
 
 
 void z80cpu::iy_instructions() {
-    opcode = read(program_counter);
+    opcode = rom_read(program_counter);
     program_counter++;
     memory_refresh_counter();
 

@@ -13,7 +13,7 @@ void z80cpu::PUSH_register_indirect_register() {
         stack_pointer--;
     }
 
-    write(stack_pointer, *register_pair_table[register_pair_bit].high_byte_register);
+    rom_write(stack_pointer, *register_pair_table[register_pair_bit].high_byte_register);
 
     if(stack_pointer == 0x0000){
         stack_pointer = 0xFFFF;
@@ -22,7 +22,7 @@ void z80cpu::PUSH_register_indirect_register() {
         stack_pointer--;
     }
 
-    write(stack_pointer, *register_pair_table[register_pair_bit].low_byte_register);
+    rom_write(stack_pointer, *register_pair_table[register_pair_bit].low_byte_register);
 }
 
 
@@ -41,7 +41,7 @@ void z80cpu::PUSH_register_indirect_register_ix() {
         stack_pointer--;
     }
 
-    write(stack_pointer, ix_high_byte);
+    rom_write(stack_pointer, ix_high_byte);
 
     if(stack_pointer == 0x0000){
         stack_pointer = 0xFFFF;
@@ -50,7 +50,7 @@ void z80cpu::PUSH_register_indirect_register_ix() {
         stack_pointer--;
     }
 
-    write(stack_pointer, ix_low_byte);
+    rom_write(stack_pointer, ix_low_byte);
 }
 
 
@@ -69,7 +69,7 @@ void z80cpu::PUSH_register_indirect_register_iy() {
         stack_pointer--;
     }
 
-    write(stack_pointer, iy_high_byte);
+    rom_write(stack_pointer, iy_high_byte);
 
     if(stack_pointer == 0x0000){
         stack_pointer = 0xFFFF;
@@ -78,5 +78,5 @@ void z80cpu::PUSH_register_indirect_register_iy() {
         stack_pointer--;
     }
 
-    write(stack_pointer, iy_low_byte);
+    rom_write(stack_pointer, iy_low_byte);
 }
