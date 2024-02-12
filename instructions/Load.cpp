@@ -488,6 +488,12 @@ void z80cpu::LDI_register_indirect_register_indirect() {
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
     data = ram_read(address_absolute);
 
+    // we are taking HL register and incrementing by 1
+    L_register++;
+    if(L_register == 0x00){
+        H_register++;
+    }
+
     // Next we write that data into the address location of DE register pair
     address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
     ram_write(address_absolute, data);
@@ -496,12 +502,6 @@ void z80cpu::LDI_register_indirect_register_indirect() {
     E_register++;
     if(E_register == 0x00){
         D_register++;
-    }
-
-    // we are taking HL register and incrementing by 1
-    L_register++;
-    if(L_register == 0x00){
-        H_register++;
     }
 
     // The byte counter (BC register) is decremented
