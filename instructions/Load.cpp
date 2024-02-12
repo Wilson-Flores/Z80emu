@@ -553,18 +553,93 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     // checking if byte counter has reached 0 or not
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
-    if(!recursive_flag){
-        if(address_absolute != 0){
-            set_flag(PARITY_OVERFLOW_FLAG, true);
-        }
-        else{
-            set_flag(PARITY_OVERFLOW_FLAG, false);
-        }
+    if(address_absolute > 0) {
+        // P/V us set uf BC - 1 != 0
+        set_flag(PARITY_OVERFLOW_FLAG, true);
+
+        // 5 extra clock cycles are added at the end when the program_counter decrements by 2
+        t_state_cycles += 5;
+
+        // we set the program_counter back 2 opcodes and start this instruction over again until byte_counter = 0
+        program_counter -= 2;
+        return;
     }
 
-    if(address_absolute > 0) {
-        recursive_flag = true;
+    set_flag(PARITY_OVERFLOW_FLAG, false);
+    set_flag(HALF_CARRY_FLAG, false);
+    set_flag(ADD_SUB_FLAG, false);
+}
 
+
+void z80cpu::LDD_register_indirect_register_indirect() {
+    t_state_cycles = 16;
+
+    // we are reading the data from address at HL register pair
+    address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data = ram_read(address_absolute);
+    L_register--;
+    if(L_register == 0xFF){
+        H_register--;
+    }
+
+    // we are writing the data to address at DE register pair
+    address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
+    ram_write(address_absolute, data);
+    E_register--;
+    if(E_register == 0xFF){
+        D_register--;
+    }
+
+    // decrementing BC register pair
+    C_register--;
+    if(C_register == 0xFF){
+        B_register--;
+    }
+
+    // H is reset.
+    set_flag(HALF_CARRY_FLAG, false);
+    // N is reset.
+    set_flag(ADD_SUB_FLAG, false);
+    // P/V is set if BC != 0, else it is reset.
+    address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    if((address_absolute) != 0){
+        set_flag(PARITY_OVERFLOW_FLAG, true);
+    }
+    else{
+        set_flag(PARITY_OVERFLOW_FLAG, false);
+    }
+}
+
+
+void z80cpu::LDDR_register_indirect_register_indirect() {
+    t_state_cycles = 16;
+
+    // we are reading the data from address at HL register pair
+    address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data = ram_read(address_absolute);
+    L_register--;
+    if(L_register == 0xFF){
+        H_register--;
+    }
+
+    // we are writing the data to address at DE register pair
+    address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
+    ram_write(address_absolute, data);
+    E_register--;
+    if(E_register == 0xFF){
+        D_register--;
+    }
+
+    // decrementing BC register pair
+    C_register--;
+    if(C_register == 0xFF){
+        B_register--;
+    }
+
+    // checking if byte counter has reached 0 or not
+    address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
+
+    if(address_absolute > 0) {
         t_state_cycles += 5; // 5 extra clock cycles are added at the end when the program_counter decrements by 2
 
         // we set the program_counter back 2 opcodes and start this instruction over again until byte_counter = 0
@@ -572,7 +647,8 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
         return;
     }
 
+    // H, P/V, N is reset
     set_flag(HALF_CARRY_FLAG, false);
     set_flag(ADD_SUB_FLAG, false);
-    recursive_flag = false;
+    set_flag(PARITY_OVERFLOW_FLAG, false);
 }

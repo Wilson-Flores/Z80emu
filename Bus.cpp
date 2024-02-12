@@ -2,9 +2,13 @@
 
 
 Bus::Bus() {
-	for (uint8_t& i : ram) {
-		i = 0x00;
-	}
+    uint8_t value = 0;
+
+    for(uint8_t& i : ram){
+        i = value;
+        value++;
+    }
+
 
     for (uint8_t& i : rom) {
         i = 0x00;
@@ -15,32 +19,22 @@ Bus::Bus() {
 
 
 void Bus::ram_write(uint16_t address, uint8_t data) {
-	if (address >= 0x0000 && address <= 0xFFFF) {
-		ram[address] = data;
-	}
+    ram[address] = data;
 }
 
 
 uint8_t Bus::ram_read(uint16_t address) {
-	if (address >= 0x0000 && address <= 0xFFFF) {
-		return ram[address];
-	}
-	return 0x00;
+    return ram[address];
 }
 
 
 void Bus::rom_write(uint16_t address, uint8_t data) {
-    if (address >= 0x0000 && address <= 0xFFFF) {
-        rom[address] = data;
-    }
+    rom[address] = data;
 }
 
 
 uint8_t Bus::rom_read(uint16_t address) {
-    if (address >= 0x0000 && address <= 0xFFFF) {
-        return rom[address];
-    }
-    return 0x00;
+    return rom[address];
 }
 
 

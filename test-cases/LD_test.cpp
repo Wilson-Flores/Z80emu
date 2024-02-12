@@ -61,6 +61,9 @@ void LD_test(Bus& test){
         case 17:
             LDIR_test(test);
             break;
+        case 18:
+            LDI_LDIR_LDD_LDDR_test(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
     }
@@ -434,4 +437,26 @@ void LDIR_test(Bus& test){
         test.cpu.instruction_cycle();
     }
 
+}
+
+
+void LDI_LDIR_LDD_LDDR_test(Bus& test) {
+    std::vector<uint8_t> memory = {
+            0x01, 0x0A, 0x00, 0x11, 0x00, 0x00, 0x21, 0x20,
+            0x00, 0xED, 0xA0, 0xED, 0xB0, 0x01, 0x0A, 0x00,
+            0x21, 0x30, 0x00, 0xED, 0xA8, 0xED, 0xB8
+    };
+
+    test.rom_reset();
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom[i] = memory[i];
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+    // test full byte range 64KB
+    for(uint16_t byte_counter = 0; byte_counter < 0xFFFF; byte_counter++){
+        test.cpu.instruction_cycle();
+    }
 }

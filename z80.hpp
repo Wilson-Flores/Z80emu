@@ -74,10 +74,6 @@ public:
 	void non_maskable_interrupt(); // NMI
 
 
-    // extra flag to help with setting P/V in LDIR function
-    bool recursive_flag = false;
-
-
 	// 8-bit Instructions
 	// LD Instructions
 	void LD_register_immediate();                                           // [LD r, n]

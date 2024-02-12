@@ -42,4 +42,6 @@ void LD_extended_register_16_bit_test(Bus& test);
 
 void LDIR_test(Bus& test);
 
+void LDI_LDIR_LDD_LDDR_test(Bus& test);
+
 #endif // !Test_hpp
