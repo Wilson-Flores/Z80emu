@@ -97,6 +97,12 @@ public:
     void LDIR_register_indirect_register_indirect();                        // [LDIR]
     void LDD_register_indirect_register_indirect();                         // [LDD]
     void LDDR_register_indirect_register_indirect();                        // [LDDR]
+
+    // Block Search Instructions
+    void CPI_register_indirect();                                           // [CPI]
+    void CPIR_register_indirect();                                          // [CPIR]
+    void CPD_register_indirect();                                           // [CPD]
+    void CPDR_register_indirect();                                          // [CPDR]
 	
 	// 16-bit Instructions
 	// LD Instructions
@@ -142,6 +148,7 @@ public:
 
 
     int8_t displacement = 0x00;
+    uint16_t data = 0x0000;
 
 private:
 	Bus* bus = nullptr;
@@ -152,7 +159,6 @@ private:
 
     uint8_t ram_read(uint16_t address);
     void ram_write(uint16_t address, uint8_t data);
-    uint16_t data = 0x0000;
 
 
 	uint8_t get_flag(FLAGSZ80 flag);
