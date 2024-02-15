@@ -94,7 +94,7 @@ void z80cpu::CPIR_register_indirect() {
     // P/V is set if BC-1 != 0, else reset
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
-    if((address_absolute != 0) || (accumulator != data)){
+    if((address_absolute != 0) && (accumulator != data)){
         set_flag(PARITY_OVERFLOW_FLAG, true);
         t_state_cycles += 5;
         program_counter -= 2;
@@ -197,7 +197,7 @@ void z80cpu::CPDR_register_indirect() {
     // P/V is set if BC-1 != 0, else reset
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
-    if((address_absolute != 0) || (accumulator != data)){
+    if((address_absolute != 0) && (accumulator != data)){
         set_flag(PARITY_OVERFLOW_FLAG, true);
         t_state_cycles += 5;
         program_counter -= 2;
