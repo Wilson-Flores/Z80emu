@@ -553,7 +553,10 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     // checking if byte counter has reached 0 or not
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
-    if(address_absolute > 0) {
+    set_flag(HALF_CARRY_FLAG, false);
+    set_flag(ADD_SUB_FLAG, false);
+
+    if(address_absolute != 0) {
         // P/V us set uf BC - 1 != 0
         set_flag(PARITY_OVERFLOW_FLAG, true);
 
@@ -566,8 +569,6 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     }
 
     set_flag(PARITY_OVERFLOW_FLAG, false);
-    set_flag(HALF_CARRY_FLAG, false);
-    set_flag(ADD_SUB_FLAG, false);
 }
 
 
@@ -636,10 +637,16 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
         B_register--;
     }
 
+    // H, N is reset
+    set_flag(HALF_CARRY_FLAG, false);
+    set_flag(ADD_SUB_FLAG, false);
+
+
     // checking if byte counter has reached 0 or not
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
-    if(address_absolute > 0) {
+    if(address_absolute != 0) {
+        set_flag(PARITY_OVERFLOW_FLAG, true);
         t_state_cycles += 5; // 5 extra clock cycles are added at the end when the program_counter decrements by 2
 
         // we set the program_counter back 2 opcodes and start this instruction over again until byte_counter = 0
@@ -647,8 +654,5 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
         return;
     }
 
-    // H, P/V, N is reset
-    set_flag(HALF_CARRY_FLAG, false);
-    set_flag(ADD_SUB_FLAG, false);
     set_flag(PARITY_OVERFLOW_FLAG, false);
 }
