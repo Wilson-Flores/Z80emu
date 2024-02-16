@@ -14,8 +14,6 @@ int main() {
 //    EX_test(test);
 //    compare_test(test);
 
-
-
     return 0;
 }
 

@@ -6,7 +6,7 @@ void z80cpu::ADD_register_register() {
     uint8_t source_register_bit = (opcode & BIT_MASK_2);
 
     // H is set if carry from bit 3 in lower nibble
-    if((accumulator & 0x0F) + (*register_table[source_register_bit] & 0x0F) > 15) {
+    if(((accumulator & 0x0F) + (*register_table[source_register_bit] & 0x0F)) < (*register_table[source_register_bit] & 0x0F)) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {
@@ -66,7 +66,7 @@ void z80cpu::ADD_register_register_indirect() {
     data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    if((accumulator & 0x0F) + (data & 0x0F) > 15) {
+    if(((accumulator & 0x0F) + (data & 0x0F)) < (data & 0x0F)) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {
@@ -128,7 +128,7 @@ void z80cpu::ADD_register_indexed_ix() {
     data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    if((accumulator & 0x0F) + (data & 0x0F) > 15) {
+    if(((accumulator & 0x0F) + (data & 0x0F)) < (data & 0x0F)) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {
@@ -190,7 +190,7 @@ void z80cpu::ADD_register_indexed_iy() {
     data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    if((accumulator & 0x0F) + (data & 0x0F) > 15) {
+    if(((accumulator & 0x0F) + (data & 0x0F)) < (data & 0x0F)) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {
