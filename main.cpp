@@ -12,7 +12,9 @@ int main() {
 //    LD_test(test);
 //    push_pop_test(test);
 //    EX_test(test);
-    compare_test(test);
+//    compare_test(test);
+
+
 
     return 0;
 }

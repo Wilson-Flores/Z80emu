@@ -103,6 +103,14 @@ public:
     void CPIR_register_indirect();                                          // [CPIR]
     void CPD_register_indirect();                                           // [CPD]
     void CPDR_register_indirect();                                          // [CPDR]
+
+    // Arithmetic Instructions
+    // ADD Instructions
+    void ADD_register_register();                                           // [ADD A, r]
+    void ADD_register_register_indirect();                                  // [ADD A, (HL)]
+    void ADD_register_indexed_ix();                                         // [ADD A, (IX+d)]
+    void ADD_register_indexed_iy();                                         // [ADD A, (IY+d)]
+    void ADD_register_immediate();                                          // [ADD A, n]
 	
 	// 16-bit Instructions
 	// LD Instructions
