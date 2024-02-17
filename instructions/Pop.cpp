@@ -62,7 +62,7 @@ void z80cpu::POP_register_indirect_register_iy() {
         stack_pointer++;
     }
 
-    uint8_t iy_high_byte = rom_read(stack_pointer);
+    uint8_t iy_high_byte = ram_read(stack_pointer);
 
     if(stack_pointer == 0xFFFF){
         stack_pointer = 0x0000;

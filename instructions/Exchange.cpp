@@ -42,7 +42,7 @@ void z80cpu::EX_implied_implied() {
 void z80cpu::EX_register_indirect_implied_hl() {
     t_state_cycles = 19;
 
-    data = ram_read(stack_pointer);  // low byte in HL is swapped with memory at stack pointer address
+    uint8_t data = ram_read(stack_pointer);  // low byte in HL is swapped with memory at stack pointer address
     L_register ^= data;
     data ^= L_register;
     L_register ^= data;
@@ -59,7 +59,7 @@ void z80cpu::EX_register_indirect_implied_hl() {
 void z80cpu::EX_register_indirect_implied_ix() {
     t_state_cycles = 19;
 
-    data = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
+    uint8_t data = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
     index_register_x ^= data;
     data ^= index_register_x;
     index_register_x ^= data;
@@ -72,7 +72,7 @@ void z80cpu::EX_register_indirect_implied_ix() {
 void z80cpu::EX_register_indirect_implied_iy() {
     t_state_cycles = 19;
 
-    data = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
+    uint8_t data = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
     index_register_y ^= data;
     data ^= index_register_y;
     index_register_y ^= data;

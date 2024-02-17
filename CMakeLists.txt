@@ -24,4 +24,5 @@ add_executable(z80emu_test "main.cpp" "z80.cpp" "Bus.cpp" "test-cases/LD_test.cp
         instructions/Compare.cpp
         test-cases/compare_test.cpp
         instructions/Add.cpp
+        test-cases/add_test.cpp
 )

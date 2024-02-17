@@ -6,7 +6,10 @@ void z80cpu::ADD_register_register() {
     uint8_t source_register_bit = (opcode & BIT_MASK_2);
 
     // H is set if carry from bit 3 in lower nibble
-    if(((accumulator & 0x0F) + (*register_table[source_register_bit] & 0x0F)) < (*register_table[source_register_bit] & 0x0F)) {
+    uint8_t temp_register = *register_table[source_register_bit] & 0x0F;
+    uint8_t result = (accumulator + temp_register) & 0x0F;
+
+    if(result < temp_register) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {
@@ -18,7 +21,7 @@ void z80cpu::ADD_register_register() {
     int8_t value2;
     value2 = static_cast<int8_t>(*register_table[source_register_bit]);
 
-    // Overflow flag considers all values as signed.
+    // P/V flag considers all values as signed.
     if((value1 > 0 && value2 > 0 && value1 > (127 - value2)) ||
     (value1 < 0 && value2 < 0 && value1 < (-128 - value2))) {
         set_flag(PARITY_OVERFLOW_FLAG, true);
@@ -63,10 +66,13 @@ void z80cpu::ADD_register_register_indirect() {
     t_state_cycles = 7;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+   uint8_t data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    if(((accumulator & 0x0F) + (data & 0x0F)) < (data & 0x0F)) {
+    uint8_t temp_register = data & 0x0F;
+    uint8_t result = (accumulator + data) & 0x0F;
+
+    if(result < temp_register) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {
@@ -122,13 +128,17 @@ void z80cpu::ADD_register_register_indirect() {
 void z80cpu::ADD_register_indexed_ix() {
     t_state_cycles = 19;
 
+    int8_t displacement;
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    uint8_t data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    if(((accumulator & 0x0F) + (data & 0x0F)) < (data & 0x0F)) {
+    uint8_t temp_register = data & 0x0F;
+    uint8_t result = (accumulator + data) & 0x0F;
+
+    if(result < temp_register) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {
@@ -184,13 +194,17 @@ void z80cpu::ADD_register_indexed_ix() {
 void z80cpu::ADD_register_indexed_iy() {
     t_state_cycles = 19;
 
+    int8_t displacement;
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    uint8_t data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    if(((accumulator & 0x0F) + (data & 0x0F)) < (data & 0x0F)) {
+    uint8_t temp_register = data & 0x0F;
+    uint8_t result = (accumulator + data) & 0x0F;
+
+    if(result < temp_register) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {
@@ -246,11 +260,14 @@ void z80cpu::ADD_register_indexed_iy() {
 void z80cpu::ADD_register_immediate() {
     t_state_cycles = 7;
 
-    data = rom_read(program_counter);
+    uint8_t data = rom_read(program_counter);
     program_counter++;
 
     // H is set if carry from bit 3 in lower nibble
-    if((accumulator & 0x0F) + (data & 0x0F) > 15) {
+    uint8_t temp_register = data & 0x0F;
+    uint8_t result = (accumulator + data) & 0x0F;
+
+    if(result < temp_register) {
         set_flag(HALF_CARRY_FLAG, true);
     }
     else {

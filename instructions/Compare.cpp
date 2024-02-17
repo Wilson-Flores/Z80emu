@@ -5,7 +5,7 @@ void z80cpu::CPI_register_indirect() {
 
     // Read data at HL address, then decrement HL
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    uint8_t data = ram_read(address_absolute);
     L_register++;
     if(L_register == 0x00){
         H_register++;
@@ -56,7 +56,7 @@ void z80cpu::CPIR_register_indirect() {
     t_state_cycles = 16;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    uint8_t data = ram_read(address_absolute);
     L_register++;
     if(L_register == 0x00){
         H_register++;
@@ -110,7 +110,7 @@ void z80cpu::CPD_register_indirect() {
     t_state_cycles = 16;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    uint8_t data = ram_read(address_absolute);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
@@ -159,7 +159,7 @@ void z80cpu::CPDR_register_indirect() {
     t_state_cycles = 16;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    uint8_t data = ram_read(address_absolute);
     L_register--;
     if(L_register == 0xFF){
         H_register--;

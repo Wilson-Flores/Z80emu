@@ -155,9 +155,6 @@ public:
 	uint8_t t_state_cycles = 0;
 
 
-    int8_t displacement = 0x00;
-    uint16_t data = 0x0000;
-
 private:
 	Bus* bus = nullptr;
 

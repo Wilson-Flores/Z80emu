@@ -22,7 +22,7 @@ void z80cpu::PUSH_register_indirect_register() {
         stack_pointer--;
     }
 
-    rom_write(stack_pointer, *register_pair_table[register_pair_bit].low_byte_register);
+    ram_write(stack_pointer, *register_pair_table[register_pair_bit].low_byte_register);
 }
 
 
