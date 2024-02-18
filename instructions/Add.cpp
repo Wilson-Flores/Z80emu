@@ -3,62 +3,24 @@
 void z80cpu::ADD_register_register() {
     t_state_cycles = 4;
 
-    uint8_t source_register_bit = (opcode & BIT_MASK_2);
+    uint8_t data = *register_table[opcode & BIT_MASK_2];
 
     // H is set if carry from bit 3 in lower nibble
-    uint8_t temp_register = *register_table[source_register_bit] & 0x0F;
-    uint8_t result = (accumulator + temp_register) & 0x0F;
-
-    if(result < temp_register) {
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else {
-        set_flag(HALF_CARRY_FLAG, false);
-    }
-
-    int8_t value1;
-    value1 = static_cast<int8_t>(accumulator);
-    int8_t value2;
-    value2 = static_cast<int8_t>(*register_table[source_register_bit]);
-
+    set_flag(HALF_CARRY_FLAG, ((accumulator + data) & 0x0F) < (data & 0x0F));
     // P/V flag considers all values as signed.
-    if((value1 > 0 && value2 > 0 && value1 > (127 - value2)) ||
-    (value1 < 0 && value2 < 0 && value1 < (-128 - value2))) {
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG, (accumulator ^ (accumulator + data)) & ~(accumulator ^ data));
 
     // A = A + r
-    accumulator += *register_table[source_register_bit];
+    accumulator += data;
 
     // S is set if result is negative, else its reset
-    if(accumulator > 0x7F){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
-
+    set_flag(SIGN_FLAG, accumulator & 0x80);
     // Z is set if result is 0, else its reset
-    if(accumulator == 0){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
-
+    set_flag(ZERO_FLAG, accumulator == 0);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
-
     // C is set if carry from bit 7, else reset
-    if(accumulator < *register_table[source_register_bit]) {
-        set_flag(CARRY_FLAG, true);
-    }
-    else{
-        set_flag(CARRY_FLAG, false);
-    }
+    set_flag(CARRY_FLAG, accumulator < data);
 }
 
 
@@ -66,62 +28,24 @@ void z80cpu::ADD_register_register_indirect() {
     t_state_cycles = 7;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-   uint8_t data = ram_read(address_absolute);
+    uint8_t data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    uint8_t temp_register = data & 0x0F;
-    uint8_t result = (accumulator + data) & 0x0F;
-
-    if(result < temp_register) {
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else {
-        set_flag(HALF_CARRY_FLAG, false);
-    }
-
-    int8_t value1;
-    value1 = static_cast<int8_t>(accumulator);
-    int8_t value2;
-    value2 = static_cast<int8_t>(data);
-
+    set_flag(HALF_CARRY_FLAG, ((accumulator + data) & 0x0F) < (data & 0x0F));
     // Overflow flag considers all values as signed.
-    if((value1 > 0 && value2 > 0 && value1 > (127 - value2)) ||
-       (value1 < 0 && value2 < 0 && value1 < (-128 - value2))) {
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG, (accumulator ^ (accumulator + data)) & ~(accumulator ^ data));
 
     // A = A + (HL)
     accumulator += data;
 
     // S is set if result is negative, else its reset
-    if(accumulator > 0x7F){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
-
+    set_flag(SIGN_FLAG, accumulator & 0x80);
     // Z is set if result is 0, else its reset
-    if(accumulator == 0){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
-
+    set_flag(ZERO_FLAG, accumulator == 0);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
-
     // C is set if carry from bit 7, else reset
-    if(accumulator < data) {
-        set_flag(CARRY_FLAG, true);
-    }
-    else{
-        set_flag(CARRY_FLAG, false);
-    }
+    set_flag(CARRY_FLAG, accumulator < data);
 }
 
 
@@ -135,59 +59,21 @@ void z80cpu::ADD_register_indexed_ix() {
     uint8_t data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    uint8_t temp_register = data & 0x0F;
-    uint8_t result = (accumulator + data) & 0x0F;
-
-    if(result < temp_register) {
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else {
-        set_flag(HALF_CARRY_FLAG, false);
-    }
-
-    int8_t value1;
-    value1 = static_cast<int8_t>(accumulator);
-    int8_t value2;
-    value2 = static_cast<int8_t>(data);
-
+    set_flag(HALF_CARRY_FLAG, ((accumulator + data) & 0x0F) < (data & 0x0F));
     // Overflow flag considers all values as signed.
-    if((value1 > 0 && value2 > 0 && value1 > (127 - value2)) ||
-       (value1 < 0 && value2 < 0 && value1 < (-128 - value2))) {
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG, (accumulator ^ (accumulator + data)) & ~(accumulator ^ data));
 
     // A = A + (HL)
     accumulator += data;
 
     // S is set if result is negative, else its reset
-    if(accumulator > 0x7F){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
-
+    set_flag(SIGN_FLAG, accumulator & 0x80);
     // Z is set if result is 0, else its reset
-    if(accumulator == 0){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
-
+    set_flag(ZERO_FLAG, accumulator == 0);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
-
     // C is set if carry from bit 7, else reset
-    if(accumulator < data) {
-        set_flag(CARRY_FLAG, true);
-    }
-    else{
-        set_flag(CARRY_FLAG, false);
-    }
+    set_flag(CARRY_FLAG, accumulator < data);
 }
 
 
@@ -201,59 +87,20 @@ void z80cpu::ADD_register_indexed_iy() {
     uint8_t data = ram_read(address_absolute);
 
     // H is set if carry from bit 3 in lower nibble
-    uint8_t temp_register = data & 0x0F;
-    uint8_t result = (accumulator + data) & 0x0F;
-
-    if(result < temp_register) {
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else {
-        set_flag(HALF_CARRY_FLAG, false);
-    }
-
-    int8_t value1;
-    value1 = static_cast<int8_t>(accumulator);
-    int8_t value2;
-    value2 = static_cast<int8_t>(data);
-
+    set_flag(HALF_CARRY_FLAG, ((accumulator + data) & 0x0F) < (data & 0x0F));
     // Overflow flag considers all values as signed.
-    if((value1 > 0 && value2 > 0 && value1 > (127 - value2)) ||
-       (value1 < 0 && value2 < 0 && value1 < (-128 - value2))) {
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG, (accumulator ^ (accumulator + data)) & ~(accumulator ^ data));
 
-    // A = A + (HL)
     accumulator += data;
 
     // S is set if result is negative, else its reset
-    if(accumulator > 0x7F){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
-
+    set_flag(SIGN_FLAG, accumulator & 0x80);
     // Z is set if result is 0, else its reset
-    if(accumulator == 0){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
-
+    set_flag(ZERO_FLAG, accumulator == 0);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
-
     // C is set if carry from bit 7, else reset
-    if(accumulator < data) {
-        set_flag(CARRY_FLAG, true);
-    }
-    else{
-        set_flag(CARRY_FLAG, false);
-    }
+    set_flag(CARRY_FLAG, accumulator < data);
 }
 
 
@@ -264,57 +111,27 @@ void z80cpu::ADD_register_immediate() {
     program_counter++;
 
     // H is set if carry from bit 3 in lower nibble
-    uint8_t temp_register = data & 0x0F;
-    uint8_t result = (accumulator + data) & 0x0F;
-
-    if(result < temp_register) {
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else {
-        set_flag(HALF_CARRY_FLAG, false);
-    }
-
-    int8_t value1;
-    value1 = static_cast<int8_t>(accumulator);
-    int8_t value2;
-    value2 = static_cast<int8_t>(data);
-
+    set_flag(HALF_CARRY_FLAG, ((accumulator + data) & 0x0F) < (data & 0x0F));
     // Overflow flag considers all values as signed.
-    if((value1 > 0 && value2 > 0 && value1 > (127 - value2)) ||
-       (value1 < 0 && value2 < 0 && value1 < (-128 - value2))) {
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG, (accumulator ^ (accumulator + data)) & ~(accumulator ^ data));
 
-    // A = A + (HL)
     accumulator += data;
 
     // S is set if result is negative, else its reset
-    if(accumulator > 0x7F){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
-
+    set_flag(SIGN_FLAG, accumulator & 0x80);
     // Z is set if result is 0, else its reset
-    if(accumulator == 0){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
-
+    set_flag(ZERO_FLAG, accumulator == 0);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
-
     // C is set if carry from bit 7, else reset
-    if(accumulator < data) {
-        set_flag(CARRY_FLAG, true);
-    }
-    else{
-        set_flag(CARRY_FLAG, false);
-    }
+    set_flag(CARRY_FLAG, accumulator < data);
+}
+
+
+void z80cpu::ADC_register_register() {
+    t_state_cycles = 4;
+
+    uint8_t source_register_bit = (opcode & BIT_MASK_2);
+
+
 }

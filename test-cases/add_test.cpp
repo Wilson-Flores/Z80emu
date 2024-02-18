@@ -14,7 +14,7 @@ void add_test(Bus& test){
     test.rom_reset();
 
     for (int i = 0; i < memory.size(); i++) {
-        test.rom[i] = memory[i];
+        test.rom_write(i,memory[i]);
         std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }

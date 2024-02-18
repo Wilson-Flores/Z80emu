@@ -19,34 +19,14 @@ void z80cpu::CPI_register_indirect() {
 
     // A - (HL)
     // S is set if result is negative else reset
-    if(accumulator < data){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
+    set_flag(SIGN_FLAG, accumulator < data);
     // Z is set if A == (HL), else reset
-    if(accumulator == data){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
+    set_flag(ZERO_FLAG, accumulator == data);
     // H is set if borrow in lower nibble, else reset
-    if(((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F) ){
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else{
-        set_flag(HALF_CARRY_FLAG, false);
-    }
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F));
     // P/V is set if BC-1 != 0, else reset
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
-    if(address_absolute != 0){
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG, address_absolute != 0);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 }
@@ -68,26 +48,11 @@ void z80cpu::CPIR_register_indirect() {
     }
 
     // S is set if result is negative else reset
-    if(accumulator < data){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
+    set_flag(SIGN_FLAG, accumulator < data);
     // Z is set if A == (HL), else reset
-    if(accumulator == data){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
+    set_flag(ZERO_FLAG, accumulator == data);
     // H is set if borrow in lower nibble, else reset
-    if(((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F) ){
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else{
-        set_flag(HALF_CARRY_FLAG, false);
-    }
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F));
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
@@ -122,34 +87,14 @@ void z80cpu::CPD_register_indirect() {
     }
 
     // S is set if result is negative else reset
-    if(accumulator < data){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
+    set_flag(SIGN_FLAG, accumulator < data);
     // Z is set if A == (HL), else reset
-    if(accumulator == data){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
+    set_flag(ZERO_FLAG, accumulator == data);
     // H is set if borrow in lower nibble, else reset
-    if(((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F) ){
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else{
-        set_flag(HALF_CARRY_FLAG, false);
-    }
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F));
     // P/V is set if BC-1 != 0, else reset
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
-    if(address_absolute != 0){
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG, address_absolute != 0);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 }
@@ -171,26 +116,11 @@ void z80cpu::CPDR_register_indirect() {
     }
 
     // S is set if result is negative else reset
-    if(accumulator < data){
-        set_flag(SIGN_FLAG, true);
-    }
-    else{
-        set_flag(SIGN_FLAG, false);
-    }
+    set_flag(SIGN_FLAG, accumulator < data);
     // Z is set if A == (HL), else reset
-    if(accumulator == data){
-        set_flag(ZERO_FLAG, true);
-    }
-    else{
-        set_flag(ZERO_FLAG, false);
-    }
+    set_flag(ZERO_FLAG, accumulator == data);
     // H is set if borrow in lower nibble, else reset
-    if(((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F) ){
-        set_flag(HALF_CARRY_FLAG, true);
-    }
-    else{
-        set_flag(HALF_CARRY_FLAG, false);
-    }
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F));
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 

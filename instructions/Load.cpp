@@ -67,40 +67,20 @@ void z80cpu::LD_register_implied() {
     if (opcode == 0x57) { // LD A, I
 
         // Sign Flag is set if I is negative, else it is reset.
-        if ((interrupt_vector_register >> 7) == 0x01) {
-            set_flag(SIGN_FLAG, true);
-        }
-        else {
-            set_flag(SIGN_FLAG, false);
-        }
+        set_flag(SIGN_FLAG, (interrupt_vector_register >> 7) == 0x01);
 
         // Zero Flag is set if I equals 0, else it is reset.
-        if (interrupt_vector_register == 0x00) {
-            set_flag(ZERO_FLAG, true);
-        }
-        else {
-            set_flag(ZERO_FLAG, false);
-        }
+        set_flag(ZERO_FLAG, interrupt_vector_register == 0x00);
 
         accumulator = interrupt_vector_register;
     }
     else { // LD A, R
 
         // Sign Flag is set if I is negative, else it is reset.
-        if ((memory_refresh_register >> 7) == 0x01) {
-            set_flag(SIGN_FLAG, true);
-        }
-        else {
-            set_flag(SIGN_FLAG, false);
-        }
+        set_flag(SIGN_FLAG, (memory_refresh_register >> 7) == 0x01);
 
         // Zero Flag is set if I equals 0, else it is reset.
-        if (memory_refresh_register == 0x00) {
-            set_flag(ZERO_FLAG, true);
-        }
-        else {
-            set_flag(ZERO_FLAG, false);
-        }
+        set_flag(SIGN_FLAG, memory_refresh_register == 0x00);
 
         accumulator = memory_refresh_register;
     }
@@ -523,12 +503,7 @@ void z80cpu::LDI_register_indirect_register_indirect() {
     set_flag(ADD_SUB_FLAG, false);
     // P/V is set if BC-1 != 0, else it is reset.
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
-    if((address_absolute) != 0){
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG,address_absolute != 0);
 }
 
 
@@ -610,12 +585,7 @@ void z80cpu::LDD_register_indirect_register_indirect() {
     set_flag(ADD_SUB_FLAG, false);
     // P/V is set if BC != 0, else it is reset.
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
-    if((address_absolute) != 0){
-        set_flag(PARITY_OVERFLOW_FLAG, true);
-    }
-    else{
-        set_flag(PARITY_OVERFLOW_FLAG, false);
-    }
+    set_flag(PARITY_OVERFLOW_FLAG, address_absolute != 0);
 }
 
 

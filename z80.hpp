@@ -111,6 +111,13 @@ public:
     void ADD_register_indexed_ix();                                         // [ADD A, (IX+d)]
     void ADD_register_indexed_iy();                                         // [ADD A, (IY+d)]
     void ADD_register_immediate();                                          // [ADD A, n]
+
+    // ADC Instructions
+    void ADC_register_register();                                           // [ADC A, r]
+    void ADC_register_register_indirect();                                  // [ADC A, (HL)]
+    void ADC_register_indexed_ix();                                         // [ADC A, (IX+d)]
+    void ADC_register_indexed_iy();                                         // [ADC A, (IY+d)]
+    void ADC_register_immediate();                                          // [ADC A, n]
 	
 	// 16-bit Instructions
 	// LD Instructions
@@ -160,7 +167,6 @@ private:
 
 
 	uint8_t rom_read(uint16_t address);
-	void rom_write(uint16_t address, uint8_t data);
 
     uint8_t ram_read(uint16_t address);
     void ram_write(uint16_t address, uint8_t data);
