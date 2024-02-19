@@ -172,7 +172,7 @@ private:
     void ram_write(uint16_t address, uint8_t data);
 
 
-	uint8_t get_flag(FLAGSZ80 flag);
+	uint8_t get_flag(FLAGSZ80 flag) const;
 	void set_flag(FLAGSZ80 flag, bool setFlag);
 
 	struct INSTRUCTION {
