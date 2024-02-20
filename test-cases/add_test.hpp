@@ -8,5 +8,6 @@
 
 void add_test(Bus& test);
 
+void adc_test(Bus& test);
 
 #endif
