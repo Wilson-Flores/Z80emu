@@ -118,7 +118,14 @@ public:
     void ADC_register_indexed_ix();                                         // [ADC A, (IX+d)]
     void ADC_register_indexed_iy();                                         // [ADC A, (IY+d)]
     void ADC_register_immediate();                                          // [ADC A, n]
-	
+
+    void SUB_register_register();                                           // [SUB A, r]
+    void SUB_register_register_indirect();                                  // [SUB A, (HL)]
+    void SUB_register_indexed_ix();                                         // [SUB A, (IX+d)]
+    void SUB_register_indexed_iy();                                         // [SUB A, (IY+d)]
+    void SUB_register_immediate();                                          // [SUB A, n]
+
+
 	// 16-bit Instructions
 	// LD Instructions
     void LD_register_immediate_extended_16_bit();                           // [LD dd, nn]
