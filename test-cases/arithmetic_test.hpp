@@ -13,4 +13,6 @@ void adc_test(Bus& test);
 
 void sub_test(Bus& test);
 
+void sbc_test(Bus& test);
+
 #endif

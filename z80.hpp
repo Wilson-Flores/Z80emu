@@ -119,11 +119,19 @@ public:
     void ADC_implied_indexed_iy();                                          // [ADC A, (IY+d)]
     void ADC_implied_immediate();                                           // [ADC A, n]
 
+    // SUB Instructions
     void SUB_implied_register();                                            // [SUB A, r]
     void SUB_implied_register_indirect();                                   // [SUB A, (HL)]
     void SUB_implied_indexed_ix();                                          // [SUB A, (IX+d)]
     void SUB_implied_indexed_iy();                                          // [SUB A, (IY+d)]
     void SUB_implied_immediate();                                           // [SUB A, n]
+
+    // SBC Instructions
+    void SBC_implied_register();                                            // [SBC A, r]
+    void SBC_implied_register_indirect();                                   // [SBC A, (HL)]
+    void SBC_implied_indexed_ix();                                          // [SBC A, (IX+d)]
+    void SBC_implied_indexed_iy();                                          // [SBC A, (IY+d)]
+    void SBC_implied_immediate();                                           // [SBC A, n]
 
 	// 16-bit Instructions
 	// LD Instructions
