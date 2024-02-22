@@ -23,7 +23,7 @@ void z80cpu::CPI_register_indirect() {
     // Z is set if A == (HL), else reset
     set_flag(ZERO_FLAG, accumulator == data);
     // H is set if borrow in lower nibble, else reset
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if BC-1 != 0, else reset
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
     set_flag(PARITY_OVERFLOW_FLAG, address_absolute != 0);
@@ -52,7 +52,7 @@ void z80cpu::CPIR_register_indirect() {
     // Z is set if A == (HL), else reset
     set_flag(ZERO_FLAG, accumulator == data);
     // H is set if borrow in lower nibble, else reset
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
@@ -91,7 +91,7 @@ void z80cpu::CPD_register_indirect() {
     // Z is set if A == (HL), else reset
     set_flag(ZERO_FLAG, accumulator == data);
     // H is set if borrow in lower nibble, else reset
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if BC-1 != 0, else reset
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
     set_flag(PARITY_OVERFLOW_FLAG, address_absolute != 0);
@@ -120,7 +120,7 @@ void z80cpu::CPDR_register_indirect() {
     // Z is set if A == (HL), else reset
     set_flag(ZERO_FLAG, accumulator == data);
     // H is set if borrow in lower nibble, else reset
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) - (data & 0x0F)) < (data & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 

@@ -5,9 +5,12 @@
 #include <iomanip>
 #include <iostream>
 
+void arithmetic_test_choice(Bus& test);
 
 void add_test(Bus& test);
 
 void adc_test(Bus& test);
+
+void sub_test(Bus& test);
 
 #endif

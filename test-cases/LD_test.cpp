@@ -66,6 +66,7 @@ void LD_test(Bus& test){
             break;
         default:
             std::cout << "Invalid choice.\n";
+            break;
     }
 }
 
