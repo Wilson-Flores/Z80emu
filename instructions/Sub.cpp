@@ -40,7 +40,7 @@ void z80cpu::SUB_register_register_indirect() {
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint16_t overflow_result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(~data + 0x01);
+    uint8_t overflow_result = accumulator + (~data + 0x01);
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
@@ -69,7 +69,7 @@ void z80cpu::SUB_register_indexed_ix() {
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint16_t overflow_result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(~data + 0x01);
+    uint8_t overflow_result = accumulator + (~data + 0x01);
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
@@ -98,7 +98,7 @@ void z80cpu::SUB_register_indexed_iy() {
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint16_t overflow_result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(~data + 0x01);
+    uint8_t overflow_result = accumulator + (~data + 0x01);
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
@@ -124,7 +124,7 @@ void z80cpu::SUB_register_immediate() {
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint16_t overflow_result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(~data + 0x01);
+    uint8_t overflow_result = accumulator + (~data + 0x01);
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
