@@ -1,6 +1,6 @@
 #include "../z80.hpp"
 
-void z80cpu::ADD_register_register() {
+void z80cpu::ADD_implied_register() {
     t_state_cycles = 4;
 
     uint8_t data = *register_table[opcode & BIT_MASK_2];
@@ -24,7 +24,7 @@ void z80cpu::ADD_register_register() {
 }
 
 
-void z80cpu::ADD_register_register_indirect() {
+void z80cpu::ADD_implied_register_indirect() {
     t_state_cycles = 7;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
@@ -49,7 +49,7 @@ void z80cpu::ADD_register_register_indirect() {
 }
 
 
-void z80cpu::ADD_register_indexed_ix() {
+void z80cpu::ADD_implied_indexed_ix() {
     t_state_cycles = 19;
 
     int8_t displacement;
@@ -77,7 +77,7 @@ void z80cpu::ADD_register_indexed_ix() {
 }
 
 
-void z80cpu::ADD_register_indexed_iy() {
+void z80cpu::ADD_implied_indexed_iy() {
     t_state_cycles = 19;
 
     int8_t displacement;
@@ -105,7 +105,7 @@ void z80cpu::ADD_register_indexed_iy() {
 }
 
 
-void z80cpu::ADD_register_immediate() {
+void z80cpu::ADD_implied_immediate() {
     t_state_cycles = 7;
 
     uint8_t data = rom_read(program_counter);
@@ -130,7 +130,7 @@ void z80cpu::ADD_register_immediate() {
 }
 
 
-void z80cpu::ADC_register_register() {
+void z80cpu::ADC_implied_register() {
     t_state_cycles = 4;
 
     uint8_t data = *register_table[opcode & BIT_MASK_2];
@@ -158,7 +158,7 @@ void z80cpu::ADC_register_register() {
 }
 
 
-void z80cpu::ADC_register_register_indirect() {
+void z80cpu::ADC_implied_register_indirect() {
     t_state_cycles = 7;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
@@ -183,7 +183,7 @@ void z80cpu::ADC_register_register_indirect() {
     accumulator = result;
 }
 
-void z80cpu::ADC_register_indexed_ix() {
+void z80cpu::ADC_implied_indexed_ix() {
     t_state_cycles = 19;
 
     int8_t displacement;
@@ -213,7 +213,7 @@ void z80cpu::ADC_register_indexed_ix() {
 }
 
 
-void z80cpu::ADC_register_indexed_iy() {
+void z80cpu::ADC_implied_indexed_iy() {
     t_state_cycles = 19;
 
     int8_t displacement;
@@ -243,7 +243,7 @@ void z80cpu::ADC_register_indexed_iy() {
 }
 
 
-void z80cpu::ADC_register_immediate() {
+void z80cpu::ADC_implied_immediate() {
     t_state_cycles = 7;
 
     uint8_t data = rom_read(program_counter);
