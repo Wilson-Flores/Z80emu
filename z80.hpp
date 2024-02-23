@@ -12,6 +12,28 @@ constexpr uint8_t BIT_MASK_2 = 0x07;      // 0000 0111 binary value
 constexpr uint8_t BIT_MASK_3 = 0x30;      // 0011 0000 binary value
 constexpr uint8_t LOW_BYTE_MASK = 0xFF;   // 1111 1111 binary value
 
+// lookup table for the parity of any value from 0-255. Used for P/V flag
+// 0: Odd, 1: Even
+constexpr uint8_t PARITY_TABLE[256] = {
+    1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,
+    0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+    0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+    1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,
+    0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+    1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,
+    1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,
+    0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+    0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+    1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,
+    1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,
+    0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+    1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,
+    0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+    0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+    1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1
+};
+
+
 class Bus;
 
 
@@ -132,6 +154,13 @@ public:
     void SBC_implied_indexed_ix();                                          // [SBC A, (IX+d)]
     void SBC_implied_indexed_iy();                                          // [SBC A, (IY+d)]
     void SBC_implied_immediate();                                           // [SBC A, n]
+
+    // AND Instructions
+    void AND_implied_register();                                            // [ADD A, r]
+    void AND_implied_register_indirect();                                   // [ADD A, (HL)]
+    void AND_implied_indexed_ix();                                          // [ADD A, (IX+d)]
+    void AND_implied_indexed_iy();                                          // [ADD A, (IY+d)]
+    void AND_implied_immediate();                                           // [ADD A, n]
 
 	// 16-bit Instructions
 	// LD Instructions

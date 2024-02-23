@@ -19,6 +19,9 @@ void arithmetic_test_choice(Bus& test) {
         case 4:
             sbc_test(test);
             break;
+        case 5:
+            and_test(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
             break;
@@ -121,6 +124,30 @@ void sbc_test(Bus& test) {
 
     // test full byte range 64KB
     for(uint16_t byte_counter = 0; byte_counter < 22; byte_counter++){
+        test.cpu.instruction_cycle();
+    }
+}
+
+void and_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x3E, 0xFF, 0x06, 0x7F, 0x0E, 0x3F, 0x16, 0x1F,
+            0x1E, 0x0F, 0x26, 0x07, 0x2E, 0x03, 0xA7, 0xA0,
+            0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0x21, 0x00, 0x00,
+            0x3E, 0xFF, 0x32, 0x00, 0x00, 0xA6, 0xDD, 0x21,
+            0x22, 0x00, 0xFD, 0x21, 0x24, 0x00, 0xDD, 0xA6,
+            0xDE, 0xFD, 0xA6, 0xDC, 0xE6, 0x00
+    };
+
+    test.rom_reset();
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom_write(i,memory[i]);
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+    // test full byte range 64KB
+    for(uint16_t byte_counter = 0; byte_counter < 23; byte_counter++){
         test.cpu.instruction_cycle();
     }
 }

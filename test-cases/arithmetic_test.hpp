@@ -15,4 +15,6 @@ void sub_test(Bus& test);
 
 void sbc_test(Bus& test);
 
+void and_test(Bus& test);
+
 #endif
