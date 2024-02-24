@@ -162,6 +162,20 @@ public:
     void AND_implied_indexed_iy();                                          // [ADD A, (IY+d)]
     void AND_implied_immediate();                                           // [ADD A, n]
 
+    // OR Instructions
+    void OR_implied_register();                                             // [OR A, r]
+    void OR_implied_register_indirect();                                    // [OR A, (HL)]
+    void OR_implied_indexed_ix();                                           // [OR A, (IX+d)]
+    void OR_implied_indexed_iy();                                           // [OR A, (IY+d)]
+    void OR_implied_immediate();                                            // [OR A, n]
+
+    // XOR Instructions
+    void XOR_implied_register();                                            // [XOR A, r]
+    void XOR_implied_register_indirect();                                   // [XOR A, (HL)]
+    void XOR_implied_indexed_ix();                                          // [XOR A, (IX+d)]
+    void XOR_implied_indexed_iy();                                          // [XOR A, (IY+d)]
+    void XOR_implied_immediate();                                           // [XOR A, n]
+
 	// 16-bit Instructions
 	// LD Instructions
     void LD_register_immediate_extended_16_bit();                           // [LD dd, nn]

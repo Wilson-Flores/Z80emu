@@ -14,6 +14,8 @@ add_executable(z80emu "main.cpp" "z80.cpp" "Bus.cpp" "instructions/Load.cpp"
         instructions/Add.cpp
         instructions/Sub.cpp
         instructions/And.cpp
+        instructions/Or.cpp
+        instructions/Xor.cpp
 )
 
 
@@ -29,4 +31,6 @@ add_executable(z80emu_test "main.cpp" "z80.cpp" "Bus.cpp" "test-cases/LD_test.cp
         test-cases/arithmetic_test.cpp
         instructions/Sub.cpp
         instructions/And.cpp
+        instructions/Or.cpp
+        instructions/Xor.cpp
 )
