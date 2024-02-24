@@ -176,6 +176,13 @@ public:
     void XOR_implied_indexed_iy();                                          // [XOR A, (IY+d)]
     void XOR_implied_immediate();                                           // [XOR A, n]
 
+    // OR Instructions
+    void CP_implied_register();                                             // [CP A, r]
+    void CP_implied_register_indirect();                                    // [CP A, (HL)]
+    void CP_implied_indexed_ix();                                           // [CP A, (IX+d)]
+    void CP_implied_indexed_iy();                                           // [CP A, (IY+d)]
+    void CP_implied_immediate();                                            // [CP A, n]
+
 	// 16-bit Instructions
 	// LD Instructions
     void LD_register_immediate_extended_16_bit();                           // [LD dd, nn]
