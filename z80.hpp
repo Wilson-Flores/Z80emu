@@ -10,6 +10,7 @@
 constexpr uint8_t BIT_MASK_1 = 0x38;      // 0011 1000 binary value
 constexpr uint8_t BIT_MASK_2 = 0x07;      // 0000 0111 binary value
 constexpr uint8_t BIT_MASK_3 = 0x30;      // 0011 0000 binary value
+constexpr uint8_t BIT_MASK_4 = 0x38;      // 0011 1000 binary value
 constexpr uint8_t LOW_BYTE_MASK = 0xFF;   // 1111 1111 binary value
 
 // lookup table for the parity of any value from 0-255. Used for P/V flag
@@ -182,6 +183,12 @@ public:
     void CP_implied_indexed_ix();                                           // [CP A, (IX+d)]
     void CP_implied_indexed_iy();                                           // [CP A, (IY+d)]
     void CP_implied_immediate();                                            // [CP A, n]
+
+    // XOR Instructions
+    void INC_implied_register();                                            // [INC A, r]
+    void INC_implied_register_indirect();                                   // [INC A, (HL)]
+    void INC_implied_indexed_ix();                                          // [INC A, (IX+d)]
+    void INC_implied_indexed_iy();                                          // [INC A, (IY+d)]
 
 	// 16-bit Instructions
 	// LD Instructions
