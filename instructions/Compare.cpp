@@ -193,8 +193,7 @@ void z80cpu::CP_implied_register_indirect() {
 void z80cpu::CP_implied_indexed_ix() {
     t_state_cycles = 19;
 
-    int8_t displacement;
-    displacement = static_cast<int8_t>(rom_read(program_counter));
+    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
     uint8_t data = ram_read(address_absolute);
@@ -220,8 +219,7 @@ void z80cpu::CP_implied_indexed_ix() {
 void z80cpu::CP_implied_indexed_iy() {
     t_state_cycles = 19;
 
-    int8_t displacement;
-    displacement = static_cast<int8_t>(rom_read(program_counter));
+    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
     uint8_t data = ram_read(address_absolute);

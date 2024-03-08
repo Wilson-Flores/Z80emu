@@ -184,11 +184,17 @@ public:
     void CP_implied_indexed_iy();                                           // [CP A, (IY+d)]
     void CP_implied_immediate();                                            // [CP A, n]
 
-    // XOR Instructions
+    // INC Instructions
     void INC_implied_register();                                            // [INC A, r]
     void INC_implied_register_indirect();                                   // [INC A, (HL)]
     void INC_implied_indexed_ix();                                          // [INC A, (IX+d)]
     void INC_implied_indexed_iy();                                          // [INC A, (IY+d)]
+
+    // DEC Instructions
+    void DEC_implied_register();                                            // [DEC A, r]
+    void DEC_implied_register_indirect();                                   // [DEC A, (HL)]
+    void DEC_implied_indexed_ix();                                          // [DEC A, (IX+d)]
+    void DEC_implied_indexed_iy();                                          // [DEC A, (IY+d)]
 
 	// 16-bit Instructions
 	// LD Instructions
