@@ -198,17 +198,17 @@ public:
 
 	// 16-bit Instructions
 	// LD Instructions
-    void LD_register_immediate_extended_16_bit();                           // [LD dd, nn]
+    void LD_register_immediate_extended_16_bit();                           // [LD ss, nn]
 	void LD_register_immediate_extended_ix();                               // [LD IX, nn]
 	void LD_register_immediate_extended_iy();                               // [LD IY, nn]
-    void LD_register_extended_16_bit();                                     // [LD dd, (nn)]
+    void LD_register_extended_16_bit();                                     // [LD ss, (nn)]
     void LD_register_extended_hl();                                         // [LD HL, (nn)]
     void LD_register_extended_ix();                                         // [LD IX, (nn)]
     void LD_register_extended_iy();                                         // [LD IY, (nn)]
     void LD_register_register_hl();                                         // [LD SP, HL]
     void LD_register_register_ix();                                         // [LD SP, IX]
     void LD_register_register_iy();                                         // [LD SP, IY]
-    void LD_extended_register_16_bit();                                     // [LD (nn), dd]
+    void LD_extended_register_16_bit();                                     // [LD (nn), ss]
     void LD_extended_register_hl();                                         // [LD (nn), HL]
     void LD_extended_register_ix();                                         // [LD (nn), IX]
     void LD_extended_register_iy();                                         // [LD (nn), IY]
@@ -230,6 +230,12 @@ public:
     void EX_register_indirect_implied_hl();                                 // [EX (SP), HL]
     void EX_register_indirect_implied_ix();                                 // [EX (SP), IX]
     void EX_register_indirect_implied_iy();                                 // [EX (SP), IY]
+
+    // Arithmetic Instructions
+    //ADD Instructions
+    void ADD_implied_register_extended();                                   // [ADD HL, ss]
+    void ADD_implied_register_extended_ix();                                // [ADD IX, pp]
+    void ADD_implied_register_extended_iy();                                // [ADD IY, rr]
 
 
 	void instruction_cycle();

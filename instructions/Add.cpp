@@ -265,3 +265,9 @@ void z80cpu::ADC_implied_immediate() {
     accumulator = result;
 }
 
+void z80cpu::ADD_implied_register_extended() {
+    t_state_cycles = 11;
+
+    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
+    uint16_t data;
+}
