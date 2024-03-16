@@ -5,10 +5,10 @@ void z80cpu::POP_register_indirect_register() {
 
     uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
 
-    *register_pair_table[register_pair_bit].low_byte_register = ram_read(stack_pointer);
+    *register_pair_table_qq[register_pair_bit].low_byte_register = ram_read(stack_pointer);
     stack_pointer++;
 
-    *register_pair_table[register_pair_bit].high_byte_register = ram_read(stack_pointer);
+    *register_pair_table_qq[register_pair_bit].high_byte_register = ram_read(stack_pointer);
     stack_pointer++;
 }
 
