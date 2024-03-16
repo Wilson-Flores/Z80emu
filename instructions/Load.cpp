@@ -259,13 +259,8 @@ void z80cpu::LD_register_immediate_extended_16_bit() {
     uint8_t high_byte = rom_read(program_counter);
     program_counter++;
 
-    if(register_pair_bit == 0x03){
-        stack_pointer = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
-    }
-    else{
-        *register_pair_table[register_pair_bit].high_byte_register = high_byte;
-        *register_pair_table[register_pair_bit].low_byte_register = low_byte;
-    }
+    *register_pair_table_ss[register_pair_bit].high_byte_register = high_byte;
+    *register_pair_table_ss[register_pair_bit].low_byte_register = low_byte;
 
 }
 
@@ -307,13 +302,8 @@ void z80cpu::LD_register_extended_16_bit() {
     program_counter++;
     address_absolute = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
 
-    if(register_pair_bit == 0x03){
-        stack_pointer = (static_cast<uint16_t>(ram_read(address_absolute + 1))) << 8 | ram_read(address_absolute);
-    }
-    else{
-        *register_pair_table[register_pair_bit].high_byte_register = ram_read(address_absolute + 1);
-        *register_pair_table[register_pair_bit].low_byte_register = ram_read(address_absolute);
-    }
+    *register_pair_table_ss[register_pair_bit].high_byte_register = ram_read(address_absolute + 1);
+    *register_pair_table_ss[register_pair_bit].low_byte_register = ram_read(address_absolute);
 }
 
 
@@ -389,19 +379,9 @@ void z80cpu::LD_extended_register_16_bit() {
     program_counter++;
     address_absolute = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
 
-    uint8_t register_high_byte;
-    uint8_t register_low_byte;
+    uint8_t register_high_byte = *register_pair_table_ss[register_pair_bit].high_byte_register;
+    uint8_t register_low_byte = *register_pair_table_ss[register_pair_bit].low_byte_register;
 
-
-    if(register_pair_bit == 0x03){
-        register_high_byte = static_cast<uint8_t>(stack_pointer >> 8);
-        register_low_byte = static_cast<uint8_t>(stack_pointer & LOW_BYTE_MASK);
-
-    }
-    else{
-        register_high_byte = *register_pair_table[register_pair_bit].high_byte_register;
-        register_low_byte = *register_pair_table[register_pair_bit].low_byte_register;
-    }
 
     ram_write(address_absolute, register_low_byte);
     ram_write(address_absolute + 1, register_high_byte);

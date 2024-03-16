@@ -106,11 +106,19 @@ z80cpu::z80cpu() {
     // TODO: FIX REGISTER PAIR TABLES TO HAVE SEPARATE VERSIONS: [qq, ss, pp, rr]
     // TODO: FIX INSTRUCTIONS INVOLVING REGISTER PAIR TABLES
     // Be aware: some instructions have 0b11 set as the stack counter, others use AF register instead.
-    register_pair_table = {
+    register_pair_table_qq = {
             {&B_register, &C_register}, // BC = 0b00
             {&D_register, &E_register}, // DE = 0b01
             {&H_register, &L_register}, // HL = 0b10
             {&accumulator, &flag_register} // AF = 0b11
+    };
+
+    register_pair_table_ss = {
+            {&B_register, &C_register}, // BC = 0b00
+            {&D_register, &E_register}, // DE = 0b01
+            {&H_register, &L_register}, // HL = 0b10
+            {reinterpret_cast<uint8_t*>(&stack_pointer) + 1,
+             reinterpret_cast<uint8_t*>(&stack_pointer)} // SP = 0b11
     };
 
 }

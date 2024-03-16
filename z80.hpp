@@ -293,7 +293,10 @@ private:
         uint8_t* low_byte_register;
     };
 
-	std::vector<REGISTER_PAIR> register_pair_table;
+	std::vector<REGISTER_PAIR> register_pair_table_qq;
+    std::vector<REGISTER_PAIR> register_pair_table_ss;
+    std::vector<REGISTER_PAIR> register_pair_table_pp;
+    std::vector<REGISTER_PAIR> register_pair_table_rr;
 
 
 };
