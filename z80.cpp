@@ -136,7 +136,6 @@ z80cpu::z80cpu() {
             {reinterpret_cast<uint8_t*>(&stack_pointer) + 1,
                           reinterpret_cast<uint8_t*>(&stack_pointer)} // SP = 0b11
     };
-
 }
 
 
