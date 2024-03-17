@@ -185,16 +185,16 @@ public:
     void CP_implied_immediate();                                            // [CP A, n]
 
     // INC Instructions
-    void INC_implied_register();                                            // [INC A, r]
-    void INC_implied_register_indirect();                                   // [INC A, (HL)]
-    void INC_implied_indexed_ix();                                          // [INC A, (IX+d)]
-    void INC_implied_indexed_iy();                                          // [INC A, (IY+d)]
+    void INC_implied_register();                                            // [INC r]
+    void INC_implied_register_indirect();                                   // [INC (HL)]
+    void INC_implied_indexed_ix();                                          // [INC (IX+d)]
+    void INC_implied_indexed_iy();                                          // [INC (IY+d)]
 
     // DEC Instructions
-    void DEC_implied_register();                                            // [DEC A, r]
-    void DEC_implied_register_indirect();                                   // [DEC A, (HL)]
-    void DEC_implied_indexed_ix();                                          // [DEC A, (IX+d)]
-    void DEC_implied_indexed_iy();                                          // [DEC A, (IY+d)]
+    void DEC_implied_register();                                            // [DEC r]
+    void DEC_implied_register_indirect();                                   // [DEC (HL)]
+    void DEC_implied_indexed_ix();                                          // [DEC (IX+d)]
+    void DEC_implied_indexed_iy();                                          // [DEC (IY+d)]
 
 	// 16-bit Instructions
 	// LD Instructions
@@ -232,10 +232,22 @@ public:
     void EX_register_indirect_implied_iy();                                 // [EX (SP), IY]
 
     // Arithmetic Instructions
-    //ADD Instructions
+    // ADD Instructions
     void ADD_implied_register_extended();                                   // [ADD HL, ss]
     void ADD_implied_register_extended_ix();                                // [ADD IX, pp]
     void ADD_implied_register_extended_iy();                                // [ADD IY, rr]
+
+    // ADC Instruction
+    void ADC_implied_register_extended();                                   // [ADC HL, ss]
+
+    // SBC Instruction
+    void SBC_implied_register_extended();                                   // [SBC HL, ss]
+
+    // INC Instructions
+    void INC_implied_register_extended();                                   // [INC ss]
+    void INC_implied_register_extended_ix();                                // [INC IX]
+    void INC_implied_register_extended_iy();                                // [INC IY]
+
 
 
 	void instruction_cycle();
