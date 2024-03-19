@@ -19,4 +19,6 @@ void and_test(Bus& test);
 
 void xor_test(Bus& test);
 
+void or_test(Bus& test);
+
 #endif
