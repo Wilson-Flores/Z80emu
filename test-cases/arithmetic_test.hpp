@@ -25,4 +25,6 @@ void cp_test(Bus& test);
 
 void inc_test(Bus& test);
 
+void dec_test(Bus& test);
+
 #endif

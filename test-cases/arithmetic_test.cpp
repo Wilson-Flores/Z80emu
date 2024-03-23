@@ -34,6 +34,9 @@ void arithmetic_test_choice(Bus& test) {
         case 9:
             inc_test(test);
             break;
+        case 10:
+            dec_test(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
             break;
@@ -246,6 +249,28 @@ void inc_test(Bus& test){
             0x0C, 0x14, 0x1C, 0x24, 0x2C, 0x21, 0x19, 0x00,
             0xDD, 0x21, 0xAA, 0x00, 0xFD, 0x21, 0xAA, 0x00,
             0x34, 0xDD, 0x34, 0xEF, 0xFD, 0x34, 0xEF
+    };
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom_write(i,memory[i]);
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+
+    for(uint16_t byte_counter = 0; byte_counter < 20; byte_counter++){
+        test.cpu.instruction_cycle();
+    }
+}
+
+
+void dec_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x3E, 0x00, 0x06, 0x80, 0x0E, 0x18, 0x16, 0x1C,
+            0x1E, 0x1D, 0x26, 0x1E, 0x2E, 0x20, 0x3D, 0x05,
+            0x0D, 0x15, 0x1D, 0x25, 0x2D, 0x21, 0x19, 0x00,
+            0xDD, 0x21, 0xAA, 0x00, 0xFD, 0x21, 0xAA, 0x00,
+            0x35, 0xDD, 0x35, 0xEF, 0xFD, 0x35, 0xEF
     };
 
     for (int i = 0; i < memory.size(); i++) {
