@@ -16,12 +16,12 @@ void z80cpu::DEC_implied_register() {
     // H is set if carry from bit 3;
     // only time half carry occurs: (0b0000 - 0b0001)
     set_flag(HALF_CARRY_FLAG, ((data & 0x0F) == 0));
-    // P/V is set if r was 7Fh before operation, else reset
+    // P/V is set if r was 80h before operation, else reset
     set_flag(PARITY_OVERFLOW_FLAG, data == 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
-    register_table[register_bit]++;
+    *register_table[register_bit] = result;
 }
 
 
@@ -39,7 +39,7 @@ void z80cpu::DEC_implied_register_indirect() {
     // H is set if carry from bit 3;
     // only time half carry occurs: (0b0000 - 0b0001)
     set_flag(HALF_CARRY_FLAG, ((data & 0x0F) == 0));
-    // P/V is set if r was 7Fh before operation, else reset
+    // P/V is set if r was 80h before operation, else reset
     set_flag(PARITY_OVERFLOW_FLAG, data == 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
@@ -64,7 +64,7 @@ void z80cpu::DEC_implied_indexed_ix() {
     // H is set if carry from bit 3;
     // only time half carry occurs: (0b0000 - 0b0001)
     set_flag(HALF_CARRY_FLAG, ((data & 0x0F) == 0));
-    // P/V is set if r was 7Fh before operation, else reset
+    // P/V is set if r was 80h before operation, else reset
     set_flag(PARITY_OVERFLOW_FLAG, data == 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
@@ -89,7 +89,7 @@ void z80cpu::DEC_implied_indexed_iy() {
     // H is set if carry from bit 3;
     // only time half carry occurs: (0b0000 - 0b0001)
     set_flag(HALF_CARRY_FLAG, ((data & 0x0F) == 0));
-    // P/V is set if r was 7Fh before operation, else reset
+    // P/V is set if r was 80h before operation, else reset
     set_flag(PARITY_OVERFLOW_FLAG, data == 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);

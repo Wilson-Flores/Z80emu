@@ -21,7 +21,7 @@ void z80cpu::INC_implied_register() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
 
-    register_table[register_bit]++;
+    *register_table[register_bit] = result;
 }
 
 
