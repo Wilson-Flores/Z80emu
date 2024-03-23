@@ -21,4 +21,8 @@ void xor_test(Bus& test);
 
 void or_test(Bus& test);
 
+void cp_test(Bus& test);
+
+void inc_test(Bus& test);
+
 #endif

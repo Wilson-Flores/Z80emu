@@ -28,6 +28,12 @@ void arithmetic_test_choice(Bus& test) {
         case 7:
             or_test(test);
             break;
+        case 8:
+            cp_test(test);
+            break;
+        case 9:
+            inc_test(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
             break;
@@ -52,7 +58,7 @@ void add_test(Bus& test){
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
-    // test full byte range 64KB
+
     for(uint16_t byte_counter = 0; byte_counter < 22; byte_counter++){
         test.cpu.instruction_cycle();
     }
@@ -77,7 +83,7 @@ void adc_test(Bus& test){
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
-    // test full byte range 64KB
+
     for(uint16_t byte_counter = 0; byte_counter < 22; byte_counter++){
         test.cpu.instruction_cycle();
     }
@@ -103,7 +109,7 @@ void sub_test(Bus& test){
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
-    // test full byte range 64KB
+
     for(uint16_t byte_counter = 0; byte_counter < 22; byte_counter++){
         test.cpu.instruction_cycle();
     }
@@ -128,7 +134,7 @@ void sbc_test(Bus& test) {
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
-    // test full byte range 64KB
+
     for(uint16_t byte_counter = 0; byte_counter < 22; byte_counter++){
         test.cpu.instruction_cycle();
     }
@@ -152,7 +158,7 @@ void and_test(Bus& test){
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
-    // test full byte range 64KB
+
     for(uint16_t byte_counter = 0; byte_counter < 23; byte_counter++){
         test.cpu.instruction_cycle();
     }
@@ -177,7 +183,7 @@ void xor_test(Bus& test){
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
-    // test full byte range 64KB
+
     for(uint16_t byte_counter = 0; byte_counter < 31; byte_counter++){
         test.cpu.instruction_cycle();
     }
@@ -201,8 +207,55 @@ void or_test(Bus& test){
                   std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
     }
 
-    // test full byte range 64KB
+
     for(uint16_t byte_counter = 0; byte_counter < 31; byte_counter++){
+        test.cpu.instruction_cycle();
+    }
+}
+
+
+void cp_test(Bus& test) {
+    std::vector<uint8_t> memory = {
+            0x3E, 0x19, 0xBF, 0x3E, 0x19, 0x06, 0x8A, 0xB8,
+            0x3E, 0x19, 0x0E, 0x18, 0xB9, 0x3E, 0x19, 0x16,
+            0x1C, 0xBA, 0x3E, 0x19, 0x1E, 0x1D, 0xBB, 0x3E,
+            0x19, 0x26, 0x1E, 0xBC, 0x3E, 0x19, 0x2E, 0x1F,
+            0xBD, 0x3E, 0x19, 0x21, 0x19, 0x00, 0xBE, 0x3E,
+            0x19, 0xDD, 0x21, 0xAA, 0x00, 0xDD, 0xBE, 0xEF,
+            0x3E, 0x19, 0xFD, 0x21, 0xAA, 0x00, 0xFD, 0xBE,
+            0xEF, 0x3E, 0x00, 0xFE, 0x00
+    };
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom_write(i,memory[i]);
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+
+    for(uint16_t byte_counter = 0; byte_counter < 31; byte_counter++){
+        test.cpu.instruction_cycle();
+    }
+}
+
+
+void inc_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x3E, 0xFF, 0x06, 0x7F, 0x0E, 0x18, 0x16, 0x1C,
+            0x1E, 0x1D, 0x26, 0x1E, 0x2E, 0x1F, 0x3C, 0x04,
+            0x0C, 0x14, 0x1C, 0x24, 0x2C, 0x21, 0x19, 0x00,
+            0xDD, 0x21, 0xAA, 0x00, 0xFD, 0x21, 0xAA, 0x00,
+            0x34, 0xDD, 0x34, 0xEF, 0xFD, 0x34, 0xEF
+    };
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom_write(i,memory[i]);
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+
+    for(uint16_t byte_counter = 0; byte_counter < 20; byte_counter++){
         test.cpu.instruction_cycle();
     }
 }
