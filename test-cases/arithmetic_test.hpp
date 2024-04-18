@@ -27,4 +27,6 @@ void inc_test(Bus& test);
 
 void dec_test(Bus& test);
 
+void add_16_test(Bus& test);
+
 #endif
