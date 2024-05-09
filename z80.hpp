@@ -196,6 +196,10 @@ public:
     void DEC_implied_indexed_ix();                                          // [DEC (IX+d)]
     void DEC_implied_indexed_iy();                                          // [DEC (IY+d)]
 
+    // General-Purpose AF Operation Instructions
+    // CCF Instruction
+    void CCF_complement_carry_flag();                                       // [CCF]
+
 	// 16-bit Instructions
 	// LD Instructions
     void LD_register_immediate_extended_16_bit();                           // [LD ss, nn]
