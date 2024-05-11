@@ -43,6 +43,9 @@ void arithmetic_test_choice(Bus& test) {
         case 12:
             ccf_test(test);
             break;
+        case 13:
+            adc_16_test(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
             break;
@@ -328,6 +331,26 @@ void ccf_test(Bus& test){
 
 
     for(uint16_t byte_counter = 0; byte_counter < 6; byte_counter++){
+        test.cpu.instruction_cycle();
+    }
+}
+
+
+void adc_16_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x01, 0x00, 0x80, 0xED, 0x4A, 0x11, 0xFF, 0xFF,
+            0xED, 0x5A, 0xED, 0x6A, 0x31, 0x01, 0x00, 0xED,
+            0x7A
+    };
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom_write(i,memory[i]);
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+
+    for(uint16_t byte_counter = 0; byte_counter < 7; byte_counter++){
         test.cpu.instruction_cycle();
     }
 }

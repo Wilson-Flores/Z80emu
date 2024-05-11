@@ -162,7 +162,7 @@ void z80cpu::set_flag(FLAGSZ80 flag, bool set_flag) {
 	}
 }
 
-
+// TODO: Fix get_flag function so it returns a boolean value instead
 uint8_t z80cpu::get_flag(z80cpu::FLAGSZ80 flag) const {
     return ((flag_register & flag) > 0) ? 1 : 0;
 }

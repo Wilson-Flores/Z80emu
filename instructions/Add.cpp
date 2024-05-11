@@ -339,23 +339,26 @@ void z80cpu::ADC_implied_register_extended() {
     uint8_t high_byte = *register_pair_table_ss[register_pair_bit].high_byte_register;
     uint8_t low_byte = *register_pair_table_ss[register_pair_bit].low_byte_register;
     uint16_t register_pair_data = (high_byte << 8) + low_byte;
-    uint16_t register_pair_data_with_carry = register_pair_data + static_cast<uint16_t>(get_flag(CARRY_FLAG));
     uint16_t HL_data = (H_register << 8) + L_register;
-    uint16_t result = HL_data + register_pair_data_with_carry;
+    uint32_t result = static_cast<uint32_t>(HL_data) + static_cast<uint32_t>(register_pair_data)
+                      + static_cast<uint32_t>(get_flag(CARRY_FLAG));
+
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result & 0x8000);
+    set_flag(SIGN_FLAG, static_cast<uint16_t>(result) & 0x8000);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result == 0x0000);
+    set_flag(ZERO_FLAG, static_cast<uint16_t>(result) == 0x0000);
     // H is set if carry from bit 11, else reset
-    uint16_t h_result = (HL_data & 0x0FFF) + (register_pair_data_with_carry & 0x0FFF);
+    uint16_t h_result = (HL_data & 0x0FFF) + (register_pair_data & 0x0FFF) + (static_cast<uint16_t>(get_flag(CARRY_FLAG)) & 0x0FFF);
     set_flag(HALF_CARRY_FLAG,h_result > 0x0FFF);
     // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((HL_data ^ result) & ~(HL_data ^ register_pair_data_with_carry)) & 0x8000);
+    set_flag(PARITY_OVERFLOW_FLAG,
+             (~(static_cast<uint32_t>(HL_data) ^ static_cast<uint32_t>(register_pair_data))
+                     & (static_cast<uint32_t>(HL_data) ^ result)) & 0x00008000);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 15, else reset
-    set_flag(CARRY_FLAG, (static_cast<uint32_t>(result) > 0xFFFF));
+    set_flag(CARRY_FLAG, (result > 0xFFFF));
 
     H_register = (result & 0xFF00) >> 8;
     L_register = result & 0x00FF;
