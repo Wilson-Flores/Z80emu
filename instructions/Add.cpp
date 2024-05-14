@@ -361,6 +361,6 @@ void z80cpu::ADC_implied_register_extended() {
     // C is set if carry from bit 15, else reset
     set_flag(CARRY_FLAG, (result > 0xFFFF));
 
-    H_register = (result & 0xFF00) >> 8;
-    L_register = result & 0x00FF;
+    H_register = (static_cast<uint16_t>(result) & 0xFF00) >> 8;
+    L_register = static_cast<uint16_t>(result) & 0x00FF;
 }
