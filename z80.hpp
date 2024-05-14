@@ -46,14 +46,17 @@ public:
 	// connect to Bus
 	void connect_bus(Bus* n) { bus = n; }
 
+    //TODO: Figure out how UNUSED flags are set.
 	// Status Register
 	enum FLAGSZ80 {
 		CARRY_FLAG = (1 << 0),                    // C
 		ADD_SUB_FLAG = (1 << 1),                  // N
 		PARITY_OVERFLOW_FLAG = (1 << 2),          // P/V
-		UNUSED1 = (1 << 3),                       // X
+        // copies bit 3 of the result
+		X_FLAG = (1 << 3),                        // X
 		HALF_CARRY_FLAG = (1 << 4),               // H
-		UNUSED2 = (1 << 5),                       // X
+        // copies bit 5 of the result
+		Y_FLAG = (1 << 5),                        // X
 		ZERO_FLAG = (1 << 6),                     // Z
 		SIGN_FLAG = (1 << 7)                      // S
 	};
@@ -96,7 +99,7 @@ public:
 	void software_maskable_interrupt(); // INT
 	void non_maskable_interrupt(); // NMI
 
-    //TODO: Review Overflow flag expressions for ADC/SBC functions; possible remove data_with_carry variables.
+    //TODO: Review Overflow flag expressions for SBC functions.
 	// 8-bit Instructions
 	// LD Instructions
 	void LD_register_immediate();                                           // [LD r, n]

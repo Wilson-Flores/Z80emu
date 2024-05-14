@@ -7,7 +7,7 @@ void z80cpu::ADD_implied_register() {
     uint16_t result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -32,7 +32,7 @@ void z80cpu::ADD_implied_register_indirect() {
     uint16_t result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -59,7 +59,7 @@ void z80cpu::ADD_implied_indexed_ix() {
     uint16_t result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -86,7 +86,7 @@ void z80cpu::ADD_implied_indexed_iy() {
     uint16_t result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -111,7 +111,7 @@ void z80cpu::ADD_implied_immediate() {
     uint16_t result = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -136,7 +136,7 @@ void z80cpu::ADC_implied_register() {
             static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -163,7 +163,7 @@ void z80cpu::ADC_implied_register_indirect() {
             static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -192,7 +192,7 @@ void z80cpu::ADC_implied_indexed_ix() {
             static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -221,7 +221,7 @@ void z80cpu::ADC_implied_indexed_iy() {
                       static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
@@ -249,7 +249,7 @@ void z80cpu::ADC_implied_immediate() {
                       static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result & 0x0080);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
