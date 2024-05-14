@@ -11,8 +11,8 @@ void z80cpu::ADD_implied_register() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F)
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result) & ~(accumulator ^ data)) & 0x80);
     // N is reset
@@ -36,8 +36,8 @@ void z80cpu::ADD_implied_register_indirect() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F)
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result) & ~(accumulator ^ data)) & 0x80);
     // N is reset
@@ -63,8 +63,8 @@ void z80cpu::ADD_implied_indexed_ix() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F)
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result) & ~(accumulator ^ data)) & 0x80);
     // N is reset
@@ -90,8 +90,8 @@ void z80cpu::ADD_implied_indexed_iy() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F)
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result) & ~(accumulator ^ data)) & 0x80);
     // N is reset
@@ -115,8 +115,8 @@ void z80cpu::ADD_implied_immediate() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F)
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result) & ~(accumulator ^ data)) & 0x80);
     // N is reset
@@ -140,8 +140,8 @@ void z80cpu::ADC_implied_register() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result) &
     ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data))) & 0x0080);
@@ -167,8 +167,8 @@ void z80cpu::ADC_implied_register_indirect() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result) &
     ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data))) & 0x0080);
@@ -196,8 +196,8 @@ void z80cpu::ADC_implied_indexed_ix() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result) &
     ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data))) & 0x0080);
@@ -225,8 +225,8 @@ void z80cpu::ADC_implied_indexed_iy() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result) &
     ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data))) & 0x0080);
@@ -253,8 +253,8 @@ void z80cpu::ADC_implied_immediate() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
-    uint8_t h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0F);
+    // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result) &
     ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data))) & 0x0080);
@@ -278,8 +278,8 @@ void z80cpu::ADD_implied_register_extended() {
     uint16_t result = HL_data + register_pair_data;
 
     // H is set if carry from bit 11; else reset
-    uint16_t h_result = (HL_data & 0x0FFF) + (register_pair_data & 0x0FFF);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0FFF);
+    // h_result = ((HL_data & 0x0FFF) + (register_pair_data & 0x0FFF));
+    set_flag(HALF_CARRY_FLAG, ((HL_data & 0x0FFF) + (register_pair_data & 0x0FFF)) > 0x0FFF);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 15, else reset
@@ -300,8 +300,8 @@ void z80cpu::ADD_implied_register_extended_ix() {
     uint16_t result = index_register_x + register_pair_data;
 
     // H is set if carry from bit 11; else reset
-    uint16_t h_result = (index_register_x & 0x0FFF) + (register_pair_data & 0x0FFF);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0FFF);
+    // h_result = (index_register_x & 0x0FFF) + (register_pair_data & 0x0FFF)
+    set_flag(HALF_CARRY_FLAG, ((index_register_x & 0x0FFF) + (register_pair_data & 0x0FFF)) > 0x0FFF);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 15, else reset
@@ -321,8 +321,8 @@ void z80cpu::ADD_implied_register_extended_iy() {
     uint16_t result = index_register_y + register_pair_data;
 
     // H is set if carry from bit 11; else reset
-    uint16_t h_result = (index_register_y & 0x0FFF) + (register_pair_data & 0x0FFF);
-    set_flag(HALF_CARRY_FLAG, h_result > 0x0FFF);
+    // h_result = (index_register_y & 0x0FFF) + (register_pair_data & 0x0FFF)
+    set_flag(HALF_CARRY_FLAG, ((index_register_y & 0x0FFF) + (register_pair_data & 0x0FFF)) > 0x0FFF);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 15, else reset
@@ -349,8 +349,9 @@ void z80cpu::ADC_implied_register_extended() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, static_cast<uint16_t>(result) == 0x0000);
     // H is set if carry from bit 11, else reset
-    uint16_t h_result = (HL_data & 0x0FFF) + (register_pair_data & 0x0FFF) + (static_cast<uint16_t>(get_flag(CARRY_FLAG)) & 0x0FFF);
-    set_flag(HALF_CARRY_FLAG,h_result > 0x0FFF);
+    // h_result = (HL_data & 0x0FFF) + (register_pair_data & 0x0FFF) + (static_cast<uint16_t>(get_flag(CARRY_FLAG)) & 0x0FFF)
+    set_flag(HALF_CARRY_FLAG,((HL_data & 0x0FFF) + (register_pair_data & 0x0FFF) +
+             (static_cast<uint16_t>(get_flag(CARRY_FLAG)) & 0x0FFF)) > 0x0FFF);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG,
              (~(static_cast<uint32_t>(HL_data) ^ static_cast<uint32_t>(register_pair_data))

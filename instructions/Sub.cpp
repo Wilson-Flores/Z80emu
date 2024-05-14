@@ -1,6 +1,5 @@
 #include "../z80.hpp"
 
-//TODO: Fix SUB functions so it does the same as ADD but with 2s complement of data
 void z80cpu::SUB_implied_register() {
     t_state_cycles = 4;
 
@@ -14,9 +13,10 @@ void z80cpu::SUB_implied_register() {
     // H is set if borrow from bit 4, else reset
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
-    // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
+    // perform 2s compliment on data, reuse ADD's logic for overflow flag
+    // overflow_result = accumulator + (~data + 0x01)
+    set_flag(PARITY_OVERFLOW_FLAG,
+             ((accumulator ^ (accumulator + (~data + 0x01))) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
@@ -40,9 +40,10 @@ void z80cpu::SUB_implied_register_indirect() {
     // H is set if borrow from bit 4, else reset
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
-    // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
+    // perform 2s compliment on data, reuse ADD's logic for overflow flag
+    // overflow_result = accumulator + (~data + 0x01)
+    set_flag(PARITY_OVERFLOW_FLAG,
+             ((accumulator ^ (accumulator + (~data + 0x01))) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
@@ -68,9 +69,10 @@ void z80cpu::SUB_implied_indexed_ix() {
     // H is set if borrow from bit 4, else reset
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
-    // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
+    // perform 2s compliment on data, reuse ADD's logic for overflow flag
+    // overflow_result = accumulator + (~data + 0x01)
+    set_flag(PARITY_OVERFLOW_FLAG,
+             ((accumulator ^ (accumulator + (~data + 0x01))) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
@@ -96,9 +98,10 @@ void z80cpu::SUB_implied_indexed_iy() {
     // H is set if borrow from bit 4, else reset
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
-    // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
+    // perform 2s compliment on data, reuse ADD's logic for overflow flag
+    // overflow_result = accumulator + (~data + 0x01)
+    set_flag(PARITY_OVERFLOW_FLAG,
+             ((accumulator ^ (accumulator + (~data + 0x01))) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
@@ -122,9 +125,10 @@ void z80cpu::SUB_implied_immediate() {
     // H is set if borrow from bit 4, else reset
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data & 0x0F));
     // P/V is set if overflow, else reset
-    // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data + 0x01))) & 0x80);
+    // perform 2s compliment on data, reuse ADD's logic for overflow flag
+    // overflow_result = accumulator + (~data + 0x01)
+    set_flag(PARITY_OVERFLOW_FLAG,
+             ((accumulator ^ (accumulator + (~data + 0x01))) & ~(accumulator ^ (~data + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
@@ -150,6 +154,8 @@ void z80cpu::SBC_implied_register() {
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result & 0x00FF) == 0);
     // H is set if borrow from bit 4, else reset
+    // this flag works differently compared to ADC, borrow will always occur when the data is bigger than the accumulator.
+    // this time we include the carry flag. using A - D - C -> A - (D + C) -> A < (D + C)
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < ((data & 0x0F) + get_flag(CARRY_FLAG)));
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG,((static_cast<uint16_t>(accumulator) ^ result)
