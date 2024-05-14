@@ -33,4 +33,6 @@ void ccf_test(Bus& test);
 
 void adc_16_test(Bus& test);
 
+void sbc_16_test(Bus& test);
+
 #endif
