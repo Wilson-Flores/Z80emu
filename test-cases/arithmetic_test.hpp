@@ -35,4 +35,6 @@ void adc_16_test(Bus& test);
 
 void sbc_16_test(Bus& test);
 
+void inc_dec_16_test(Bus& test);
+
 #endif
