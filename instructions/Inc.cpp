@@ -94,3 +94,32 @@ void z80cpu::INC_implied_indexed_iy() {
     ram_write(address_absolute, result);
 }
 
+
+void z80cpu::INC_implied_register_extended(){
+    t_state_cycles = 6;
+
+    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
+    uint8_t high_byte = *register_pair_table_ss[register_pair_bit].high_byte_register;
+    uint8_t low_byte = *register_pair_table_ss[register_pair_bit].low_byte_register;
+
+    uint16_t data = (high_byte << 8) + low_byte;
+    data++;
+
+    *register_pair_table_ss[register_pair_bit].high_byte_register = static_cast<uint8_t>((data & 0xFF00) >> 8);
+    *register_pair_table_ss[register_pair_bit].low_byte_register = static_cast<uint8_t>(data & 0x00FF);
+}
+
+
+void z80cpu::INC_implied_register_extended_ix(){
+    t_state_cycles = 10;
+
+    index_register_x++;
+}
+
+
+void z80cpu::INC_implied_register_extended_iy(){
+    t_state_cycles = 10;
+
+    index_register_y++;
+}
+
