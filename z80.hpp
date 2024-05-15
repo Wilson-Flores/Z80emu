@@ -254,6 +254,11 @@ public:
     void INC_implied_register_extended_ix();                                // [INC IX]
     void INC_implied_register_extended_iy();                                // [INC IY]
 
+    // DEC Instructions
+    void DEC_implied_register_extended();                                   // [DEC ss]
+    void DEC_implied_register_extended_ix();                                // [DEC IX]
+    void DEC_implied_register_extended_iy();                                // [DEC IY]
+
 
 
 	void instruction_cycle();
