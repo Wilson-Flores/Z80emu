@@ -12,6 +12,7 @@ void z80cpu::CCF_implied(){
     set_flag(CARRY_FLAG, (get_flag(CARRY_FLAG) == 0) ? 1 : 0);
 }
 
+
 void z80cpu::NEG_implied() {
     // Negate accumulator
     // contents of the accumulator are subtracted from zero ( two's complement) and stored back into the accumulator.
@@ -36,3 +37,24 @@ void z80cpu::NEG_implied() {
 
     accumulator = result;
 }
+
+
+void z80cpu::CPL_implied() {
+    // Complement accumulator
+    // the contents of the accumulator are inverted (one's complement).
+    // A = ~A
+    t_state_cycles = 4;
+
+    // S is not affected
+    // Z is not affected
+    // H is set
+    set_flag(HALF_CARRY_FLAG, true);
+    // P/V is not affected
+    // N is set
+    set_flag(ADD_SUB_FLAG, true);
+    // C is not affected
+
+    accumulator = ~accumulator;
+}
+
+
