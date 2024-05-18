@@ -52,6 +52,9 @@ void arithmetic_test_choice(Bus& test) {
         case 15:
             inc_dec_16_test(test);
             break;
+        case 16:
+            neg_test(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
             break;
@@ -401,3 +404,21 @@ void inc_dec_16_test(Bus& test){
         test.cpu.instruction_cycle();
     }
 }
+
+
+void neg_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0xED, 0x44, 0x3E, 0xFF, 0xED, 0x44, 0x3E, 0x80, 0xED, 0x44
+    };
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom_write(i,memory[i]);
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+    for(uint16_t byte_counter = 0; byte_counter < 5; byte_counter++){
+        test.cpu.instruction_cycle();
+    }
+}
+
