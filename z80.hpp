@@ -199,8 +199,20 @@ public:
     void DEC_implied_indexed_iy();                                          // [DEC (IY+d)]
 
     // General-Purpose AF Operation Instructions
+    // DAA Instruction
+    void DAA_implied();                                                     // [DAA]
+
+    // CPL Instruction
+    void CPL_implied();                                                     // [CPL]
+
+    // NEG Instruction
+    void NEG_implied();                                                     // [NEG]
+
     // CCF Instruction
-    void CCF_complement_carry_flag();                                       // [CCF]
+    void CCF_implied();                                                     // [CCF]
+
+    // SCF Instruction
+    void SCF_implied();                                                     // [SCF]
 
 	// 16-bit Instructions
 	// LD Instructions
