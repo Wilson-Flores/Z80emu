@@ -58,3 +58,19 @@ void z80cpu::CPL_implied() {
 }
 
 
+void z80cpu::SCF_implied() {
+    // The Carry flag is set
+    t_state_cycles = 4;
+
+    // S is not affected
+    // Z is not affected
+    // H is reset
+    set_flag(HALF_CARRY_FLAG, false);
+    // P/V is not affected
+    // N is reset
+    set_flag(ADD_SUB_FLAG, false);
+    // C is set
+    set_flag(CARRY_FLAG, true);
+}
+
+
