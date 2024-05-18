@@ -39,4 +39,6 @@ void inc_dec_16_test(Bus& test);
 
 void neg_test(Bus& test);
 
+void cpl_test(Bus& test);
+
 #endif
