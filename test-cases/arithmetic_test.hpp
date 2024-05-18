@@ -41,4 +41,7 @@ void neg_test(Bus& test);
 
 void cpl_test(Bus& test);
 
+void scf_test(Bus& test);
+
+
 #endif

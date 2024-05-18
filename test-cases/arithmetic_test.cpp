@@ -58,6 +58,9 @@ void arithmetic_test_choice(Bus& test) {
         case 17:
             cpl_test(test);
             break;
+        case 18:
+            scf_test(test);
+            break;
         default:
             std::cout << "Invalid choice.\n";
             break;
@@ -438,6 +441,23 @@ void cpl_test(Bus& test){
     }
 
     for(uint16_t byte_counter = 0; byte_counter < 2; byte_counter++){
+        test.cpu.instruction_cycle();
+    }
+}
+
+
+void scf_test(Bus& test){
+    std::vector<uint8_t> memory = {
+            0x37
+    };
+
+    for (int i = 0; i < memory.size(); i++) {
+        test.rom_write(i,memory[i]);
+        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
+                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
+    }
+
+    for(uint16_t byte_counter = 0; byte_counter < 1; byte_counter++){
         test.cpu.instruction_cycle();
     }
 }
