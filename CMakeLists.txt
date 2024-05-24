@@ -39,4 +39,6 @@ add_executable(z80emu_test "main.cpp" "z80.cpp" "Bus.cpp" "test-cases/LD_test.cp
         instructions/Inc.cpp
         instructions/Dec.cpp
         instructions/Misc.cpp
+        test-cases/DAA_test.cpp
+        test-cases/DAA_test.hpp
 )
