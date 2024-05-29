@@ -81,43 +81,79 @@ void z80cpu::DAA_implied() {
     t_state_cycles = 4;
     uint8_t data = accumulator;
 
-    // Check if ADD_SUB_FLAG is 0(ADD) or 1(SUB)
-    if(get_flag(ADD_SUB_FLAG) == 0){
-        // Check Carry Flag
-        if(get_flag(CARRY_FLAG) == 0){
-            // Check Half Carry Flag
-            if(get_flag(HALF_CARRY_FLAG) == 0){
-                // high nibble 0-9, low nibble 0-9
-                // changes nothing, adds 0 to accumulator.
-                // Carry and Half flag set to false.
-                if(((data & 0xF0) < 0xA0) && ((data & 0x0F) < 0x0A)){
-                    data += 0x00;
-                    set_flag(CARRY_FLAG, false);
-                    set_flag(HALF_CARRY_FLAG, false);
-                }
+    // We check the status of the Add/Sub Flag, Carry Flag, and Half-Carry Flag.
+    // operation will vary on the 3 flag combination
+    // --------------------------------------------
+    // N = 0, C = 0, H = 0
+    // high nibble 0-9, low nibble 0-9
+    // nothing changes
 
-                // high nibble 0-8, low nibble A-F
-                // add 0x06 to the accumulator.
-                // half flag is set to true.
-                else if(((data & 0xF0) < 0x90) && ((data & 0x0F) > 0x09)){
+    // high nibble 0-8, low nibble A-F
+    // add 0x06 to the accumulator.
+    // half flag is set to true.
+
+    // high nibble A-F, low nibble 0-9
+    // add 0x60 to the accumulator,
+    // carry flag is set to true.
+
+    // high nibble 9-F, low nibble A-F
+    // add 0x66 to the accumulator.
+    // carry flag and half flag is set to true.
+    // --------------------------------------------
+    // N = 0, C = 0, H = 1
+    // update: when lower nibble is A-F, half carry is set to true
+    // when lower nibble 0-9, half carry is set to false
+    // update: every value from (0x00-0x99) get +0x06 added
+    // update: every value from (0x9A-0xFF) gets +0x66 added, carry flag is set to true
+    // --------------------------------------------
+    // N = 0, C = 1, H = 0
+    // update: if lower nibble is 0-9, add +0x60
+    // update: if lower nibble is A-F, add +0x66, half carry flag is set to true
+    // --------------------------------------------
+    // N = 0, C = 1, H = 1
+    // update: when lower nibble is A-F, half carry is set to true
+    // when lower nibble 0-9, half carry is set to false
+    // update: every value gets add 0x66
+    // --------------------------------------------
+    // N = 1, C = 0, H = 0
+    // high nibble 0-9, low nibble 0-9
+    // nothing changes
+
+    // high nibble 0-8, low nibble A-F, add 0xFA to the accumulator.
+
+    // high nibble A-F, low nibble 0-9
+    // add 0xA0 to the accumulator,
+    // carry flag is set to true.
+
+    // high nibble 9-F, low nibble A-F
+    // add 0x9A to the accumulator.
+    // carry flag is set to true.
+    // --------------------------------------------
+    // N = 1, C = 0, H = 1
+    // update: values with lower nibble (0-5), half carry flag is set to true
+    // update: every value from (0x00-0x99) get +0xFA added
+    // update: every value from (0x9A-0xFF) get +0x9A added, carry flag is set to true
+    // --------------------------------------------
+    // N = 1, C = 1, H = 0
+    // if lower nibble is 0-9, add 0xA0
+    // if lower nibble is A-F, add 0x9A
+    // --------------------------------------------
+    // N = 1, C = 1, H = 1
+    // update: all values get +0x9A added
+    // update: half carry is set when lower nibble is less than 6.
+
+
+    if(get_flag(ADD_SUB_FLAG) == 0){
+        if(get_flag(CARRY_FLAG) == 0){
+            if(get_flag(HALF_CARRY_FLAG) == 0){
+                if(((data & 0xF0) < 0x90) && ((data & 0x0F) > 0x09)){
                     data += 0x06;
-                    set_flag(CARRY_FLAG, false);
                     set_flag(HALF_CARRY_FLAG, true);
                 }
-
-                // high nibble A-F, low nibble 0-9
-                // add 0x60 to the accumulator,
-                // carry flag is set to true.
-                // half flag is set to false.
                 else if(((data & 0xF0) > 0x90) && ((data & 0x0F) < 0x0A)){
                     data += 0x60;
                     set_flag(CARRY_FLAG, true);
-                    set_flag(HALF_CARRY_FLAG, false);
                 }
-
-                // high nibble 9-F, low nibble A-F
-                // add 0x66 to the accumulator.
-                // carry flag and half flag is set to true.
                 else if(((data & 0xF0) > 0x80) && ((data & 0x0F) > 0x09)){
                     data += 0x66;
                     set_flag(CARRY_FLAG, true);
@@ -125,105 +161,70 @@ void z80cpu::DAA_implied() {
                 }
             }
             else{
-                // high nibble 0-9, low nibble 0-3
-                // add 0x06 to accumulator.
-                // carry and half flag are set to false.
-                if(((data & 0xF0) < 0xA0) && ((data & 0x0F) < 0x04)){
+                set_flag(HALF_CARRY_FLAG, (data & 0x0F) > 0x09);
+                if(data < 0x9A){
                     data += 0x06;
-                    set_flag(CARRY_FLAG, false);
-                    set_flag(HALF_CARRY_FLAG, false);
                 }
-
-                // high nibble A-F, low nibble 0-3
-                // add 0x66 to accumulator.
-                // carry flag is set to true.
-                // half flag is set to false.
-                else if(((data & 0xF0) > 0x90) && ((data & 0x0F) < 0x04)){
+                else{
                     data += 0x66;
                     set_flag(CARRY_FLAG, true);
-                    set_flag(HALF_CARRY_FLAG, false);
                 }
             }
         }
         else{
             if(get_flag(HALF_CARRY_FLAG) == 0){
-                // high nibble 0-2, low nibble 0-9
-                // add 0x60 to accumulator
-                // carry flag is set to true.
-                // half flag is set to false.
-                if(((data & 0xF0) < 0x30) && ((data & 0x0F) < 0x0A)){
+                if((data & 0x0F) < 0x0A){
                     data += 0x60;
-                    set_flag(CARRY_FLAG, true);
-                    set_flag(HALF_CARRY_FLAG, false);
                 }
-
-                // high nibble 0-2, low nibble A-F
-                // add 0x66 to accumulator
-                // carry flag is set to true.
-                // half flag is set to true.
-                else if(((data & 0xF0) < 0x30) && ((data & 0x0F) > 0x09)){
+                else{
                     data += 0x66;
-                    set_flag(CARRY_FLAG, true);
                     set_flag(HALF_CARRY_FLAG, true);
                 }
             }
             else{
-                // high nibble 0-3, low nibble 0-3
-                // add 0x66 to accumulator.
-                // carry flag is set to true.
-                // half flag is set to false.
-                if(((data & 0xF0) < 0x40) && ((data & 0x0F) < 0x04)){
-                    data += 0x66;
-                    set_flag(CARRY_FLAG, true);
-                    set_flag(HALF_CARRY_FLAG, false);
-                }
+                set_flag(HALF_CARRY_FLAG, (data & 0x0F) > 0x09);
+                data += 0x66;
             }
         }
     }
     else {
-        // Check Carry Flag
         if(get_flag(CARRY_FLAG) == 0){
-            // Check Half Carry Flag
             if(get_flag(HALF_CARRY_FLAG) == 0){
-                // high nibble 0-9, low nibble 0-9
-                // changes nothing, adds 0 to accumulator.
-                // Carry and Half flag set to false.
-                if(((data & 0xF0) < 0xA0) && ((data & 0x0F) < 0x0A)){
-                    data += 0x00;
-                    set_flag(CARRY_FLAG, false);
-                    set_flag(HALF_CARRY_FLAG, false);
+                if(((data & 0xF0) < 0x90) && ((data & 0x0F) > 0x09)){
+                    data += 0xFA;
+                }
+                else if(((data & 0xF0) > 0x90) && ((data & 0x0F) < 0x0A)){
+                    data += 0xA0;
+                    set_flag(CARRY_FLAG, true);
+                }
+                else if(((data & 0xF0) > 0x80) && ((data & 0x0F) > 0x09)) {
+                    data += 0x9A;
+                    set_flag(CARRY_FLAG, true);
                 }
             }
             else{
-                // high nibble 0-8, low nibble 6-F
-                // add 0xFA to accumulator.
-                // carry and half flag are set to false.
-                if(((data & 0xF0) < 0x90) && ((data & 0x0F) > 0x05)){
+                set_flag(HALF_CARRY_FLAG, (data & 0x0F) < 0x06);
+                if(data < 0x9A){
                     data += 0xFA;
-                    set_flag(CARRY_FLAG, false);
-                    set_flag(HALF_CARRY_FLAG, false);
+                }
+                else{
+                    data += 0x9A;
+                    set_flag(CARRY_FLAG, true);
                 }
             }
         }
         else{
             if(get_flag(HALF_CARRY_FLAG) == 0){
-                // high nibble 7-F, low nibble 0-9
-                // add 0xA0 to accumulator.
-                // carry flag is set to true.
-                // half flag is set to false.
-                data += 0xA0;
-                set_flag(CARRY_FLAG, true);
-                set_flag(HALF_CARRY_FLAG, false);
+                if((data & 0x0F) < 0x0A){
+                    data += 0xA0;
+                }
+                else{
+                    data += 0x9A;
+                }
             }
             else{
-                // high nibble 6-F, low nibble 6-F
-                // add 0x9A to accumulator
-                // carry flag is set to true
-                // half flag is set to false
                 data += 0x9A;
-                set_flag(CARRY_FLAG, true);
-                set_flag(HALF_CARRY_FLAG, false);
-
+                set_flag(HALF_CARRY_FLAG, (data & 0x0F) < 0x06);
             }
         }
     }
