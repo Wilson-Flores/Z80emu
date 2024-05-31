@@ -182,7 +182,6 @@ void z80cpu::instruction_cycle() {
 	// when t cycles reach 0, we are ready to read next instruction
 	opcode = rom_read(program_counter);
 
-
     // increment program counter
     program_counter++;
 
@@ -200,8 +199,6 @@ void z80cpu::misc_instructions() {
     program_counter++;
     memory_refresh_counter();
 
-
-	std::cout << "OPCODE: " << this->misc_instruction_table[opcode].opcode << '\n';
 	(this->*misc_instruction_table[opcode].instruction)();
 }
 
@@ -211,7 +208,6 @@ void z80cpu::ix_instructions() {
     program_counter++;
     memory_refresh_counter();
 
-    std::cout << "OPCODE: " << this->ix_instruction_table[opcode].opcode << '\n';
     (this->*ix_instruction_table[opcode].instruction)();
 }
 
@@ -221,6 +217,5 @@ void z80cpu::iy_instructions() {
     program_counter++;
     memory_refresh_counter();
 
-    std::cout << "OPCODE: " << this->iy_instruction_table[opcode].opcode << '\n';
     (this->*iy_instruction_table[opcode].instruction)();
 }

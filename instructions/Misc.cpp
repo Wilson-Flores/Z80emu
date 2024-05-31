@@ -237,6 +237,5 @@ void z80cpu::DAA_implied() {
     set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[data]);
     // N is not affected
 
-
     accumulator = data;
 }
