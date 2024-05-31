@@ -145,11 +145,11 @@ public:
     void ADC_implied_immediate();                                           // [ADC A, n]
 
     // SUB Instructions
-    void SUB_implied_register();                                            // [SUB A, r]
-    void SUB_implied_register_indirect();                                   // [SUB A, (HL)]
-    void SUB_implied_indexed_ix();                                          // [SUB A, (IX+d)]
-    void SUB_implied_indexed_iy();                                          // [SUB A, (IY+d)]
-    void SUB_implied_immediate();                                           // [SUB A, n]
+    void SUB_implied_register();                                            // [SUB r]
+    void SUB_implied_register_indirect();                                   // [SUB (HL)]
+    void SUB_implied_indexed_ix();                                          // [SUB (IX+d)]
+    void SUB_implied_indexed_iy();                                          // [SUB (IY+d)]
+    void SUB_implied_immediate();                                           // [SUB n]
 
     // SBC Instructions
     void SBC_implied_register();                                            // [SBC A, r]
@@ -159,32 +159,32 @@ public:
     void SBC_implied_immediate();                                           // [SBC A, n]
 
     // AND Instructions
-    void AND_implied_register();                                            // [ADD A, r]
-    void AND_implied_register_indirect();                                   // [ADD A, (HL)]
-    void AND_implied_indexed_ix();                                          // [ADD A, (IX+d)]
-    void AND_implied_indexed_iy();                                          // [ADD A, (IY+d)]
-    void AND_implied_immediate();                                           // [ADD A, n]
+    void AND_implied_register();                                            // [ADD r]
+    void AND_implied_register_indirect();                                   // [ADD (HL)]
+    void AND_implied_indexed_ix();                                          // [ADD (IX+d)]
+    void AND_implied_indexed_iy();                                          // [ADD (IY+d)]
+    void AND_implied_immediate();                                           // [ADD n]
 
     // OR Instructions
-    void OR_implied_register();                                             // [OR A, r]
-    void OR_implied_register_indirect();                                    // [OR A, (HL)]
-    void OR_implied_indexed_ix();                                           // [OR A, (IX+d)]
-    void OR_implied_indexed_iy();                                           // [OR A, (IY+d)]
-    void OR_implied_immediate();                                            // [OR A, n]
+    void OR_implied_register();                                             // [OR r]
+    void OR_implied_register_indirect();                                    // [OR (HL)]
+    void OR_implied_indexed_ix();                                           // [OR (IX+d)]
+    void OR_implied_indexed_iy();                                           // [OR (IY+d)]
+    void OR_implied_immediate();                                            // [OR n]
 
     // XOR Instructions
-    void XOR_implied_register();                                            // [XOR A, r]
-    void XOR_implied_register_indirect();                                   // [XOR A, (HL)]
-    void XOR_implied_indexed_ix();                                          // [XOR A, (IX+d)]
-    void XOR_implied_indexed_iy();                                          // [XOR A, (IY+d)]
-    void XOR_implied_immediate();                                           // [XOR A, n]
+    void XOR_implied_register();                                            // [XOR r]
+    void XOR_implied_register_indirect();                                   // [XOR (HL)]
+    void XOR_implied_indexed_ix();                                          // [XOR (IX+d)]
+    void XOR_implied_indexed_iy();                                          // [XOR (IY+d)]
+    void XOR_implied_immediate();                                           // [XOR n]
 
     // OR Instructions
-    void CP_implied_register();                                             // [CP A, r]
-    void CP_implied_register_indirect();                                    // [CP A, (HL)]
-    void CP_implied_indexed_ix();                                           // [CP A, (IX+d)]
-    void CP_implied_indexed_iy();                                           // [CP A, (IY+d)]
-    void CP_implied_immediate();                                            // [CP A, n]
+    void CP_implied_register();                                             // [CP r]
+    void CP_implied_register_indirect();                                    // [CP (HL)]
+    void CP_implied_indexed_ix();                                           // [CP (IX+d)]
+    void CP_implied_indexed_iy();                                           // [CP (IY+d)]
+    void CP_implied_immediate();                                            // [CP n]
 
     // INC Instructions
     void INC_implied_register();                                            // [INC r]
@@ -213,6 +213,11 @@ public:
 
     // SCF Instruction
     void SCF_implied();                                                     // [SCF]
+
+    // Rotate Instructions
+    // Rotate Left Circular Instructions
+    void RLCA_implied();                                                    // [RLCA]
+    void RLC_implied();                                                     // [RLC r]
 
 	// 16-bit Instructions
 	// LD Instructions
