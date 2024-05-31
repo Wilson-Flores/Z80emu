@@ -190,7 +190,6 @@ void z80cpu::instruction_cycle() {
 	memory_refresh_counter();
 
 	// begin going through the main instruction table
-	std::cout << "OPCODE: " << this->main_instruction_table[opcode].opcode << '\n';
 	(this->*main_instruction_table[opcode].instruction)();
 }
 
