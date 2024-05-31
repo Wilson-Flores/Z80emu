@@ -223,8 +223,8 @@ void z80cpu::DAA_implied() {
                 }
             }
             else{
-                data += 0x9A;
                 set_flag(HALF_CARRY_FLAG, (data & 0x0F) < 0x06);
+                data += 0x9A;
             }
         }
     }
