@@ -39,28 +39,90 @@ void daa_test_choice(Bus& test){
 
 
 void daa_test_1(Bus& test){
-    std::vector<uint8_t> memory = {
-            0x3E, 0x99, 0x27, 0x3E, 0x8F, 0x27, 0xED, 0x5F,
-            0x3E, 0xF9, 0x27, 0x3F, 0xED, 0x5F, 0x3E, 0xFF,
-            0x27
-    };
+    // We will loop through ( 0x00 - 0xFF) checking the DAA results for each value.
 
-    for (int i = 0; i < memory.size(); i++) {
-        test.rom_write(i,memory[i]);
-        std::cout << "rom[" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase << i << "] : " <<
-                  std::setw(2) << std::setfill('0') << static_cast<int>(test.rom[i]) << '\n';
-    }
+    std::cout << "Hex Values:\tDAA Values:\tCF:\tHF:\tAdded Value:\n";
 
-    for(uint16_t byte_counter = 0; byte_counter < 11; byte_counter++){
-        test.cpu.instruction_cycle();
+    for(uint16_t value = 0x00; value <= 0xFF; value++){
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(value) << '\t';
+        std::vector<uint8_t> memory = { 0x3E, static_cast<uint8_t>(value), 0x27 };
+
+        // write memory vector to rom
+        for (int i = 0; i < memory.size(); i++) {
+            test.rom_write(i,memory[i]);
+        }
+
+        for(uint8_t byte_counter = 0; byte_counter < 2; byte_counter++){
+            test.cpu.instruction_cycle();
+        }
+
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.accumulator) << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.flag_register & 0x01)  << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.flag_register & 0x10) << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.accumulator - value) << '\n';
+        test.cpu.program_counter = 0x00;
+        test.cpu.flag_register = 0x00;
+        test.cpu.accumulator = 0x00;
     }
 }
 
 
-void daa_test_2(Bus& test){}
+void daa_test_2(Bus& test){
+    // We will loop through ( 0x00 - 0xFF) checking the DAA results for each value.
+
+    std::cout << "Hex Values:\tDAA Values:\tCF:\tHF:\tAdded Value:\n";
+
+    for(uint16_t value = 0x00; value <= 0xFF; value++){
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(value) << '\t';
+        std::vector<uint8_t> memory = { 0x3E, 0x0F, 0xC6, 0x01, 0x3E, static_cast<uint8_t>(value), 0x27 };
+
+        // write memory vector to rom
+        for (int i = 0; i < memory.size(); i++) {
+            test.rom_write(i,memory[i]);
+        }
+
+        for(uint8_t byte_counter = 0; byte_counter < 4; byte_counter++){
+            test.cpu.instruction_cycle();
+        }
+
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.accumulator) << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.flag_register & 0x01)  << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.flag_register & 0x10) << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.accumulator - value) << '\n';
+        test.cpu.program_counter = 0x00;
+        test.cpu.flag_register = 0x00;
+        test.cpu.accumulator = 0x00;
+    }
+}
 
 
-void daa_test_3(Bus& test){}
+void daa_test_3(Bus& test){
+    // We will loop through ( 0x00 - 0xFF) checking the DAA results for each value.
+
+    std::cout << "Hex Values:\tDAA Values:\tCF:\tHF:\tAdded Value:\n";
+
+    for(uint16_t value = 0x00; value <= 0xFF; value++){
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(value) << '\t';
+        std::vector<uint8_t> memory = { 0x3E, 0xF0, 0xC6, 0x10, 0x3E, static_cast<uint8_t>(value), 0x27 };
+
+        // write memory vector to rom
+        for (int i = 0; i < memory.size(); i++) {
+            test.rom_write(i,memory[i]);
+        }
+
+        for(uint8_t byte_counter = 0; byte_counter < 4; byte_counter++){
+            test.cpu.instruction_cycle();
+        }
+
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.accumulator) << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.flag_register & 0x01)  << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.flag_register & 0x10) << '\t';
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << static_cast<int>(test.cpu.accumulator - value) << '\n';
+        test.cpu.program_counter = 0x00;
+        test.cpu.flag_register = 0x00;
+        test.cpu.accumulator = 0x00;
+    }
+}
 
 
 void daa_test_4(Bus& test){}
