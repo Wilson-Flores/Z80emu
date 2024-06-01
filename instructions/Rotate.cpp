@@ -4,8 +4,9 @@
 void z80cpu::RLCA_implied() {
     t_state_cycles = 4;
 
-    // isolate leading bit in accumulator, then overwrite the carry bit in the flag register
-    // first we clear out the carry bit
+    // isolate leading bit in accumulator, then overwrite the carry bit in the flag register.
+    // first we clear out the carry bit in the flag register,
+    // then we do an or operation to copy the accumulator bit into the carry bit
     flag_register &= 0xFE;
     flag_register |= (accumulator >> 7);
 
