@@ -81,7 +81,7 @@ z80cpu::z80cpu() {
     };
 
     bit_instruction_table = {
-            {"00", nullptr }, {"01", nullptr }, {"02", nullptr }, {"03", nullptr }, {"04", nullptr }, {"05", nullptr }, {"06", nullptr }, {"07", nullptr }, {"08", nullptr }, {"09", nullptr }, {"0A", nullptr }, {"0B", nullptr }, {"0C", nullptr }, {"0D", nullptr }, {"0E", nullptr }, {"0F", nullptr },
+            {"00", &z::RLC_implied }, {"01", &z::RLC_implied }, {"02", &z::RLC_implied }, {"03", &z::RLC_implied }, {"04", &z::RLC_implied }, {"05", &z::RLC_implied }, {"06", nullptr }, {"07", &z::RLC_implied }, {"08", nullptr }, {"09", nullptr }, {"0A", nullptr }, {"0B", nullptr }, {"0C", nullptr }, {"0D", nullptr }, {"0E", nullptr }, {"0F", nullptr },
             {"10", nullptr }, {"11", nullptr }, {"12", nullptr }, {"13", nullptr }, {"14", nullptr }, {"15", nullptr }, {"16", nullptr }, {"17", nullptr }, {"18", nullptr }, {"19", nullptr }, {"1A", nullptr }, {"1B", nullptr }, {"1C", nullptr }, {"1D", nullptr }, {"1E", nullptr }, {"1F", nullptr },
             {"20", nullptr }, {"21", nullptr }, {"22", nullptr }, {"23", nullptr }, {"24", nullptr }, {"25", nullptr }, {"26", nullptr }, {"27", nullptr }, {"28", nullptr }, {"29", nullptr }, {"2A", nullptr }, {"2B", nullptr }, {"2C", nullptr }, {"2D", nullptr }, {"2E", nullptr }, {"2F", nullptr },
             {"30", nullptr }, {"31", nullptr }, {"32", nullptr }, {"33", nullptr }, {"34", nullptr }, {"35", nullptr }, {"36", nullptr }, {"37", nullptr }, {"38", nullptr }, {"39", nullptr }, {"3A", nullptr }, {"3B", nullptr }, {"3C", nullptr }, {"3D", nullptr }, {"3E", nullptr }, {"3F", nullptr },
