@@ -6,7 +6,11 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(z80emu "main.cpp" "z80.cpp" "Bus.cpp" "instructions/Load.cpp"
+add_executable(z80emu
+        main.cpp
+        z80.cpp
+        Bus.cpp
+        instructions/Load.cpp
         instructions/Push.cpp
         instructions/Pop.cpp
         instructions/Exchange.cpp
@@ -23,7 +27,12 @@ add_executable(z80emu "main.cpp" "z80.cpp" "Bus.cpp" "instructions/Load.cpp"
 )
 
 
-add_executable(z80emu_test "main.cpp" "z80.cpp" "Bus.cpp" "test-cases/LD_test.cpp" "instructions/Load.cpp"
+add_executable(z80emu_test
+        main.cpp
+        z80.cpp
+        Bus.cpp
+        test-cases/LD_test.cpp
+        instructions/Load.cpp
         instructions/Push.cpp
         instructions/Pop.cpp
         test-cases/push_pop_test.cpp
@@ -43,4 +52,6 @@ add_executable(z80emu_test "main.cpp" "z80.cpp" "Bus.cpp" "test-cases/LD_test.cp
         test-cases/DAA_test.cpp
         test-cases/DAA_test.hpp
         instructions/Rotate.cpp
+        test-cases/rotate_test.cpp
+        test-cases/rotate_test.hpp
 )
