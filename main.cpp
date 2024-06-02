@@ -5,6 +5,7 @@
 #include "test-cases/compare_test.hpp"
 #include "test-cases/arithmetic_test.hpp"
 #include "test-cases/DAA_test.hpp"
+#include "test-cases/rotate_test.hpp"
 
 
 int main() {
@@ -15,7 +16,9 @@ int main() {
 //    EX_test(test);
 //    compare_test(test);
 //    arithmetic_test_choice(test);
-    daa_test_choice(test);
+//    daa_test_choice(test);
+
+    rotate_test_choice(test);
 
     return 0;
 }
