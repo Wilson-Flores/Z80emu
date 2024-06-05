@@ -280,7 +280,7 @@ void z80cpu::bit_instructions() {
     program_counter++;
     memory_refresh_counter();
 
-    (this->*misc_instruction_table[opcode].instruction)();
+    (this->*bit_instruction_table[opcode].instruction)();
 }
 
 
@@ -289,7 +289,7 @@ void z80cpu::ix_bit_instructions() {
     program_counter++;
     memory_refresh_counter();
 
-    (this->*ix_instruction_table[opcode].instruction)();
+    (this->*ix_bit_instruction_table[opcode].instruction)();
 }
 
 
@@ -298,5 +298,5 @@ void z80cpu::iy_bit_instructions() {
     program_counter++;
     memory_refresh_counter();
 
-    (this->*iy_instruction_table[opcode].instruction)();
+    (this->*iy_bit_instruction_table[opcode].instruction)();
 }
