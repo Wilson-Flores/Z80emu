@@ -52,7 +52,7 @@ void RLCA_test(Bus& test){
 
 
 void RLC_test(Bus& test){
-    std::unordered_map<uint8_t, uint8_t> registers =
+    std::vector<std::pair<uint8_t, uint8_t>> registers =
             {{0x3E, 0x07}, // A
              {0x06, 0x00}, // B
              {0x0E, 0x01}, // C
@@ -73,6 +73,8 @@ void RLC_test(Bus& test){
 
         for(uint16_t byte_counter = 0; byte_counter < 4; byte_counter++){
             test.cpu.instruction_cycle();
+            std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+            << static_cast<int>(test.cpu.flag_register) << '\n';
         }
     }
 }
