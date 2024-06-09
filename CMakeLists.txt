@@ -89,6 +89,7 @@ if(ENABLE_UNIT_TESTS)
     target_sources(z80emu_test PRIVATE
             test-cases/test_main.cpp
             test-cases/test_rotate.cpp
+            test-cases/test_load.cpp
             ${SOURCES})
 
     target_link_libraries(z80emu_test

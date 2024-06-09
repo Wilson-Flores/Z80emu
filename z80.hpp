@@ -56,7 +56,7 @@ public:
 		X_FLAG = (1 << 3),                        // X
 		HALF_CARRY_FLAG = (1 << 4),               // H
         // copies bit 5 of the result
-		Y_FLAG = (1 << 5),                        // X
+		Y_FLAG = (1 << 5),                        // Y
 		ZERO_FLAG = (1 << 6),                     // Z
 		SIGN_FLAG = (1 << 7)                      // S
 	};
