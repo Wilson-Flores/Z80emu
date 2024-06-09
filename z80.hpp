@@ -218,8 +218,12 @@ public:
     // Rotate Left Circular Instructions
     void RLCA_implied();                                                    // [RLCA]
     void RLC_implied();                                                     // [RLC r]
+    void RLC_indirect();                                                    // [RLC (HL)]
+    void RLC_indexed_ix();                                                  // [RLC (IX+d)
+    void RLC_indexed_iy();                                                  // [RLC (IY+d)
 
-	// 16-bit Instructions
+
+    // 16-bit Instructions
 	// LD Instructions
     void LD_register_immediate_extended_16_bit();                           // [LD ss, nn]
 	void LD_register_immediate_extended_ix();                               // [LD IX, nn]
@@ -280,6 +284,7 @@ public:
 
 	void instruction_cycle();
 
+    //TODO: add data variable, and any other variable that is used repeatedly in instructions
 	uint16_t address_absolute = 0x0000;
 	uint8_t opcode = 0x00;
 	uint8_t t_state_cycles = 0;

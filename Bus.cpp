@@ -3,7 +3,7 @@
 
 Bus::Bus() {
     uint8_t value = 0;
-
+   //TODO: add a real way to load ram, create ram class.
     for(uint8_t& i : ram){
         i = value;
         value++;
