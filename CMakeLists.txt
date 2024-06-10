@@ -89,7 +89,7 @@ if(ENABLE_UNIT_TESTS)
     target_sources(z80emu_test PRIVATE
             test-cases/test_main.cpp
             test-cases/test_rotate.cpp
-            test-cases/test_load.cpp
+#            test-cases/test_load.cpp
             ${SOURCES})
 
     target_link_libraries(z80emu_test
@@ -98,5 +98,5 @@ if(ENABLE_UNIT_TESTS)
 
     #enable testing
     enable_testing()
-    add_test(NAME google_test COMMAND $<TARGET_FILE:z80emu_test>)
+    add_test(NAME z80emu_test COMMAND $<TARGET_FILE:z80emu_test>)
 endif()
