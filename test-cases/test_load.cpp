@@ -1,6 +1,9 @@
 #include "../Bus.hpp"
 #include "gtest/gtest.h"
 
+//TODO: implement loop instructions first,
+// then come back so we can loop through 0x00-0xFF and load them to registers.
+
 
 // Define a test fixture class
 class LoadTest : public ::testing::Test {
@@ -9,23 +12,22 @@ protected:
 };
 
 TEST_F(LoadTest, LD_register_immediate_test){
-    std::vector<std::pair<uint8_t, uint8_t>> registers =
-            {{0x3E, 0xFF}, // A
-             {0x06, 0xFF}, // B
-             {0x0E, 0xFF}, // C
-             {0x16, 0xFF}, // D
-             {0x1E, 0xFF}, // E
-             {0x26, 0xFF}, // H
-             {0x2E, 0xFF}  // L
+    std::vector<uint8_t> registers =
+            {0x3E,  // A
+             0x06,  // B
+             0x0E,  // C
+             0x16,  // D
+             0x1E,  // E
+             0x26,  // H
+             0x2E,  // L
             };
 
-
+    uint8_t flag_value = 0x00;
     bool compare_flag_values = false;
 
-    for (const std::pair<const uint8_t, uint8_t>& pair : registers) {
-        std::vector<uint8_t> memory = {pair.first, pair.second};
 
-        uint8_t flag_value = 0x00;
+    for (const uint8_t& reg : registers) {
+        std::vector<uint8_t> memory = {reg, 0xFF};
 
         bus.rom_reset();
 
