@@ -42,7 +42,7 @@ void z80cpu::EX_implied_implied() {
 void z80cpu::EX_register_indirect_implied_hl() {
     t_state_cycles = 19;
 
-    uint8_t data = ram_read(stack_pointer);  // low byte in HL is swapped with memory at stack pointer address
+    data = ram_read(stack_pointer);  // low byte in HL is swapped with memory at stack pointer address
     L_register ^= data;
     data ^= L_register;
     L_register ^= data;
@@ -55,28 +55,28 @@ void z80cpu::EX_register_indirect_implied_hl() {
     ram_write(stack_pointer + 1, data);
 }
 
-
+//TODO: data was left as uint8_t, further testing needed
 void z80cpu::EX_register_indirect_implied_ix() {
     t_state_cycles = 19;
 
-    uint8_t data = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
-    index_register_x ^= data;
-    data ^= index_register_x;
-    index_register_x ^= data;
+    data_16 = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
+    index_register_x ^= data_16;
+    data_16 ^= index_register_x;
+    index_register_x ^= data_16;
 
-    ram_write(stack_pointer + 1, static_cast<uint8_t>(data >> 8));
-    ram_write(stack_pointer, static_cast<uint8_t>(data));
+    ram_write(stack_pointer + 1, static_cast<uint8_t>(data_16 >> 8));
+    ram_write(stack_pointer, static_cast<uint8_t>(data_16));
 }
 
 
 void z80cpu::EX_register_indirect_implied_iy() {
     t_state_cycles = 19;
 
-    uint8_t data = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
-    index_register_y ^= data;
-    data ^= index_register_y;
-    index_register_y ^= data;
+    data_16 = static_cast<uint16_t>(ram_read(stack_pointer + 1) << 8) | ram_read(stack_pointer);
+    index_register_y ^= data_16;
+    data_16 ^= index_register_y;
+    index_register_y ^= data_16;
 
-    ram_write(stack_pointer + 1, static_cast<uint8_t>(data >> 8));
-    ram_write(stack_pointer, static_cast<uint8_t>(data));
+    ram_write(stack_pointer + 1, static_cast<uint8_t>(data_16 >> 8));
+    ram_write(stack_pointer, static_cast<uint8_t>(data_16));
 }

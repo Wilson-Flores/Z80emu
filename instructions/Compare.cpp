@@ -5,7 +5,7 @@ void z80cpu::CPI_register_indirect() {
 
     // Read data at HL address, then decrement HL
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
+    data = ram_read(address_absolute);
     L_register++;
     if(L_register == 0x00){
         H_register++;
@@ -19,7 +19,7 @@ void z80cpu::CPI_register_indirect() {
 
     // A - (HL)
     // S is set if result is negative else reset
-    uint8_t result = accumulator - data;
+    result = accumulator - data;
     set_flag(SIGN_FLAG, result & 0x80);
     // Z is set if A == (HL), else reset
     set_flag(ZERO_FLAG, accumulator == data);
@@ -37,7 +37,7 @@ void z80cpu::CPIR_register_indirect() {
     t_state_cycles = 16;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
+    data = ram_read(address_absolute);
     L_register++;
     if(L_register == 0x00){
         H_register++;
@@ -49,7 +49,7 @@ void z80cpu::CPIR_register_indirect() {
     }
 
     // S is set if result is negative else reset
-    uint8_t result = accumulator - data;
+    result = accumulator - data;
     set_flag(SIGN_FLAG, result & 0x80);
     // Z is set if A == (HL), else reset
     set_flag(ZERO_FLAG, accumulator == data);
@@ -77,7 +77,7 @@ void z80cpu::CPD_register_indirect() {
     t_state_cycles = 16;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
+    data = ram_read(address_absolute);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
@@ -89,7 +89,7 @@ void z80cpu::CPD_register_indirect() {
     }
 
     // S is set if result is negative else reset
-    uint8_t result = accumulator - data;
+    result = accumulator - data;
     set_flag(SIGN_FLAG, result & 0x80);
     // Z is set if A == (HL), else reset
     set_flag(ZERO_FLAG, accumulator == data);
@@ -107,7 +107,7 @@ void z80cpu::CPDR_register_indirect() {
     t_state_cycles = 16;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
+    data = ram_read(address_absolute);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
@@ -119,7 +119,7 @@ void z80cpu::CPDR_register_indirect() {
     }
 
     // S is set if result is negative else reset
-    uint8_t result = accumulator - data;
+    result = accumulator - data;
     set_flag(SIGN_FLAG, result & 0x80);
     // Z is set if A == (HL), else reset
     set_flag(ZERO_FLAG, accumulator == data);
@@ -146,8 +146,8 @@ void z80cpu::CPDR_register_indirect() {
 void z80cpu::CP_implied_register() {
     t_state_cycles = 4;
 
-    uint8_t data = *register_table[opcode & BIT_MASK_2];
-    uint8_t result = accumulator - data;
+    data = *register_table[opcode & BIT_MASK_2];
+    result = accumulator - data;
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -170,8 +170,8 @@ void z80cpu::CP_implied_register_indirect() {
     t_state_cycles = 7;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
-    uint8_t result = accumulator - data;
+    data = ram_read(address_absolute);
+    result = accumulator - data;
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -193,11 +193,11 @@ void z80cpu::CP_implied_register_indirect() {
 void z80cpu::CP_implied_indexed_ix() {
     t_state_cycles = 19;
 
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    uint8_t data = ram_read(address_absolute);
-    uint8_t result = accumulator - data;
+    data = ram_read(address_absolute);
+    result = accumulator - data;
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -219,11 +219,11 @@ void z80cpu::CP_implied_indexed_ix() {
 void z80cpu::CP_implied_indexed_iy() {
     t_state_cycles = 19;
 
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    uint8_t data = ram_read(address_absolute);
-    uint8_t result = accumulator - data;
+    data = ram_read(address_absolute);
+    result = accumulator - data;
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -245,9 +245,9 @@ void z80cpu::CP_implied_indexed_iy() {
 void z80cpu::CP_implied_immediate() {
     t_state_cycles = 7;
 
-    uint8_t data = rom_read(program_counter);
+    data = rom_read(program_counter);
     program_counter++;
-    uint8_t result = accumulator - data;
+    result = accumulator - data;
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);

@@ -285,9 +285,21 @@ public:
 	void instruction_cycle();
 
     //TODO: add data variable, and any other variable that is used repeatedly in instructions
-	uint16_t address_absolute = 0x0000;
 	uint8_t opcode = 0x00;
 	uint8_t t_state_cycles = 0;
+
+    // variables that temporarily store values while executing certain instructions
+    uint16_t address_absolute = 0x0000;
+    int8_t displacement = 0x00;
+
+    // 8-bit temp values
+    uint8_t data = 0;
+    uint8_t result = 0;
+
+    // 16-bit temp values
+    uint16_t data_16 = 0;
+    uint16_t result_16 = 0;
+
 
 
 private:

@@ -92,7 +92,7 @@ void z80cpu::LD_register_indexed_ix() {
     uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
     // one-byte signed integer (-128 to +127)
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
 
     // add the value in index register x with the twos-complement signed value
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
@@ -107,7 +107,7 @@ void z80cpu::LD_register_indexed_iy() {
     uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
     // one-byte signed integer (-128 to +127)
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
     // add the value in ind
@@ -170,7 +170,7 @@ void z80cpu::LD_register_indirect_register() {
 void z80cpu::LD_indexed_ix_immediate(){
     t_state_cycles = 19;
 
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
     uint8_t value = rom_read(program_counter);
@@ -185,7 +185,7 @@ void z80cpu::LD_indexed_ix_immediate(){
 void z80cpu::LD_indexed_iy_immediate() {
     t_state_cycles = 19;
 
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
     uint8_t value = rom_read(program_counter);
@@ -202,7 +202,7 @@ void z80cpu::LD_indexed_ix_register(){
 
     uint8_t register_bit = (opcode & BIT_MASK_2);
 
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
@@ -215,7 +215,7 @@ void z80cpu::LD_indexed_iy_register(){
 
     uint8_t register_bit = (opcode & BIT_MASK_2);
 
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
@@ -447,7 +447,7 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // We get the data from the address location of HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
+    data = ram_read(address_absolute);
 
     // we are taking HL register and incrementing by 1
     L_register++;
@@ -486,7 +486,7 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
+    data = ram_read(address_absolute);
     L_register++;
     if(L_register == 0x00){
         H_register++;
@@ -533,7 +533,7 @@ void z80cpu::LDD_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
+    data = ram_read(address_absolute);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
@@ -568,7 +568,7 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
+    data = ram_read(address_absolute);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
