@@ -88,8 +88,6 @@ void z80cpu::RLC_indexed_ix() {
     t_state_cycles = 23;
 
     // copy the data from the memory address
-    displacement = static_cast<int8_t>(rom_read(program_counter));
-    program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
     data = ram_read(address_absolute);
 
@@ -120,9 +118,6 @@ void z80cpu::RLC_indexed_ix() {
 void z80cpu::RLC_indexed_iy() {
     t_state_cycles = 23;
 
-    // copy the data from the memory address
-    displacement = static_cast<int8_t>(rom_read(program_counter));
-    program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
     data = ram_read(address_absolute);
 
