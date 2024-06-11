@@ -56,7 +56,7 @@ public:
 		X_FLAG = (1 << 3),                        // X
 		HALF_CARRY_FLAG = (1 << 4),               // H
         // copies bit 5 of the result
-		Y_FLAG = (1 << 5),                        // X
+		Y_FLAG = (1 << 5),                        // Y
 		ZERO_FLAG = (1 << 6),                     // Z
 		SIGN_FLAG = (1 << 7)                      // S
 	};
@@ -218,8 +218,12 @@ public:
     // Rotate Left Circular Instructions
     void RLCA_implied();                                                    // [RLCA]
     void RLC_implied();                                                     // [RLC r]
+    void RLC_indirect();                                                    // [RLC (HL)]
+    void RLC_indexed_ix();                                                  // [RLC (IX+d)
+    void RLC_indexed_iy();                                                  // [RLC (IY+d)
 
-	// 16-bit Instructions
+
+    // 16-bit Instructions
 	// LD Instructions
     void LD_register_immediate_extended_16_bit();                           // [LD ss, nn]
 	void LD_register_immediate_extended_ix();                               // [LD IX, nn]
@@ -280,9 +284,22 @@ public:
 
 	void instruction_cycle();
 
-	uint16_t address_absolute = 0x0000;
+    //TODO: add data variable, and any other variable that is used repeatedly in instructions
 	uint8_t opcode = 0x00;
 	uint8_t t_state_cycles = 0;
+
+    // variables that temporarily store values while executing certain instructions
+    uint16_t address_absolute = 0x0000;
+    int8_t displacement = 0x00;
+
+    // 8-bit temp values
+    uint8_t data = 0;
+    uint8_t result = 0;
+
+    // 16-bit temp values
+    uint16_t data_16 = 0;
+    uint16_t result_16 = 0;
+
 
 
 private:

@@ -6,8 +6,8 @@ void z80cpu::DEC_implied_register() {
 
     // Decrement value in register
     uint8_t register_bit = (opcode & BIT_MASK_4) >> 3;
-    uint8_t data = *register_table[register_bit];
-    uint8_t result = data - 1;
+    data = *register_table[register_bit];
+    result = data - 1;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -29,8 +29,8 @@ void z80cpu::DEC_implied_register_indirect() {
     t_state_cycles = 11;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t data = ram_read(address_absolute);
-    uint8_t result = data - 1;
+    data = ram_read(address_absolute);
+    result = data - 1;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -51,11 +51,11 @@ void z80cpu::DEC_implied_register_indirect() {
 void z80cpu::DEC_implied_indexed_ix() {
     t_state_cycles = 23;
 
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    uint8_t data = ram_read(address_absolute);
-    uint8_t result = data - 1;
+    data = ram_read(address_absolute);
+    result = data - 1;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -76,11 +76,11 @@ void z80cpu::DEC_implied_indexed_ix() {
 void z80cpu::DEC_implied_indexed_iy() {
     t_state_cycles = 23;
 
-    int8_t displacement = static_cast<int8_t>(rom_read(program_counter));
+    displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    uint8_t data = ram_read(address_absolute);
-    uint8_t result = data - 1;
+    data = ram_read(address_absolute);
+    result = data - 1;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -105,7 +105,7 @@ void z80cpu::DEC_implied_register_extended(){
     uint8_t high_byte = *register_pair_table_ss[register_pair_bit].high_byte_register;
     uint8_t low_byte = *register_pair_table_ss[register_pair_bit].low_byte_register;
 
-    uint16_t data = (high_byte << 8) + low_byte;
+    data_16 = (high_byte << 8) + low_byte;
     data--;
 
     *register_pair_table_ss[register_pair_bit].high_byte_register = static_cast<uint8_t>((data & 0xFF00) >> 8);

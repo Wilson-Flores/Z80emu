@@ -19,7 +19,7 @@ void z80cpu::NEG_implied() {
     // A = 0 - A
     t_state_cycles = 8;
 
-    uint8_t result = ~accumulator + 1;
+    result = ~accumulator + 1;
 
     // S is set if result is negative; otherwise it is reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -79,7 +79,7 @@ void z80cpu::DAA_implied() {
     // For Addition: (ADD, ADC, INC); for Subtraction: (SUB, SBC, DEC, NEG)
 
     t_state_cycles = 4;
-    uint8_t data = accumulator;
+    data = accumulator;
 
     // We check the status of the Add/Sub Flag, Carry Flag, and Half-Carry Flag.
     // operation will vary on the 3 flag combination
