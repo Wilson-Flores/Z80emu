@@ -222,6 +222,13 @@ public:
     void RLC_indexed_ix();                                                  // [RLC (IX+d)
     void RLC_indexed_iy();                                                  // [RLC (IY+d)
 
+    // Rotate Right Circular Instructions
+    void RRCA_implied();                                                    // [RRCA]
+    void RRC_implied();                                                     // [RRC r]
+    void RRC_indirect();                                                    // [RRC (HL)]
+    void RRC_indexed_ix();                                                  // [RRC (IX+d)]
+    void RRC_indexed_iy();                                                  // [RRC (IY+d)]
+
 
     // 16-bit Instructions
 	// LD Instructions
