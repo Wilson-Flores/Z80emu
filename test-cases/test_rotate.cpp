@@ -266,6 +266,7 @@ TEST_F(RotateTest, RRC_indexed_ix_test){
     }
 }
 
+
 TEST_F(RotateTest, RRC_indexed_iy_test){
     std::vector<uint8_t> expected_flag_values = {0x00, 0x00, 0x85};
     bool compare_flag_values = false;
