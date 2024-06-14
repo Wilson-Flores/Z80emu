@@ -164,3 +164,44 @@ TEST_F(RotateTest, RRCA_implied_test){
 }
 
 
+TEST_F(RotateTest, RRC_implied_test){
+
+    // {first, second}
+    // {[LD r, n], [RLC r]}
+    std::vector<std::pair<uint8_t, uint8_t>> registers_instructions =
+            {{0x3E, 0x0F}, // A
+             {0x06, 0x08}, // B
+             {0x0E, 0x09}, // C
+             {0x16, 0x0A}, // D
+             {0x1E, 0x0B}, // E
+             {0x26, 0x0C}, // H
+             {0x2E, 0x0D}  // L
+            };
+
+    std::vector<uint8_t> expected_flag_values = {0x00, 0x85, 0x85, 0x00};
+    bool compare_flag_values = false;
+
+    for (const std::pair<const uint8_t, uint8_t>& pair : registers_instructions) {
+        std::vector<uint8_t> memory = {pair.first, 0x11, 0xCB, pair.second, pair.first, 0xD6, 0xCB, pair.second};
+
+        bus.rom_reset();
+
+        for (int i = 0; i < memory.size(); i++) {
+            bus.rom_write(i,memory[i]);
+        }
+
+        for(uint16_t byte_counter = 0; byte_counter < 4; byte_counter++){
+            bus.cpu.instruction_cycle();
+
+            if(bus.cpu.flag_register != expected_flag_values[byte_counter]){
+                compare_flag_values = true;
+                std::cout << "OPCODE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                          << static_cast<int>(bus.cpu.opcode) << '\t';
+
+                std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                          << static_cast<int>(bus.cpu.flag_register) << '\n';
+            }
+            ASSERT_EQ(compare_flag_values, false);
+        }
+    }
+}
