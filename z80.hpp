@@ -229,6 +229,13 @@ public:
     void RRC_indexed_ix();                                                  // [RRC (IX+d)]
     void RRC_indexed_iy();                                                  // [RRC (IY+d)]
 
+    // Rotate Left Instructions
+    void RLA_implied();                                                      // [RLA]
+    void RL_implied();                                                       // [RL r]
+    void RL_indirect();                                                      // [RL (HL)]
+    void RL_indexed_ix();                                                    // [RL (IX+d)]
+    void RL_indexed_iy();                                                    // [RL (IY+d)]
+
 
     // 16-bit Instructions
 	// LD Instructions
