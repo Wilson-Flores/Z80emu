@@ -236,6 +236,12 @@ public:
     void RL_indexed_ix();                                                    // [RL (IX+d)]
     void RL_indexed_iy();                                                    // [RL (IY+d)]
 
+    // Rotate Right Instructions
+    void RRA_implied();                                                      // [RRA]
+    void RR_implied();                                                       // [RR r]
+    void RR_indirect();                                                      // [RR (HL)]
+    void RR_indexed_ix();                                                    // [RR (IX+d)]
+    void RR_indexed_iy();                                                    // [RR (IY+d)]
 
     // NOP Instruction
     void NOP_implied();                                                     // [NOP]
