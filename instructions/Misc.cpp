@@ -239,3 +239,10 @@ void z80cpu::DAA_implied() {
 
     accumulator = data;
 }
+
+
+void z80cpu::NOP_implied() {
+    t_state_cycles = 4;
+
+    // do nothing
+}

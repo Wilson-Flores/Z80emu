@@ -237,6 +237,9 @@ public:
     void RL_indexed_iy();                                                    // [RL (IY+d)]
 
 
+    // NOP Instruction
+    void NOP_implied();                                                     // [NOP]
+
     // 16-bit Instructions
 	// LD Instructions
     void LD_register_immediate_extended_16_bit();                           // [LD ss, nn]
