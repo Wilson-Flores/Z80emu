@@ -27,6 +27,7 @@ set(SOURCES
         instructions/Dec.cpp
         instructions/Misc.cpp
         instructions/Rotate.cpp
+        instructions/Shift.cpp
 )
 
 add_executable(z80emu
@@ -89,6 +90,7 @@ if(ENABLE_UNIT_TESTS)
     target_sources(z80emu_test PRIVATE
             test-cases/test_main.cpp
             test-cases/test_rotate.cpp
+            test-cases/test_shift.cpp
 #            test-cases/test_load.cpp
             ${SOURCES})
 
