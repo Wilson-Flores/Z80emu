@@ -243,6 +243,12 @@ public:
     void RR_indexed_ix();                                                    // [RR (IX+d)]
     void RR_indexed_iy();                                                    // [RR (IY+d)]
 
+    // Shift Left Arithmetic Instructions
+    void SLA_implied();                                                      // [SLA r]
+    void SLA_indirect();                                                     // [SLA (HL)]
+    void SLA_indexed_ix();                                                   // [SLA (IX+d)]
+    void SLA_indexed_iy();                                                   // [SLA (IY+d)]
+
     // NOP Instruction
     void NOP_implied();                                                     // [NOP]
 
@@ -307,7 +313,6 @@ public:
 
 	void instruction_cycle();
 
-    //TODO: add data variable, and any other variable that is used repeatedly in instructions
 	uint8_t opcode = 0x00;
 	uint8_t t_state_cycles = 0;
 
