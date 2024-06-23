@@ -142,7 +142,7 @@ void z80cpu::SRA_implied() {
     // EXAMPLE:
     // 7 6 5 4 3 2 1 0 C     7 6 5 4 3 2 1 0 C
     // 1 0 1 1 1 0 0 0 0 ->  1 1 0 1 1 1 0 0 0
-    result = (data >> 1) & (data & 0x80);
+    result = (data >> 1) | (data & 0x80);
     *register_table[opcode & BIT_MASK_2] = result;
 
     // S is set if result is negative, else reset
@@ -175,7 +175,7 @@ void z80cpu::SRA_indirect() {
     // EXAMPLE:
     // 7 6 5 4 3 2 1 0 C     7 6 5 4 3 2 1 0 C
     // 1 0 1 1 1 0 0 0 0 ->  1 1 0 1 1 1 0 0 0
-    result = (data >> 1) & (data & 0x80);
+    result = (data >> 1) | (data & 0x80);
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -211,7 +211,7 @@ void z80cpu::SRA_indexed_ix() {
     // EXAMPLE:
     // 7 6 5 4 3 2 1 0 C     7 6 5 4 3 2 1 0 C
     // 1 0 1 1 1 0 0 0 0 ->  1 1 0 1 1 1 0 0 0
-    result = (data >> 1) & (data & 0x80);
+    result = (data >> 1) | (data & 0x80);
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -246,7 +246,7 @@ void z80cpu::SRA_indexed_iy() {
     // EXAMPLE:
     // 7 6 5 4 3 2 1 0 C     7 6 5 4 3 2 1 0 C
     // 1 0 1 1 1 0 0 0 0 ->  1 1 0 1 1 1 0 0 0
-    result = (data >> 1) & (data & 0x80);
+    result = (data >> 1) | (data & 0x80);
 
     // overwrite data
     ram_write(address_absolute, result);
