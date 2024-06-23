@@ -249,6 +249,12 @@ public:
     void SLA_indexed_ix();                                                   // [SLA (IX+d)]
     void SLA_indexed_iy();                                                   // [SLA (IY+d)]
 
+    // Shift Right Arithmetic Instructions
+    void SRA_implied();                                                      // [SRA r]
+    void SRA_indirect();                                                     // [SRA (HL)]
+    void SRA_indexed_ix();                                                   // [SRA (IX+d)]
+    void SRA_indexed_iy();                                                   // [SRA (IY+d)]
+
     // NOP Instruction
     void NOP_implied();                                                     // [NOP]
 
