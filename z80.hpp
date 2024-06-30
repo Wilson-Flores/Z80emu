@@ -261,65 +261,71 @@ public:
     void SRL_indexed_ix();                                                   // [SRL (IX+d)]
     void SRL_indexed_iy();                                                   // [SRL (IY+d)]
 
+    // Rotate Digit Left Instruction
+    void RLD_implied();                                                      // [RLD]
+
+    // Rotate Digit Right Instruction
+    void RRD_implied();                                                      // [RRD]
+
     // NOP Instruction
-    void NOP_implied();                                                     // [NOP]
+    void NOP_implied();                                                      // [NOP]
 
     // 16-bit Instructions
 	// LD Instructions
-    void LD_register_immediate_extended_16_bit();                           // [LD ss, nn]
-	void LD_register_immediate_extended_ix();                               // [LD IX, nn]
-	void LD_register_immediate_extended_iy();                               // [LD IY, nn]
-    void LD_register_extended_16_bit();                                     // [LD ss, (nn)]
-    void LD_register_extended_hl();                                         // [LD HL, (nn)]
-    void LD_register_extended_ix();                                         // [LD IX, (nn)]
-    void LD_register_extended_iy();                                         // [LD IY, (nn)]
-    void LD_register_register_hl();                                         // [LD SP, HL]
-    void LD_register_register_ix();                                         // [LD SP, IX]
-    void LD_register_register_iy();                                         // [LD SP, IY]
-    void LD_extended_register_16_bit();                                     // [LD (nn), ss]
-    void LD_extended_register_hl();                                         // [LD (nn), HL]
-    void LD_extended_register_ix();                                         // [LD (nn), IX]
-    void LD_extended_register_iy();                                         // [LD (nn), IY]
+    void LD_register_immediate_extended_16_bit();                            // [LD ss, nn]
+	void LD_register_immediate_extended_ix();                                // [LD IX, nn]
+	void LD_register_immediate_extended_iy();                                // [LD IY, nn]
+    void LD_register_extended_16_bit();                                      // [LD ss, (nn)]
+    void LD_register_extended_hl();                                          // [LD HL, (nn)]
+    void LD_register_extended_ix();                                          // [LD IX, (nn)]
+    void LD_register_extended_iy();                                          // [LD IY, (nn)]
+    void LD_register_register_hl();                                          // [LD SP, HL]
+    void LD_register_register_ix();                                          // [LD SP, IX]
+    void LD_register_register_iy();                                          // [LD SP, IY]
+    void LD_extended_register_16_bit();                                      // [LD (nn), ss]
+    void LD_extended_register_hl();                                          // [LD (nn), HL]
+    void LD_extended_register_ix();                                          // [LD (nn), IX]
+    void LD_extended_register_iy();                                          // [LD (nn), IY]
 
     // PUSH Instructions
-    void PUSH_register_indirect_register();                                 // [PUSH qq]
-    void PUSH_register_indirect_register_ix();                              // [PUSH IX]
-    void PUSH_register_indirect_register_iy();                              // [PUSH IY]
+    void PUSH_register_indirect_register();                                  // [PUSH qq]
+    void PUSH_register_indirect_register_ix();                               // [PUSH IX]
+    void PUSH_register_indirect_register_iy();                               // [PUSH IY]
 
     // POP Instructions
-    void POP_register_indirect_register();                                  // [POP qq]
-    void POP_register_indirect_register_ix();                               // [POP IX]
-    void POP_register_indirect_register_iy();                               // [POP IY]
+    void POP_register_indirect_register();                                   // [POP qq]
+    void POP_register_indirect_register_ix();                                // [POP IX]
+    void POP_register_indirect_register_iy();                                // [POP IY]
 
     // EX Instructions
-    void EX_implied_implied_af();                                           // [EX AF, AF']
-    void EXX_implied_implied();                                             // [EXX]
-    void EX_implied_implied();                                              // [EX DE, HL]
-    void EX_register_indirect_implied_hl();                                 // [EX (SP), HL]
-    void EX_register_indirect_implied_ix();                                 // [EX (SP), IX]
-    void EX_register_indirect_implied_iy();                                 // [EX (SP), IY]
+    void EX_implied_implied_af();                                            // [EX AF, AF']
+    void EXX_implied_implied();                                              // [EXX]
+    void EX_implied_implied();                                               // [EX DE, HL]
+    void EX_register_indirect_implied_hl();                                  // [EX (SP), HL]
+    void EX_register_indirect_implied_ix();                                  // [EX (SP), IX]
+    void EX_register_indirect_implied_iy();                                  // [EX (SP), IY]
 
     // Arithmetic Instructions
     // ADD Instructions
-    void ADD_implied_register_extended();                                   // [ADD HL, ss]
-    void ADD_implied_register_extended_ix();                                // [ADD IX, pp]
-    void ADD_implied_register_extended_iy();                                // [ADD IY, rr]
+    void ADD_implied_register_extended();                                    // [ADD HL, ss]
+    void ADD_implied_register_extended_ix();                                 // [ADD IX, pp]
+    void ADD_implied_register_extended_iy();                                 // [ADD IY, rr]
 
     // ADC Instruction
-    void ADC_implied_register_extended();                                   // [ADC HL, ss]
+    void ADC_implied_register_extended();                                    // [ADC HL, ss]
 
     // SBC Instruction
-    void SBC_implied_register_extended();                                   // [SBC HL, ss]
+    void SBC_implied_register_extended();                                    // [SBC HL, ss]
 
     // INC Instructions
-    void INC_implied_register_extended();                                   // [INC ss]
-    void INC_implied_register_extended_ix();                                // [INC IX]
-    void INC_implied_register_extended_iy();                                // [INC IY]
+    void INC_implied_register_extended();                                    // [INC ss]
+    void INC_implied_register_extended_ix();                                 // [INC IX]
+    void INC_implied_register_extended_iy();                                 // [INC IY]
 
     // DEC Instructions
-    void DEC_implied_register_extended();                                   // [DEC ss]
-    void DEC_implied_register_extended_ix();                                // [DEC IX]
-    void DEC_implied_register_extended_iy();                                // [DEC IY]
+    void DEC_implied_register_extended();                                    // [DEC ss]
+    void DEC_implied_register_extended_ix();                                 // [DEC IX]
+    void DEC_implied_register_extended_iy();                                 // [DEC IY]
 
 
 
