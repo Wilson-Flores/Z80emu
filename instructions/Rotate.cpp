@@ -614,3 +614,91 @@ void z80cpu::RR_indexed_iy() {
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 }
+
+
+void z80cpu::RLD_implied() {
+    t_state_cycles = 18;
+
+    address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data = ram_read(address_absolute);
+
+    /* The contents of the low-order four bits (3,2,1,0) of data in memory location (HL)
+     * are copied to the high-order four bits (7,6,5,4) of data in memory location (HL).
+     *
+     * The previous contents of those high-order four bits are copied to the low-order four bits of the accumulator.
+     *
+     * The previous contents of the low-order four bits of the accumulator are copied to the low-order four bits of
+     * data in memory location (HL)
+     * */
+
+    /* Step 1: Left Shift data bits. [ 0 0 0 0 1 1 1 1 ] -> [ 1 1 1 1 0 0 0 0 ]
+     * Step 2: Perform 'AND' operation on accumulator. We will only be working with the low-order bits.
+     * [ 1111 1111 & 0000 1111 = 0000 1111 ]
+     * Step 3: Perform an 'OR' operation and store the data into result variable.
+     * Step 4: Perform and 'OR' operation with the Right Shift data bits and accumulator.
+     * Step 5: Overwrite accumulator value.
+     * */
+
+    result = (data << 4) | (accumulator & 0x0F);
+    accumulator &= 0xF0;
+    accumulator |= (data >> 4);
+
+    ram_write(address_absolute, result);
+
+    // S is set if accumulator is negative after an operation, else reset
+    set_flag(SIGN_FLAG, accumulator & 0x80);
+    // Z is set if the accumulator is 0 after an operation, else reset
+    set_flag(ZERO_FLAG, accumulator == 0);
+    // H is reset
+    set_flag(HALF_CARRY_FLAG, false);
+    // P/V is set if the parity of the accumulator is even after an operation, else reset
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[accumulator]);
+    // N is reset
+    set_flag(ADD_SUB_FLAG, false);
+    // C is not affected
+}
+
+
+void z80cpu::RRD_implied() {
+    t_state_cycles = 18;
+
+    address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data = ram_read(address_absolute);
+
+    /* The contents of the low-order four bits (3,2,1,0) of data in memory location (HL)
+     * are copied to the low-order bits of the accumulator.
+     *
+     * The previous contents of the low-order four bits of the accumulator are copied to the high-order four bits of
+     * data in memory location (HL).
+     *
+     * The previous contents of the high-order four bits of (HL) are copied to the low-order four bits of (HL).
+     * */
+
+    /* Step 1: Right Shift data bits. [ 1111 0000 ] -> [ 0000 1111 ]
+     * Step 2: Left Shift accumulator bits. [ 0000 1111 ] -> [ 1111 0000 ]
+     * Step 3: Perform an 'OR' operation and store the data into result variable.
+     * Step 4: Perform and 'OR' operation with the  data's low-order bits and accumulator.
+     * Step 5: Overwrite accumulator value.
+     * */
+
+    result = (data >> 4) | (accumulator << 4);
+
+    // clear the low-order bits
+    accumulator &= 0xF0;
+    // 'OR' operation with data's low-order bits
+    accumulator |= (data & 0x0F);
+
+    ram_write(address_absolute, result);
+
+    // S is set if accumulator is negative after an operation, else reset
+    set_flag(SIGN_FLAG, accumulator & 0x80);
+    // Z is set if the accumulator is 0 after an operation, else reset
+    set_flag(ZERO_FLAG, accumulator == 0);
+    // H is reset
+    set_flag(HALF_CARRY_FLAG, false);
+    // P/V is set if the parity of the accumulator is even after an operation, else reset
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[accumulator]);
+    // N is reset
+    set_flag(ADD_SUB_FLAG, false);
+    // C is not affected
+}
