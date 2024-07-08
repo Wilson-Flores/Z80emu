@@ -28,14 +28,14 @@ void z80cpu::RLC_implied() {
     t_state_cycles = 8;
 
     // copy the data from the register
-    data = *register_table[opcode & BIT_MASK_2];
+    temp_data = *register_table[opcode & BIT_MASK_2];
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data >> 7);
+    flag_register |= (temp_data >> 7);
     // rotate data bits and save back into register
-    result = (data << 1) + (data >> 7);
+    result = (temp_data << 1) + (temp_data >> 7);
     *register_table[opcode & BIT_MASK_2] = result;
 
 
@@ -58,15 +58,15 @@ void z80cpu::RLC_indirect() {
 
     // copy the data from the memory address
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data >> 7);
+    flag_register |= (temp_data >> 7);
     // rotate data bits and save back into register
-    result = (data << 1) + (data >> 7);
+    result = (temp_data << 1) + (temp_data >> 7);
     ram_write(address_absolute, result);
 
 
@@ -89,15 +89,15 @@ void z80cpu::RLC_indexed_ix() {
 
     // copy the data from the memory address
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data >> 7);
+    flag_register |= (temp_data >> 7);
     // rotate data bits and save back into register
-    result = (data << 1) + (data >> 7);
+    result = (temp_data << 1) + (temp_data >> 7);
     ram_write(address_absolute, result);
 
 
@@ -119,15 +119,15 @@ void z80cpu::RLC_indexed_iy() {
     t_state_cycles = 23;
 
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data >> 7);
+    flag_register |= (temp_data >> 7);
     // rotate data bits and save back into register
-    result = (data << 1) + (data >> 7);
+    result = (temp_data << 1) + (temp_data >> 7);
     ram_write(address_absolute, result);
 
 
@@ -173,14 +173,14 @@ void z80cpu::RRC_implied() {
     t_state_cycles = 8;
 
     // copy the data from the register
-    data = *register_table[opcode & BIT_MASK_2];
+    temp_data = *register_table[opcode & BIT_MASK_2];
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
     // rotate data bits and save back into register
-    result = (data >> 1) + ((data & 0x01) << 7);
+    result = (temp_data >> 1) + ((temp_data & 0x01) << 7);
     *register_table[opcode & BIT_MASK_2] = result;
 
 
@@ -203,15 +203,15 @@ void z80cpu::RRC_indirect() {
 
     // copy the data from the memory address
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
     // rotate data bits and save back into register
-    result = (data >> 1) + ((data & 0x01) << 7);
+    result = (temp_data >> 1) + ((temp_data & 0x01) << 7);
     ram_write(address_absolute, result);
 
 
@@ -234,15 +234,15 @@ void z80cpu::RRC_indexed_ix() {
 
     // copy the data from the memory address
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
     // rotate data bits and save back into register
-    result = (data >> 1) + ((data & 0x01) << 7);
+    result = (temp_data >> 1) + ((temp_data & 0x01) << 7);
     ram_write(address_absolute, result);
 
 
@@ -265,15 +265,15 @@ void z80cpu::RRC_indexed_iy() {
     t_state_cycles = 23;
 
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
     // rotate data bits and save back into register
-    result = (data >> 1) + ((data & 0x01) << 7);
+    result = (temp_data >> 1) + ((temp_data & 0x01) << 7);
     ram_write(address_absolute, result);
 
 
@@ -295,14 +295,14 @@ void z80cpu::RLA_implied() {
     t_state_cycles = 4;
 
     // temp store 7th bit value of accumulator
-    data = (accumulator >> 7);
+    temp_data = (accumulator >> 7);
 
     // bit shift left and add carry bit
     accumulator = (flag_register & 0x01) | (accumulator << 1);
 
     // clear carry bit and then add 7th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // S is not affected
     // Z is not affected
@@ -322,14 +322,14 @@ void z80cpu::RL_implied() {
     result = *register_table[opcode & BIT_MASK_2];
 
     // temp store 7th bit value of register
-    data = (result >> 7);
+    temp_data = (result >> 7);
 
     // bit shift left and add carry bit
     result = (flag_register & 0x01) | (result << 1);
 
     // clear carry bit and then add 7th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // overwrite the register data
     *register_table[opcode & BIT_MASK_2] = result;
@@ -357,14 +357,14 @@ void z80cpu::RL_indirect() {
     result = ram_read(address_absolute);
 
     // temp store 7th bit value of register
-    data = (result >> 7);
+    temp_data = (result >> 7);
 
     // bit shift left and add carry bit
     result = (flag_register & 0x01) | (result << 1);
 
     // clear carry bit and then add 7th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -392,14 +392,14 @@ void z80cpu::RL_indexed_ix() {
     result = ram_read(address_absolute);
 
     // temp store 7th bit value of register
-    data = (result >> 7);
+    temp_data = (result >> 7);
 
     // bit shift left and add carry bit
     result = (flag_register & 0x01) | (result << 1);
 
     // clear carry bit and then add 7th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -427,14 +427,14 @@ void z80cpu::RL_indexed_iy() {
     result = ram_read(address_absolute);
 
     // temp store 7th bit value of register
-    data = (result >> 7);
+    temp_data = (result >> 7);
 
     // bit shift left and add carry bit
     result = (flag_register & 0x01) | (result << 1);
 
     // clear carry bit and then add 7th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -458,14 +458,14 @@ void z80cpu::RRA_implied() {
     t_state_cycles = 4;
 
     // temp store 0th bit value of accumulator
-    data = (accumulator & 0x01);
+    temp_data = (accumulator & 0x01);
 
     // bit shift right and add carry bit
     accumulator = ((flag_register & 0x01) << 7) | (accumulator >> 1);
 
     // clear carry bit and then add 0th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // S is not affected
     // Z is not affected
@@ -484,14 +484,14 @@ void z80cpu::RR_implied() {
     result = *register_table[opcode & BIT_MASK_2];
 
     // temp store 0th bit value of register
-    data = (result & 0x01);
+    temp_data = (result & 0x01);
 
     // bit shift right and add carry bit
     result = ((flag_register & 0x01) << 7) | (result >> 1);
 
     // clear carry bit and then add 0th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // overwrite the register data
     *register_table[opcode & BIT_MASK_2] = result;
@@ -519,14 +519,14 @@ void z80cpu::RR_indirect() {
     result = ram_read(address_absolute);
 
     // temp store 0th bit value of register
-    data = (result & 0x01);
+    temp_data = (result & 0x01);
 
     // bit shift right and add carry bit
     result = ((flag_register & 0x01) << 7) | (result >> 1);
 
     // clear carry bit and then add 0th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -554,14 +554,14 @@ void z80cpu::RR_indexed_ix() {
     result = ram_read(address_absolute);
 
     // temp store 0th bit value of register
-    data = (result & 0x01);
+    temp_data = (result & 0x01);
 
     // bit shift right and add carry bit
     result = ((flag_register & 0x01) << 7) | (result >> 1);
 
     // clear carry bit and then add 0th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -589,14 +589,14 @@ void z80cpu::RR_indexed_iy() {
     result = ram_read(address_absolute);
 
     // temp store 0th bit value of register
-    data = (result & 0x01);
+    temp_data = (result & 0x01);
 
     // bit shift right and add carry bit
     result = ((flag_register & 0x01) << 7) | (result >> 1);
 
     // clear carry bit and then add 0th bit value
     flag_register &= 0xFE;
-    flag_register |= data;
+    flag_register |= temp_data;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -620,7 +620,7 @@ void z80cpu::RLD_implied() {
     t_state_cycles = 18;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     /* The contents of the low-order four bits (3,2,1,0) of data in memory location (HL)
      * are copied to the high-order four bits (7,6,5,4) of data in memory location (HL).
@@ -639,9 +639,9 @@ void z80cpu::RLD_implied() {
      * Step 5: Overwrite accumulator value.
      * */
 
-    result = (data << 4) | (accumulator & 0x0F);
+    result = (temp_data << 4) | (accumulator & 0x0F);
     accumulator &= 0xF0;
-    accumulator |= (data >> 4);
+    accumulator |= (temp_data >> 4);
 
     ram_write(address_absolute, result);
 
@@ -663,7 +663,7 @@ void z80cpu::RRD_implied() {
     t_state_cycles = 18;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     /* The contents of the low-order four bits (3,2,1,0) of data in memory location (HL)
      * are copied to the low-order bits of the accumulator.
@@ -681,12 +681,12 @@ void z80cpu::RRD_implied() {
      * Step 5: Overwrite accumulator value.
      * */
 
-    result = (data >> 4) | (accumulator << 4);
+    result = (temp_data >> 4) | (accumulator << 4);
 
     // clear the low-order bits
     accumulator &= 0xF0;
     // 'OR' operation with data's low-order bits
-    accumulator |= (data & 0x0F);
+    accumulator |= (temp_data & 0x0F);
 
     ram_write(address_absolute, result);
 

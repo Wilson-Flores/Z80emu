@@ -5,15 +5,15 @@ void z80cpu::SLA_implied() {
     t_state_cycles = 8;
 
     // copy the data from the register
-    data = *register_table[opcode & BIT_MASK_2];
+    temp_data = *register_table[opcode & BIT_MASK_2];
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data >> 7);
+    flag_register |= (temp_data >> 7);
 
     // shift bits to the left and rewrite data in register
-    result = data << 1;
+    result = temp_data << 1;
     *register_table[opcode & BIT_MASK_2] = result;
 
     // S is set if result is negative, else reset
@@ -35,15 +35,15 @@ void z80cpu::SLA_indirect() {
 
     // copy the data from the memory address
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data >> 7);
+    flag_register |= (temp_data >> 7);
 
     // shift bits to the left
-    result = data << 1;
+    result = temp_data << 1;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -68,15 +68,15 @@ void z80cpu::SLA_indexed_ix() {
 
     // copy the data from the memory address
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data >> 7);
+    flag_register |= (temp_data >> 7);
 
     // shift bits to the left
-    result = data << 1;
+    result = temp_data << 1;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -100,15 +100,15 @@ void z80cpu::SLA_indexed_iy() {
 
     // copy the data from the memory address
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data >> 7);
+    flag_register |= (temp_data >> 7);
 
     // shift bits to the left
-    result = data << 1;
+    result = temp_data << 1;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -131,18 +131,18 @@ void z80cpu::SRA_implied() {
     t_state_cycles = 8;
 
     // copy the data from the register
-    data = *register_table[opcode & BIT_MASK_2];
+    temp_data = *register_table[opcode & BIT_MASK_2];
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
 
     // We will be shifting bits to right while keeping the 7 bit the same.
     // EXAMPLE:
     // 7 6 5 4 3 2 1 0 C     7 6 5 4 3 2 1 0 C
     // 1 0 1 1 1 0 0 0 0 ->  1 1 0 1 1 1 0 0 0
-    result = (data >> 1) | (data & 0x80);
+    result = (temp_data >> 1) | (temp_data & 0x80);
     *register_table[opcode & BIT_MASK_2] = result;
 
     // S is set if result is negative, else reset
@@ -164,18 +164,18 @@ void z80cpu::SRA_indirect() {
 
     // copy the data from the memory address
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
 
     // We will be shifting bits to right while keeping the 7 bit the same.
     // EXAMPLE:
     // 7 6 5 4 3 2 1 0 C     7 6 5 4 3 2 1 0 C
     // 1 0 1 1 1 0 0 0 0 ->  1 1 0 1 1 1 0 0 0
-    result = (data >> 1) | (data & 0x80);
+    result = (temp_data >> 1) | (temp_data & 0x80);
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -200,18 +200,18 @@ void z80cpu::SRA_indexed_ix() {
 
     // copy the data from the memory address
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
 
     // We will be shifting bits to right while keeping the 7 bit the same.
     // EXAMPLE:
     // 7 6 5 4 3 2 1 0 C     7 6 5 4 3 2 1 0 C
     // 1 0 1 1 1 0 0 0 0 ->  1 1 0 1 1 1 0 0 0
-    result = (data >> 1) | (data & 0x80);
+    result = (temp_data >> 1) | (temp_data & 0x80);
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -235,18 +235,18 @@ void z80cpu::SRA_indexed_iy() {
 
     // copy the data from the memory address
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
 
     // We will be shifting bits to right while keeping the 7 bit the same.
     // EXAMPLE:
     // 7 6 5 4 3 2 1 0 C     7 6 5 4 3 2 1 0 C
     // 1 0 1 1 1 0 0 0 0 ->  1 1 0 1 1 1 0 0 0
-    result = (data >> 1) | (data & 0x80);
+    result = (temp_data >> 1) | (temp_data & 0x80);
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -269,15 +269,15 @@ void z80cpu::SRL_implied() {
     t_state_cycles = 8;
 
     // copy the data from the register
-    data = *register_table[opcode & BIT_MASK_2];
+    temp_data = *register_table[opcode & BIT_MASK_2];
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
 
     // We will be shifting bits to right
-    result = data >> 1;
+    result = temp_data >> 1;
     *register_table[opcode & BIT_MASK_2] = result;
 
     // S is reset
@@ -299,15 +299,15 @@ void z80cpu::SRL_indirect() {
 
     // copy the data from the memory address
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
 
     // We will be shifting bits to right
-    result = data >> 1;
+    result = temp_data >> 1;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -332,15 +332,15 @@ void z80cpu::SRL_indexed_ix() {
 
     // copy the data from the memory address
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
 
     // We will be shifting bits to right
-    result = data >> 1;
+    result = temp_data >> 1;
 
     // overwrite data
     ram_write(address_absolute, result);
@@ -364,15 +364,15 @@ void z80cpu::SRL_indexed_iy() {
 
     // copy the data from the memory address
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data & 0x01);
+    flag_register |= (temp_data & 0x01);
 
     // We will be shifting bits to right
-    result = data >> 1;
+    result = temp_data >> 1;
 
     // overwrite data
     ram_write(address_absolute, result);

@@ -447,7 +447,7 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // We get the data from the address location of HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
 
     // we are taking HL register and incrementing by 1
     L_register++;
@@ -457,7 +457,7 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // Next we write that data into the address location of DE register pair
     address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
-    ram_write(address_absolute, data);
+    ram_write(address_absolute, temp_data);
 
     // we are taking DE register and incrementing by 1
     E_register++;
@@ -486,7 +486,7 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
     L_register++;
     if(L_register == 0x00){
         H_register++;
@@ -494,7 +494,7 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
 
     // we are writing the data to address at DE register pair
     address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
-    ram_write(address_absolute, data);
+    ram_write(address_absolute, temp_data);
     E_register++;
     if(E_register == 0x00){
         D_register++;
@@ -533,7 +533,7 @@ void z80cpu::LDD_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
@@ -541,7 +541,7 @@ void z80cpu::LDD_register_indirect_register_indirect() {
 
     // we are writing the data to address at DE register pair
     address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
-    ram_write(address_absolute, data);
+    ram_write(address_absolute, temp_data);
     E_register--;
     if(E_register == 0xFF){
         D_register--;
@@ -568,7 +568,7 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
+    temp_data = ram_read(address_absolute);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
@@ -576,7 +576,7 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
 
     // we are writing the data to address at DE register pair
     address_absolute = (static_cast<uint16_t>(D_register) << 8) | E_register;
-    ram_write(address_absolute, data);
+    ram_write(address_absolute, temp_data);
     E_register--;
     if(E_register == 0xFF){
         D_register--;

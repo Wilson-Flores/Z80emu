@@ -4,8 +4,8 @@
 void z80cpu::XOR_implied_register() {
     t_state_cycles = 4;
 
-    data = *register_table[opcode & BIT_MASK_2];
-    accumulator ^= data;
+    temp_data = *register_table[opcode & BIT_MASK_2];
+    accumulator ^= temp_data;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator & 0x80);
@@ -26,8 +26,8 @@ void z80cpu::XOR_implied_register_indirect() {
     t_state_cycles = 7;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
-    accumulator ^= data;
+    temp_data = ram_read(address_absolute);
+    accumulator ^= temp_data;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator & 0x80);
@@ -49,8 +49,8 @@ void z80cpu::XOR_implied_indexed_ix() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
-    accumulator ^= data;
+    temp_data = ram_read(address_absolute);
+    accumulator ^= temp_data;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator & 0x80);
@@ -73,8 +73,8 @@ void z80cpu::XOR_implied_indexed_iy() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
-    accumulator ^= data;
+    temp_data = ram_read(address_absolute);
+    accumulator ^= temp_data;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator & 0x80);
@@ -93,9 +93,9 @@ void z80cpu::XOR_implied_indexed_iy() {
 void z80cpu::XOR_implied_immediate() {
     t_state_cycles = 7;
 
-    data = rom_read(program_counter);
+    temp_data = rom_read(program_counter);
     program_counter++;
-    accumulator ^= data;
+    accumulator ^= temp_data;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator & 0x80);

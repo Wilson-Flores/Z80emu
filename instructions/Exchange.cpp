@@ -42,17 +42,17 @@ void z80cpu::EX_implied_implied() {
 void z80cpu::EX_register_indirect_implied_hl() {
     t_state_cycles = 19;
 
-    data = ram_read(stack_pointer);  // low byte in HL is swapped with memory at stack pointer address
-    L_register ^= data;
-    data ^= L_register;
-    L_register ^= data;
-    ram_write(stack_pointer, data);
+    temp_data = ram_read(stack_pointer);  // low byte in HL is swapped with memory at stack pointer address
+    L_register ^= temp_data;
+    temp_data ^= L_register;
+    L_register ^= temp_data;
+    ram_write(stack_pointer, temp_data);
 
-    data = ram_read(stack_pointer + 1);     // high byte in HL is swapped with memory at (stack pointer + 1) address
-    H_register ^= data;
-    data ^= H_register;
-    H_register ^= data;
-    ram_write(stack_pointer + 1, data);
+    temp_data = ram_read(stack_pointer + 1);     // high byte in HL is swapped with memory at (stack pointer + 1) address
+    H_register ^= temp_data;
+    temp_data ^= H_register;
+    H_register ^= temp_data;
+    ram_write(stack_pointer + 1, temp_data);
 }
 
 //TODO: data was left as uint8_t, further testing needed

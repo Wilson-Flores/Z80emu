@@ -6,8 +6,8 @@ void z80cpu::INC_implied_register() {
 
     // increment value in register
     uint8_t register_bit = (opcode & BIT_MASK_4) >> 3;
-    data = *register_table[register_bit];
-    result = data + 1;
+    temp_data = *register_table[register_bit];
+    result = temp_data + 1;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
@@ -15,9 +15,9 @@ void z80cpu::INC_implied_register() {
     set_flag(ZERO_FLAG, result == 0);
     // H is set if carry from bit 3;
     // only time half carry occurs: (0b1111 + 0b0001)
-    set_flag(HALF_CARRY_FLAG, ((data & 0x0F) == 0x0F));
+    set_flag(HALF_CARRY_FLAG, ((temp_data & 0x0F) == 0x0F));
     // P/V is set if r was 7Fh before operation, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, data == 0x7F);
+    set_flag(PARITY_OVERFLOW_FLAG, temp_data == 0x7F);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
 
@@ -29,17 +29,17 @@ void z80cpu::INC_implied_register_indirect() {
     t_state_cycles = 11;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data = ram_read(address_absolute);
-    result = data + 1;
+    temp_data = ram_read(address_absolute);
+    result = temp_data + 1;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, result == 0);
     // H is set if carry from bit 3;
-    set_flag(HALF_CARRY_FLAG, ((data & 0x0F) == 0x0F));
+    set_flag(HALF_CARRY_FLAG, ((temp_data & 0x0F) == 0x0F));
     // P/V is set if r was 7Fh before operation, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, data == 0x7F);
+    set_flag(PARITY_OVERFLOW_FLAG, temp_data == 0x7F);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
 
@@ -53,17 +53,17 @@ void z80cpu::INC_implied_indexed_ix() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
-    result = data + 1;
+    temp_data = ram_read(address_absolute);
+    result = temp_data + 1;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, result == 0);
     // H is set if carry from bit 3;
-    set_flag(HALF_CARRY_FLAG, ((data & 0x0F) == 0x0F));
+    set_flag(HALF_CARRY_FLAG, ((temp_data & 0x0F) == 0x0F));
     // P/V is set if r was 7Fh before operation, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, data == 0x7F);
+    set_flag(PARITY_OVERFLOW_FLAG, temp_data == 0x7F);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
 
@@ -77,17 +77,17 @@ void z80cpu::INC_implied_indexed_iy() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data = ram_read(address_absolute);
-    result = data + 1;
+    temp_data = ram_read(address_absolute);
+    result = temp_data + 1;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result & 0x80);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, result == 0);
     // H is set if carry from bit 3;
-    set_flag(HALF_CARRY_FLAG, ((data & 0x0F) == 0x0F));
+    set_flag(HALF_CARRY_FLAG, ((temp_data & 0x0F) == 0x0F));
     // P/V is set if r was 7Fh before operation, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, data == 0x7F);
+    set_flag(PARITY_OVERFLOW_FLAG, temp_data == 0x7F);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
 
@@ -103,10 +103,10 @@ void z80cpu::INC_implied_register_extended(){
     uint8_t low_byte = *register_pair_table_ss[register_pair_bit].low_byte_register;
 
     data_16 = (high_byte << 8) + low_byte;
-    data++;
+    temp_data++;
 
-    *register_pair_table_ss[register_pair_bit].high_byte_register = static_cast<uint8_t>((data & 0xFF00) >> 8);
-    *register_pair_table_ss[register_pair_bit].low_byte_register = static_cast<uint8_t>(data & 0x00FF);
+    *register_pair_table_ss[register_pair_bit].high_byte_register = static_cast<uint8_t>((temp_data & 0xFF00) >> 8);
+    *register_pair_table_ss[register_pair_bit].low_byte_register = static_cast<uint8_t>(temp_data & 0x00FF);
 }
 
 

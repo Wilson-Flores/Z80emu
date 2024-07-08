@@ -339,7 +339,7 @@ public:
     int8_t displacement = 0x00;
 
     // 8-bit temp values
-    uint8_t data = 0;
+    uint8_t temp_data = 0;
     uint8_t result = 0;
 
     // 16-bit temp values
