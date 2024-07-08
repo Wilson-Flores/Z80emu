@@ -243,6 +243,13 @@ public:
     void RR_indexed_ix();                                                    // [RR (IX+d)]
     void RR_indexed_iy();                                                    // [RR (IY+d)]
 
+    // Rotate Digit Left Instruction
+    void RLD_implied();                                                      // [RLD]
+
+    // Rotate Digit Right Instruction
+    void RRD_implied();                                                      // [RRD]
+
+    // Shift Instructions
     // Shift Left Arithmetic Instructions
     void SLA_implied();                                                      // [SLA r]
     void SLA_indirect();                                                     // [SLA (HL)]
@@ -261,11 +268,11 @@ public:
     void SRL_indexed_ix();                                                   // [SRL (IX+d)]
     void SRL_indexed_iy();                                                   // [SRL (IY+d)]
 
-    // Rotate Digit Left Instruction
-    void RLD_implied();                                                      // [RLD]
-
-    // Rotate Digit Right Instruction
-    void RRD_implied();                                                      // [RRD]
+    // BIT Instructions
+    void BIT_implied();                                                      // [BIT b, r]
+    void BIT_indirect();                                                     // [BIT b, (HL)]
+    void BIT_indexed_ix();                                                   // [BIT b, (IX+d)]
+    void BIT_indexed_iy();                                                   // [BIT b, (IY+d)]
 
     // NOP Instruction
     void NOP_implied();                                                      // [NOP]

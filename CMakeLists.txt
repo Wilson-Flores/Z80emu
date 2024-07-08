@@ -28,6 +28,14 @@ set(SOURCES
         instructions/Misc.cpp
         instructions/Rotate.cpp
         instructions/Shift.cpp
+        instructions/Bit.cpp
+)
+
+# List of test source files
+set(TEST_SOURCES
+        test-cases/test_main.cpp
+        test-cases/test_rotate.cpp
+        test-cases/test_shift.cpp
 )
 
 add_executable(z80emu
@@ -88,10 +96,7 @@ if(ENABLE_UNIT_TESTS)
     add_executable(z80emu_test "")
 
     target_sources(z80emu_test PRIVATE
-            test-cases/test_main.cpp
-            test-cases/test_rotate.cpp
-            test-cases/test_shift.cpp
-#            test-cases/test_load.cpp
+            ${TEST_SOURCES}
             ${SOURCES})
 
     target_link_libraries(z80emu_test
