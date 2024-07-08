@@ -623,3 +623,55 @@ TEST_F(RotateTest, RR_indexed_iy_test){
         ASSERT_EQ(compare_flag_values, false);
     }
 }
+
+
+TEST_F(RotateTest, RLD_implied_test){
+    std::vector<int> expected_flag_values = {0x00, 0x00, 0x00, 0x84};
+    bool compare_flag_values = false;
+
+    std::vector<uint8_t> memory = {0x01, 0x00, 0x50, 0x36, 0x31, 0x3E, 0x9A, 0xED, 0x6F};
+
+    for (int i = 0; i < memory.size(); i++) {
+        bus.rom_write(i,memory[i]);
+    }
+
+    for(uint16_t byte_counter = 0; byte_counter < expected_flag_values.size(); byte_counter++){
+        bus.cpu.instruction_cycle();
+
+        if(bus.cpu.flag_register != expected_flag_values[byte_counter]){
+            compare_flag_values = true;
+            std::cout << "OPCODE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                      << static_cast<int>(bus.cpu.opcode) << '\t';
+
+            std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                      << static_cast<int>(bus.cpu.flag_register) << '\n';
+        }
+        ASSERT_EQ(compare_flag_values, false);
+    }
+}
+
+
+TEST_F(RotateTest, RRD_implied_test){
+    std::vector<int> expected_flag_values = {0x00, 0x00, 0x00, 0x80};
+    bool compare_flag_values = false;
+
+    std::vector<uint8_t> memory = {0x01, 0x00, 0x50, 0x36, 0x20, 0x3E, 0x84, 0xED, 0x67};
+
+    for (int i = 0; i < memory.size(); i++) {
+        bus.rom_write(i,memory[i]);
+    }
+
+    for(uint16_t byte_counter = 0; byte_counter < expected_flag_values.size(); byte_counter++){
+        bus.cpu.instruction_cycle();
+
+        if(bus.cpu.flag_register != expected_flag_values[byte_counter]){
+            compare_flag_values = true;
+            std::cout << "OPCODE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                      << static_cast<int>(bus.cpu.opcode) << '\t';
+
+            std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                      << static_cast<int>(bus.cpu.flag_register) << '\n';
+        }
+        ASSERT_EQ(compare_flag_values, false);
+    }
+}
