@@ -84,6 +84,10 @@ void z80cpu::LD_register_implied() {
 
         accumulator = memory_refresh_register;
     }
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
