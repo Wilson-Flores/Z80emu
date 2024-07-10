@@ -46,16 +46,13 @@ public:
 	// connect to Bus
 	void connect_bus(Bus* n) { bus = n; }
 
-    //TODO: Figure out how UNUSED flags are set.
 	// Status Register
 	enum FLAGSZ80 {
 		CARRY_FLAG = (1 << 0),                    // C
 		ADD_SUB_FLAG = (1 << 1),                  // N
 		PARITY_OVERFLOW_FLAG = (1 << 2),          // P/V
-        // copies bit 3 of the result
 		X_FLAG = (1 << 3),                        // X
 		HALF_CARRY_FLAG = (1 << 4),               // H
-        // copies bit 5 of the result
 		Y_FLAG = (1 << 5),                        // Y
 		ZERO_FLAG = (1 << 6),                     // Z
 		SIGN_FLAG = (1 << 7)                      // S
