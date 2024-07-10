@@ -274,6 +274,10 @@ public:
     void BIT_indexed_ix();                                                   // [BIT b, (IX+d)]
     void BIT_indexed_iy();                                                   // [BIT b, (IY+d)]
 
+    // Jump Instructions
+    void JP_immediate();                                                     // [JP nn]
+    void JP_cc_immediate();                                                  // [JP cc, nn]
+
     // NOP Instruction
     void NOP_implied();                                                      // [NOP]
 
@@ -346,8 +350,8 @@ public:
     int8_t displacement = 0x00;
 
     // 8-bit temp values
-    uint8_t temp_data = 0;
-    uint8_t result = 0;
+    uint8_t data_8 = 0;
+    uint8_t result_8 = 0;
 
     // 16-bit temp values
     uint16_t data_16 = 0;

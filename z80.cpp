@@ -283,7 +283,7 @@ void z80cpu::bit_instructions() {
     (this->*bit_instruction_table[opcode].instruction)();
 }
 
-//TODO: create another variable to store displacement, ex: DD CB d 06
+
 void z80cpu::ix_bit_instructions() {
     // DDCB opcodes have a displacement value placed before the final opcode
     // ex DD CB d 06

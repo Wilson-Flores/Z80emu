@@ -29,6 +29,7 @@ set(SOURCES
         instructions/Rotate.cpp
         instructions/Shift.cpp
         instructions/Bit.cpp
+        instructions/Jump.cpp
 )
 
 # List of test source files

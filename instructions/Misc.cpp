@@ -19,12 +19,12 @@ void z80cpu::NEG_implied() {
     // A = 0 - A
     t_state_cycles = 8;
 
-    result = ~accumulator + 1;
+    result_8 = ~accumulator + 1;
 
     // S is set if result is negative; otherwise it is reset
-    set_flag(SIGN_FLAG, result & 0x80);
+    set_flag(SIGN_FLAG, result_8 & 0x80);
     // Z is set if result is 0, else it is reset
-    set_flag(ZERO_FLAG, result == 0);
+    set_flag(ZERO_FLAG, result_8 == 0);
     // H is set if borrow from bit 4, else it is reset
     // 0 - (anything != 0) will always need to borrow, we can use > 0 as well.
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) > 0);
@@ -35,7 +35,7 @@ void z80cpu::NEG_implied() {
     // C is set if Accumulator was not 00h before operation, else it is reset
     set_flag(CARRY_FLAG, accumulator != 0);
 
-    accumulator = result;
+    accumulator = result_8;
 }
 
 
@@ -79,7 +79,7 @@ void z80cpu::DAA_implied() {
     // For Addition: (ADD, ADC, INC); for Subtraction: (SUB, SBC, DEC, NEG)
 
     t_state_cycles = 4;
-    temp_data = accumulator;
+    data_8 = accumulator;
 
     // We check the status of the Add/Sub Flag, Carry Flag, and Half-Carry Flag.
     // operation will vary on the 3 flag combination
@@ -146,98 +146,98 @@ void z80cpu::DAA_implied() {
     if(get_flag(ADD_SUB_FLAG) == 0){
         if(get_flag(CARRY_FLAG) == 0){
             if(get_flag(HALF_CARRY_FLAG) == 0){
-                if(((temp_data & 0xF0) < 0x90) && ((temp_data & 0x0F) > 0x09)){
-                    temp_data += 0x06;
+                if(((data_8 & 0xF0) < 0x90) && ((data_8 & 0x0F) > 0x09)){
+                    data_8 += 0x06;
                     set_flag(HALF_CARRY_FLAG, true);
                 }
-                else if(((temp_data & 0xF0) > 0x90) && ((temp_data & 0x0F) < 0x0A)){
-                    temp_data += 0x60;
+                else if(((data_8 & 0xF0) > 0x90) && ((data_8 & 0x0F) < 0x0A)){
+                    data_8 += 0x60;
                     set_flag(CARRY_FLAG, true);
                 }
-                else if(((temp_data & 0xF0) > 0x80) && ((temp_data & 0x0F) > 0x09)){
-                    temp_data += 0x66;
+                else if(((data_8 & 0xF0) > 0x80) && ((data_8 & 0x0F) > 0x09)){
+                    data_8 += 0x66;
                     set_flag(CARRY_FLAG, true);
                     set_flag(HALF_CARRY_FLAG, true);
                 }
             }
             else{
-                set_flag(HALF_CARRY_FLAG, (temp_data & 0x0F) > 0x09);
-                if(temp_data < 0x9A){
-                    temp_data += 0x06;
+                set_flag(HALF_CARRY_FLAG, (data_8 & 0x0F) > 0x09);
+                if(data_8 < 0x9A){
+                    data_8 += 0x06;
                 }
                 else{
-                    temp_data += 0x66;
+                    data_8 += 0x66;
                     set_flag(CARRY_FLAG, true);
                 }
             }
         }
         else{
             if(get_flag(HALF_CARRY_FLAG) == 0){
-                if((temp_data & 0x0F) < 0x0A){
-                    temp_data += 0x60;
+                if((data_8 & 0x0F) < 0x0A){
+                    data_8 += 0x60;
                 }
                 else{
-                    temp_data += 0x66;
+                    data_8 += 0x66;
                     set_flag(HALF_CARRY_FLAG, true);
                 }
             }
             else{
-                set_flag(HALF_CARRY_FLAG, (temp_data & 0x0F) > 0x09);
-                temp_data += 0x66;
+                set_flag(HALF_CARRY_FLAG, (data_8 & 0x0F) > 0x09);
+                data_8 += 0x66;
             }
         }
     }
     else {
         if(get_flag(CARRY_FLAG) == 0){
             if(get_flag(HALF_CARRY_FLAG) == 0){
-                if(((temp_data & 0xF0) < 0x90) && ((temp_data & 0x0F) > 0x09)){
-                    temp_data += 0xFA;
+                if(((data_8 & 0xF0) < 0x90) && ((data_8 & 0x0F) > 0x09)){
+                    data_8 += 0xFA;
                 }
-                else if(((temp_data & 0xF0) > 0x90) && ((temp_data & 0x0F) < 0x0A)){
-                    temp_data += 0xA0;
+                else if(((data_8 & 0xF0) > 0x90) && ((data_8 & 0x0F) < 0x0A)){
+                    data_8 += 0xA0;
                     set_flag(CARRY_FLAG, true);
                 }
-                else if(((temp_data & 0xF0) > 0x80) && ((temp_data & 0x0F) > 0x09)) {
-                    temp_data += 0x9A;
+                else if(((data_8 & 0xF0) > 0x80) && ((data_8 & 0x0F) > 0x09)) {
+                    data_8 += 0x9A;
                     set_flag(CARRY_FLAG, true);
                 }
             }
             else{
-                set_flag(HALF_CARRY_FLAG, (temp_data & 0x0F) < 0x06);
-                if(temp_data < 0x9A){
-                    temp_data += 0xFA;
+                set_flag(HALF_CARRY_FLAG, (data_8 & 0x0F) < 0x06);
+                if(data_8 < 0x9A){
+                    data_8 += 0xFA;
                 }
                 else{
-                    temp_data += 0x9A;
+                    data_8 += 0x9A;
                     set_flag(CARRY_FLAG, true);
                 }
             }
         }
         else{
             if(get_flag(HALF_CARRY_FLAG) == 0){
-                if((temp_data & 0x0F) < 0x0A){
-                    temp_data += 0xA0;
+                if((data_8 & 0x0F) < 0x0A){
+                    data_8 += 0xA0;
                 }
                 else{
-                    temp_data += 0x9A;
+                    data_8 += 0x9A;
                 }
             }
             else{
-                set_flag(HALF_CARRY_FLAG, (temp_data & 0x0F) < 0x06);
-                temp_data += 0x9A;
+                set_flag(HALF_CARRY_FLAG, (data_8 & 0x0F) < 0x06);
+                data_8 += 0x9A;
             }
         }
     }
 
     // S is set if most significant bit of the accumulator is 1 after an operation, else reset
-    set_flag(SIGN_FLAG, temp_data & 0x80);
+    set_flag(SIGN_FLAG, data_8 & 0x80);
     // Z is set if the accumulator is 0 after an operation, else reset
-    set_flag(ZERO_FLAG, temp_data == 0);
+    set_flag(ZERO_FLAG, data_8 == 0);
     // P/V is set if the accumulator is an even parity after an operation, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[temp_data]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[data_8]);
     // N is not affected
 
-    accumulator = temp_data;
+    accumulator = data_8;
 }
 
 

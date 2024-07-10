@@ -3,8 +3,8 @@
 void z80cpu::ADD_implied_register() {
     t_state_cycles = 4;
 
-    temp_data = *register_table[opcode & BIT_MASK_2];
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data);
+    data_8 = *register_table[opcode & BIT_MASK_2];
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8);
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result_16 & 0x0080);
@@ -12,9 +12,9 @@ void z80cpu::ADD_implied_register() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (temp_data & 0x0F) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data_8 & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ temp_data)) & 0x80);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ data_8)) & 0x80);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -28,8 +28,8 @@ void z80cpu::ADD_implied_register_indirect() {
     t_state_cycles = 7;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    temp_data = ram_read(address_absolute);
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data);
+    data_8 = ram_read(address_absolute);
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8);
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result_16 & 0x0080);
@@ -37,9 +37,9 @@ void z80cpu::ADD_implied_register_indirect() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (temp_data & 0x0F) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data_8 & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ temp_data)) & 0x80);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ data_8)) & 0x80);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -55,8 +55,8 @@ void z80cpu::ADD_implied_indexed_ix() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    temp_data = ram_read(address_absolute);
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data);
+    data_8 = ram_read(address_absolute);
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8);
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result_16 & 0x0080);
@@ -64,9 +64,9 @@ void z80cpu::ADD_implied_indexed_ix() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (temp_data & 0x0F) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data_8 & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ temp_data)) & 0x80);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ data_8)) & 0x80);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -82,8 +82,8 @@ void z80cpu::ADD_implied_indexed_iy() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    temp_data = ram_read(address_absolute);
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data);
+    data_8 = ram_read(address_absolute);
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8);
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result_16 & 0x0080);
@@ -91,9 +91,9 @@ void z80cpu::ADD_implied_indexed_iy() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (temp_data & 0x0F) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data_8 & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ temp_data)) & 0x80);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ data_8)) & 0x80);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -106,9 +106,9 @@ void z80cpu::ADD_implied_indexed_iy() {
 void z80cpu::ADD_implied_immediate() {
     t_state_cycles = 7;
 
-    temp_data = rom_read(program_counter);
+    data_8 = rom_read(program_counter);
     program_counter++;
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data);
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8);
 
     // S is set if result if negative, else reset
     set_flag(SIGN_FLAG, result_16 & 0x0080);
@@ -116,9 +116,9 @@ void z80cpu::ADD_implied_immediate() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (temp_data & 0x0F) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) + (data_8 & 0x0F) > 0x0F);
     // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ temp_data)) & 0x80);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ result_16) & ~(accumulator ^ data_8)) & 0x80);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -131,8 +131,8 @@ void z80cpu::ADD_implied_immediate() {
 void z80cpu::ADC_implied_register() {
     t_state_cycles = 4;
 
-    temp_data = *register_table[opcode & BIT_MASK_2];
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data) +
+    data_8 = *register_table[opcode & BIT_MASK_2];
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8) +
                 static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
@@ -141,10 +141,10 @@ void z80cpu::ADC_implied_register() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (temp_data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data_8 & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result_16) &
-    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(temp_data))) & 0x0080);
+    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data_8))) & 0x0080);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -158,8 +158,8 @@ void z80cpu::ADC_implied_register_indirect() {
     t_state_cycles = 7;
 
     address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    temp_data = ram_read(address_absolute);
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data) +
+    data_8 = ram_read(address_absolute);
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8) +
                 static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
@@ -168,10 +168,10 @@ void z80cpu::ADC_implied_register_indirect() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (temp_data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data_8 & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result_16) &
-    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(temp_data))) & 0x0080);
+    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data_8))) & 0x0080);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -187,8 +187,8 @@ void z80cpu::ADC_implied_indexed_ix() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    temp_data = ram_read(address_absolute);
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data) +
+    data_8 = ram_read(address_absolute);
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8) +
                 static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
@@ -197,10 +197,10 @@ void z80cpu::ADC_implied_indexed_ix() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (temp_data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data_8 & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result_16) &
-    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(temp_data))) & 0x0080);
+    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data_8))) & 0x0080);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -216,8 +216,8 @@ void z80cpu::ADC_implied_indexed_iy() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    temp_data = ram_read(address_absolute);
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data) +
+    data_8 = ram_read(address_absolute);
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8) +
                 static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
@@ -226,10 +226,10 @@ void z80cpu::ADC_implied_indexed_iy() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (temp_data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data_8 & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result_16) &
-    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(temp_data))) & 0x0080);
+    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data_8))) & 0x0080);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
@@ -242,10 +242,10 @@ void z80cpu::ADC_implied_indexed_iy() {
 void z80cpu::ADC_implied_immediate() {
     t_state_cycles = 7;
 
-    temp_data = rom_read(program_counter);
+    data_8 = rom_read(program_counter);
     program_counter++;
 
-    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(temp_data) +
+    result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(data_8) +
                 static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
@@ -254,10 +254,10 @@ void z80cpu::ADC_implied_immediate() {
     set_flag(ZERO_FLAG, (result_16 & 0x00FF) == 0);
     // H is set if carry from bit 3, else reset
     // h_result = (accumulator & 0x0F) + (data & 0x0F) + get_flag(CARRY_FLAG)
-    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (temp_data & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
+    set_flag(HALF_CARRY_FLAG, ((accumulator & 0x0F) + (data_8 & 0x0F) + get_flag(CARRY_FLAG)) > 0x0F);
     // P/V is set if overflow, else reset
     set_flag(PARITY_OVERFLOW_FLAG, ((static_cast<uint16_t>(accumulator) ^ result_16) &
-    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(temp_data))) & 0x0080);
+    ~(static_cast<uint16_t>(accumulator) ^ static_cast<uint16_t>(data_8))) & 0x0080);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
