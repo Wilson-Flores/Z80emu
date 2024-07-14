@@ -3,8 +3,7 @@
 
 
 int main() {
-	Bus test;
-
+	Bus bus;
 
     return 0;
 }
