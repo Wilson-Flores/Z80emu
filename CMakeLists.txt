@@ -37,6 +37,7 @@ set(TEST_SOURCES
         test-cases/test_main.cpp
         test-cases/test_rotate.cpp
         test-cases/test_shift.cpp
+        test-cases/test_inc.cpp
 )
 
 add_executable(z80emu
