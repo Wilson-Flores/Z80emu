@@ -482,6 +482,11 @@ void z80cpu::LDI_register_indirect_register_indirect() {
     // P/V is set if BC-1 != 0, else it is reset.
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
     set_flag(PARITY_OVERFLOW_FLAG,address_absolute != 0);
+
+    // re-use data_8 as a temp
+    data_8 += accumulator;
+    set_flag(Y_FLAG, data_8 & 0x02);
+    set_flag(X_FLAG, data_8 & 0x08);
 }
 
 
@@ -516,6 +521,7 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     set_flag(HALF_CARRY_FLAG, false);
     set_flag(ADD_SUB_FLAG, false);
 
+
     if(address_absolute != 0) {
         // P/V us set uf BC - 1 != 0
         set_flag(PARITY_OVERFLOW_FLAG, true);
@@ -529,6 +535,11 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     }
 
     set_flag(PARITY_OVERFLOW_FLAG, false);
+
+    // re-use data_8 as a temp
+    data_8 += accumulator;
+    set_flag(Y_FLAG, data_8 & 0x02);
+    set_flag(X_FLAG, data_8 & 0x08);
 }
 
 
@@ -564,6 +575,11 @@ void z80cpu::LDD_register_indirect_register_indirect() {
     // P/V is set if BC != 0, else it is reset.
     address_absolute = (static_cast<uint16_t>(B_register) << 8) | C_register;
     set_flag(PARITY_OVERFLOW_FLAG, address_absolute != 0);
+
+    // re-use data_8 as a temp
+    data_8 += accumulator;
+    set_flag(Y_FLAG, data_8 & 0x02);
+    set_flag(X_FLAG, data_8 & 0x08);
 }
 
 
@@ -610,4 +626,9 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
     }
 
     set_flag(PARITY_OVERFLOW_FLAG, false);
+
+    // re-use data_8 as a temp
+    data_8 += accumulator;
+    set_flag(Y_FLAG, data_8 & 0x02);
+    set_flag(X_FLAG, data_8 & 0x08);
 }
