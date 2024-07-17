@@ -55,7 +55,7 @@ void z80cpu::EX_register_indirect_implied_hl() {
     ram_write(stack_pointer + 1, data_8);
 }
 
-//TODO: data was left as uint8_t, further testing needed
+
 void z80cpu::EX_register_indirect_implied_ix() {
     t_state_cycles = 19;
 

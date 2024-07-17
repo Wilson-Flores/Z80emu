@@ -533,8 +533,9 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
         program_counter -= 2;
         return;
     }
-
-    set_flag(PARITY_OVERFLOW_FLAG, false);
+    else{
+        set_flag(PARITY_OVERFLOW_FLAG, false);
+    }
 
     // re-use data_8 as a temp
     data_8 += accumulator;
@@ -624,8 +625,9 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
         program_counter -= 2;
         return;
     }
-
-    set_flag(PARITY_OVERFLOW_FLAG, false);
+    else{
+        set_flag(PARITY_OVERFLOW_FLAG, false);
+    }
 
     // re-use data_8 as a temp
     data_8 += accumulator;
