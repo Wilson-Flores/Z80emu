@@ -30,6 +30,10 @@ void z80cpu::CPI_register_indirect() {
     set_flag(PARITY_OVERFLOW_FLAG, address_absolute != 0);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
+
+    result_8 -= get_flag(HALF_CARRY_FLAG);
+    set_flag(Y_FLAG, data_8 & 0x02);
+    set_flag(X_FLAG, data_8 & 0x08);
 }
 
 
@@ -70,6 +74,10 @@ void z80cpu::CPIR_register_indirect() {
     else{
         set_flag(PARITY_OVERFLOW_FLAG, false);
     }
+
+    result_8 -= get_flag(HALF_CARRY_FLAG);
+    set_flag(Y_FLAG, data_8 & 0x02);
+    set_flag(X_FLAG, data_8 & 0x08);
 }
 
 
@@ -100,6 +108,10 @@ void z80cpu::CPD_register_indirect() {
     set_flag(PARITY_OVERFLOW_FLAG, address_absolute != 0);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
+
+    result_8 -= get_flag(HALF_CARRY_FLAG);
+    set_flag(Y_FLAG, data_8 & 0x02);
+    set_flag(X_FLAG, data_8 & 0x08);
 }
 
 
@@ -140,6 +152,10 @@ void z80cpu::CPDR_register_indirect() {
     else{
         set_flag(PARITY_OVERFLOW_FLAG, false);
     }
+
+    result_8 -= get_flag(HALF_CARRY_FLAG);
+    set_flag(Y_FLAG, data_8 & 0x02);
+    set_flag(X_FLAG, data_8 & 0x08);
 }
 
 
