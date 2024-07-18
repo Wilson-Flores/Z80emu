@@ -207,6 +207,10 @@ void z80cpu::CP_implied_register_indirect() {
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
     set_flag(CARRY_FLAG, accumulator < data_8);
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -233,6 +237,10 @@ void z80cpu::CP_implied_indexed_ix() {
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
     set_flag(CARRY_FLAG, accumulator < data_8);
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -259,6 +267,10 @@ void z80cpu::CP_implied_indexed_iy() {
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
     set_flag(CARRY_FLAG, accumulator < data_8);
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -283,4 +295,8 @@ void z80cpu::CP_implied_immediate() {
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
     set_flag(CARRY_FLAG, accumulator < data_8);
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }

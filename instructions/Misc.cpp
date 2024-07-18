@@ -10,6 +10,10 @@ void z80cpu::CCF_implied(){
     set_flag(ADD_SUB_FLAG, false);
     // C is set if CY was 0 before operation; otherwise, it is reset
     set_flag(CARRY_FLAG, (get_flag(CARRY_FLAG) == 0) ? 1 : 0);
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -36,6 +40,10 @@ void z80cpu::NEG_implied() {
     set_flag(CARRY_FLAG, accumulator != 0);
 
     accumulator = result_8;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -55,6 +63,10 @@ void z80cpu::CPL_implied() {
     // C is not affected
 
     accumulator = ~accumulator;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -71,6 +83,10 @@ void z80cpu::SCF_implied() {
     set_flag(ADD_SUB_FLAG, false);
     // C is set
     set_flag(CARRY_FLAG, true);
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -238,6 +254,10 @@ void z80cpu::DAA_implied() {
     // N is not affected
 
     accumulator = data_8;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 

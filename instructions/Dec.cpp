@@ -22,6 +22,10 @@ void z80cpu::DEC_implied_register() {
     set_flag(ADD_SUB_FLAG, true);
 
     *register_table[register_bit] = result_8;
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -43,6 +47,10 @@ void z80cpu::DEC_implied_register_indirect() {
     set_flag(PARITY_OVERFLOW_FLAG, data_8 == 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 
     ram_write(address_absolute, result_8);
 }
@@ -69,6 +77,10 @@ void z80cpu::DEC_implied_indexed_ix() {
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
+
     ram_write(address_absolute, result_8);
 }
 
@@ -93,6 +105,10 @@ void z80cpu::DEC_implied_indexed_iy() {
     set_flag(PARITY_OVERFLOW_FLAG, data_8 == 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 
     ram_write(address_absolute, result_8);
 }

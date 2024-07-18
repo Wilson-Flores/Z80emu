@@ -23,6 +23,10 @@ void z80cpu::SUB_implied_register() {
     set_flag(CARRY_FLAG, accumulator < data_8);
 
     accumulator = result_8;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -50,6 +54,10 @@ void z80cpu::SUB_implied_register_indirect() {
     set_flag(CARRY_FLAG, accumulator < data_8);
 
     accumulator = result_8;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -79,6 +87,10 @@ void z80cpu::SUB_implied_indexed_ix() {
     set_flag(CARRY_FLAG, accumulator < data_8);
 
     accumulator = result_8;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -108,6 +120,10 @@ void z80cpu::SUB_implied_indexed_iy() {
     set_flag(CARRY_FLAG, accumulator < data_8);
 
     accumulator = result_8;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -135,6 +151,10 @@ void z80cpu::SUB_implied_immediate() {
     set_flag(CARRY_FLAG, accumulator < data_8);
 
     accumulator = result_8;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -166,6 +186,10 @@ void z80cpu::SBC_implied_register() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = static_cast<uint8_t>(result_16);
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -196,6 +220,10 @@ void z80cpu::SBC_implied_register_indirect() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = static_cast<uint8_t>(result_16);
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -228,6 +256,10 @@ void z80cpu::SBC_implied_indexed_ix() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = static_cast<uint8_t>(result_16);
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -260,6 +292,10 @@ void z80cpu::SBC_implied_indexed_iy() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = static_cast<uint8_t>(result_16);
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 void z80cpu::SBC_implied_immediate() {
@@ -289,6 +325,10 @@ void z80cpu::SBC_implied_immediate() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = static_cast<uint8_t>(result_16);
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -320,4 +360,8 @@ void z80cpu::SBC_implied_register_extended() {
 
     H_register = (static_cast<uint16_t>(result_32) & 0xFF00) >> 8;
     L_register = static_cast<uint16_t>(result_32) & 0x00FF;
+
+    //X & Y Flags are copies bit 3 & 5 of the high byte (H register)
+    set_flag(X_FLAG, H_register & 0x08);
+    set_flag(Y_FLAG, H_register & 0x20);
 }

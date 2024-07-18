@@ -21,6 +21,10 @@ void z80cpu::ADD_implied_register() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -46,6 +50,10 @@ void z80cpu::ADD_implied_register_indirect() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -73,6 +81,10 @@ void z80cpu::ADD_implied_indexed_ix() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -100,6 +112,10 @@ void z80cpu::ADD_implied_indexed_iy() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -125,6 +141,10 @@ void z80cpu::ADD_implied_immediate() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -151,6 +171,10 @@ void z80cpu::ADC_implied_register() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -178,6 +202,10 @@ void z80cpu::ADC_implied_register_indirect() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -207,6 +235,10 @@ void z80cpu::ADC_implied_indexed_ix() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -236,6 +268,10 @@ void z80cpu::ADC_implied_indexed_iy() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -264,6 +300,10 @@ void z80cpu::ADC_implied_immediate() {
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
     accumulator = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator & 0x08);
+    set_flag(Y_FLAG, accumulator & 0x20);
 }
 
 
@@ -287,6 +327,10 @@ void z80cpu::ADD_implied_register_extended() {
 
     H_register = (result_16 & 0xFF00) >> 8;
     L_register = result_16 & 0x00FF;
+
+    //X & Y Flags are copies bit 3 & 5 of the high byte (H register)
+    set_flag(X_FLAG, H_register & 0x08);
+    set_flag(Y_FLAG, H_register & 0x20);
 }
 
 
@@ -308,6 +352,10 @@ void z80cpu::ADD_implied_register_extended_ix() {
     set_flag(CARRY_FLAG, (result_16 < index_register_x) || (result_16 < register_pair_data));
 
     index_register_x = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the high byte of register x
+    set_flag(X_FLAG, index_register_x & 0x0800);
+    set_flag(Y_FLAG, index_register_x & 0x2000);
 }
 
 
@@ -329,6 +377,10 @@ void z80cpu::ADD_implied_register_extended_iy() {
     set_flag(CARRY_FLAG, (result_16 < index_register_y) || (result_16 < register_pair_data));
 
     index_register_y = result_16;
+
+    //X & Y Flags are copies bit 3 & 5 of the high byte of register y
+    set_flag(X_FLAG, index_register_y & 0x0800);
+    set_flag(Y_FLAG, index_register_y & 0x2000);
 }
 
 
@@ -363,4 +415,8 @@ void z80cpu::ADC_implied_register_extended() {
 
     H_register = (static_cast<uint16_t>(result_32) & 0xFF00) >> 8;
     L_register = static_cast<uint16_t>(result_32) & 0x00FF;
+
+    //X & Y Flags are copies bit 3 & 5 of the high byte (H register)
+    set_flag(X_FLAG, H_register & 0x08);
+    set_flag(Y_FLAG, H_register & 0x20);
 }
