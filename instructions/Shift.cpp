@@ -27,6 +27,10 @@ void z80cpu::SLA_implied() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -60,6 +64,10 @@ void z80cpu::SLA_indirect() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -92,6 +100,10 @@ void z80cpu::SLA_indexed_ix() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -124,6 +136,10 @@ void z80cpu::SLA_indexed_iy() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -156,6 +172,10 @@ void z80cpu::SRA_implied() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 0 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -192,6 +212,10 @@ void z80cpu::SRA_indirect() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 0 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -227,6 +251,10 @@ void z80cpu::SRA_indexed_ix() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 0 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -262,6 +290,10 @@ void z80cpu::SRA_indexed_iy() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 0 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -291,6 +323,10 @@ void z80cpu::SRL_implied() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 0 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -324,6 +360,10 @@ void z80cpu::SRL_indirect() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -356,6 +396,10 @@ void z80cpu::SRL_indexed_ix() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
 
 
@@ -388,4 +432,8 @@ void z80cpu::SRL_indexed_iy() {
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
+
+    //X & Y Flags are copies bit 3 & 5 of the register
+    set_flag(X_FLAG, result_8 & 0x08);
+    set_flag(Y_FLAG, result_8 & 0x20);
 }
