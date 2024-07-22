@@ -5,7 +5,7 @@ void z80cpu::DEC_implied_register() {
     t_state_cycles = 4;
 
     // Decrement value in register
-    uint8_t register_bit = (opcode & BIT_MASK_4) >> 3;
+    uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
     data_8 = *register_table[register_bit];
     result_8 = data_8 - 1;
 
