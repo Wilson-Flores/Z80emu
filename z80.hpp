@@ -84,6 +84,7 @@ public:
 	// Other Registers
 	uint8_t interrupt_vector_register = 0x00;
 	uint8_t memory_refresh_register = 0x00;
+    uint16_t WZ_register = 0x0000;
 	void memory_refresh_counter();
 
 	uint16_t stack_pointer = 0x0000;
@@ -342,7 +343,6 @@ public:
 	uint8_t t_state_cycles = 0;
 
     // variables that temporarily store values while executing certain instructions
-    uint16_t address_absolute = 0x0000;
     int8_t displacement = 0x00;
 
     // 8-bit temp values

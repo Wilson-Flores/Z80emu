@@ -33,8 +33,8 @@ void z80cpu::SUB_implied_register() {
 void z80cpu::SUB_implied_register_indirect() {
     t_state_cycles = 7;
 
-    address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(address_absolute);
+    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(WZ_register);
     result_8 = accumulator - data_8;
 
     // S is set if result if negative, else reset
@@ -66,8 +66,8 @@ void z80cpu::SUB_implied_indexed_ix() {
 
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
-    address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(address_absolute);
+    WZ_register = index_register_x + static_cast<int16_t>(displacement);
+    data_8 = ram_read(WZ_register);
     result_8 = accumulator - data_8;
 
     // S is set if result if negative, else reset
@@ -99,8 +99,8 @@ void z80cpu::SUB_implied_indexed_iy() {
 
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
-    address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(address_absolute);
+    WZ_register = index_register_y + static_cast<int16_t>(displacement);
+    data_8 = ram_read(WZ_register);
     result_8 = accumulator - data_8;
 
     // S is set if result if negative, else reset
@@ -201,8 +201,8 @@ void z80cpu::SBC_implied_register_indirect() {
     // take the 2s complement of D: -D = (~D + 1)
     // A = A + (~D + 1) - C -> A = A + ~D + (1 - C)
     // take it a step further by taking the 2s complement of C: A = A + ~D + 1 + (~C + 1) -> A = A + ~D + ~C + 2
-    address_absolute = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(address_absolute);
+    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(WZ_register);
     result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(~data_8) + static_cast<uint16_t>(~get_flag(CARRY_FLAG)) + 2;
 
     // S is set if result if negative, else reset
@@ -237,8 +237,8 @@ void z80cpu::SBC_implied_indexed_ix() {
     // take it a step further by taking the 2s complement of C: A = A + ~D + 1 + (~C + 1) -> A = A + ~D + ~C + 2
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
-    address_absolute = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(address_absolute);
+    WZ_register = index_register_x + static_cast<int16_t>(displacement);
+    data_8 = ram_read(WZ_register);
     result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(~data_8) + static_cast<uint16_t>(~get_flag(CARRY_FLAG)) + 2;
 
     // S is set if result if negative, else reset
@@ -273,8 +273,8 @@ void z80cpu::SBC_implied_indexed_iy() {
     // take it a step further by taking the 2s complement of C: A = A + ~D + 1 + (~C + 1) -> A = A + ~D + ~C + 2
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
-    address_absolute = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(address_absolute);
+    WZ_register = index_register_y + static_cast<int16_t>(displacement);
+    data_8 = ram_read(WZ_register);
     result_16 = static_cast<uint16_t>(accumulator) + static_cast<uint16_t>(~data_8) + static_cast<uint16_t>(~get_flag(CARRY_FLAG)) + 2;
 
     // S is set if result if negative, else reset
