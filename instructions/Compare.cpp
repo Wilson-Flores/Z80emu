@@ -4,8 +4,8 @@ void z80cpu::CPI_register_indirect() {
     t_state_cycles = 16;
 
     // Read data at HL address, then decrement HL
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
     L_register++;
     if(L_register == 0x00){
         H_register++;
@@ -26,8 +26,8 @@ void z80cpu::CPI_register_indirect() {
     // H is set if borrow in lower nibble, else reset
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
     // P/V is set if BC-1 != 0, else reset
-    WZ_register = (static_cast<uint16_t>(B_register) << 8) | C_register;
-    set_flag(PARITY_OVERFLOW_FLAG, WZ_register != 0);
+    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    set_flag(PARITY_OVERFLOW_FLAG, memory_address != 0);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
@@ -40,8 +40,8 @@ void z80cpu::CPI_register_indirect() {
 void z80cpu::CPIR_register_indirect() {
     t_state_cycles = 16;
 
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
     L_register++;
     if(L_register == 0x00){
         H_register++;
@@ -63,9 +63,9 @@ void z80cpu::CPIR_register_indirect() {
     set_flag(ADD_SUB_FLAG, true);
 
     // P/V is set if BC-1 != 0, else reset
-    WZ_register = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
-    if((WZ_register != 0) && (accumulator != data_8)){
+    if((memory_address != 0) && (accumulator != data_8)){
         set_flag(PARITY_OVERFLOW_FLAG, true);
         t_state_cycles += 5;
         program_counter -= 2;
@@ -84,8 +84,8 @@ void z80cpu::CPIR_register_indirect() {
 void z80cpu::CPD_register_indirect() {
     t_state_cycles = 16;
 
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
@@ -104,8 +104,8 @@ void z80cpu::CPD_register_indirect() {
     // H is set if borrow in lower nibble, else reset
     set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
     // P/V is set if BC-1 != 0, else reset
-    WZ_register = (static_cast<uint16_t>(B_register) << 8) | C_register;
-    set_flag(PARITY_OVERFLOW_FLAG, WZ_register != 0);
+    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    set_flag(PARITY_OVERFLOW_FLAG, memory_address != 0);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
@@ -118,8 +118,8 @@ void z80cpu::CPD_register_indirect() {
 void z80cpu::CPDR_register_indirect() {
     t_state_cycles = 16;
 
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
     L_register--;
     if(L_register == 0xFF){
         H_register--;
@@ -141,9 +141,9 @@ void z80cpu::CPDR_register_indirect() {
     set_flag(ADD_SUB_FLAG, true);
 
     // P/V is set if BC-1 != 0, else reset
-    WZ_register = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
-    if((WZ_register != 0) && (accumulator != data_8)){
+    if((memory_address != 0) && (accumulator != data_8)){
         set_flag(PARITY_OVERFLOW_FLAG, true);
         t_state_cycles += 5;
         program_counter -= 2;
@@ -189,8 +189,8 @@ void z80cpu::CP_implied_register() {
 void z80cpu::CP_implied_register_indirect() {
     t_state_cycles = 7;
 
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
     result_8 = accumulator - data_8;
 
     // S is set if result if negative, else reset
@@ -219,8 +219,8 @@ void z80cpu::CP_implied_indexed_ix() {
 
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
-    WZ_register = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_x + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
     result_8 = accumulator - data_8;
 
     // S is set if result if negative, else reset
@@ -249,8 +249,8 @@ void z80cpu::CP_implied_indexed_iy() {
 
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
-    WZ_register = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_y + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
     result_8 = accumulator - data_8;
 
     // S is set if result if negative, else reset

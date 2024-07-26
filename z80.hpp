@@ -81,10 +81,12 @@ public:
 	uint16_t index_register_x = 0x0000;
 	uint16_t index_register_y = 0x0000;
 
+    // TODO: figure out what instructions actually utilize WZ_register and which will need to have a separate temp value
 	// Other Registers
 	uint8_t interrupt_vector_register = 0x00;
 	uint8_t memory_refresh_register = 0x00;
     uint16_t WZ_register = 0x0000;
+
 	void memory_refresh_counter();
 
 	uint16_t stack_pointer = 0x0000;
@@ -352,6 +354,9 @@ public:
     // 16-bit temp values
     uint16_t data_16 = 0;
     uint16_t result_16 = 0;
+
+    // temp memory address value
+    uint16_t memory_address = 0x0000;
 
 
 

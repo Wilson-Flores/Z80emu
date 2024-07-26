@@ -38,8 +38,8 @@ void z80cpu::SLA_indirect() {
     t_state_cycles = 15;
 
     // copy the data from the memory address
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -50,7 +50,7 @@ void z80cpu::SLA_indirect() {
     result_8 = data_8 << 1;
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
 
     // S is set if result is negative, else reset
@@ -75,8 +75,8 @@ void z80cpu::SLA_indexed_ix() {
     t_state_cycles = 23;
 
     // copy the data from the memory address
-    WZ_register = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_x + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -87,7 +87,7 @@ void z80cpu::SLA_indexed_ix() {
     result_8 = data_8 << 1;
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result_8 & 0x80);
@@ -111,8 +111,8 @@ void z80cpu::SLA_indexed_iy() {
     t_state_cycles = 23;
 
     // copy the data from the memory address
-    WZ_register = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_y + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -123,7 +123,7 @@ void z80cpu::SLA_indexed_iy() {
     result_8 = data_8 << 1;
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result_8 & 0x80);
@@ -183,8 +183,8 @@ void z80cpu::SRA_indirect() {
     t_state_cycles = 15;
 
     // copy the data from the memory address
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -198,7 +198,7 @@ void z80cpu::SRA_indirect() {
     result_8 = (data_8 >> 1) | (data_8 & 0x80);
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
 
     // S is set if result is negative, else reset
@@ -223,8 +223,8 @@ void z80cpu::SRA_indexed_ix() {
     t_state_cycles = 23;
 
     // copy the data from the memory address
-    WZ_register = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_x + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -238,7 +238,7 @@ void z80cpu::SRA_indexed_ix() {
     result_8 = (data_8 >> 1) | (data_8 & 0x80);
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result_8 & 0x80);
@@ -262,8 +262,8 @@ void z80cpu::SRA_indexed_iy() {
     t_state_cycles = 23;
 
     // copy the data from the memory address
-    WZ_register = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_y + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -277,7 +277,7 @@ void z80cpu::SRA_indexed_iy() {
     result_8 = (data_8 >> 1) | (data_8 & 0x80);
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, result_8 & 0x80);
@@ -334,8 +334,8 @@ void z80cpu::SRL_indirect() {
     t_state_cycles = 15;
 
     // copy the data from the memory address
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -346,7 +346,7 @@ void z80cpu::SRL_indirect() {
     result_8 = data_8 >> 1;
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
 
     // S is reset
@@ -371,8 +371,8 @@ void z80cpu::SRL_indexed_ix() {
     t_state_cycles = 23;
 
     // copy the data from the memory address
-    WZ_register = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_x + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -383,7 +383,7 @@ void z80cpu::SRL_indexed_ix() {
     result_8 = data_8 >> 1;
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
     // S is reset
     set_flag(SIGN_FLAG, false);
@@ -407,8 +407,8 @@ void z80cpu::SRL_indexed_iy() {
     t_state_cycles = 23;
 
     // copy the data from the memory address
-    WZ_register = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_y + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -419,7 +419,7 @@ void z80cpu::SRL_indexed_iy() {
     result_8 = data_8 >> 1;
 
     // overwrite data
-    ram_write(WZ_register, result_8);
+    ram_write(memory_address, result_8);
 
     // S is reset
     set_flag(SIGN_FLAG, false);

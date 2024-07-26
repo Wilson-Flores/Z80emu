@@ -29,8 +29,8 @@ void z80cpu::XOR_implied_register() {
 void z80cpu::XOR_implied_register_indirect() {
     t_state_cycles = 7;
 
-    WZ_register = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(WZ_register);
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    data_8 = ram_read(memory_address);
     accumulator ^= data_8;
 
     // S is set if result is negative, else reset
@@ -56,8 +56,8 @@ void z80cpu::XOR_implied_indexed_ix() {
 
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
-    WZ_register = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_x + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
     accumulator ^= data_8;
 
     // S is set if result is negative, else reset
@@ -84,8 +84,8 @@ void z80cpu::XOR_implied_indexed_iy() {
 
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
-    WZ_register = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(WZ_register);
+    memory_address = index_register_y + static_cast<int16_t>(displacement);
+    data_8 = ram_read(memory_address);
     accumulator ^= data_8;
 
     // S is set if result is negative, else reset
