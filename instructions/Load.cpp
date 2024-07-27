@@ -1,13 +1,14 @@
 #include "../z80.hpp"
 
+
+// TODO: Clean up the variables and replace them with class temp values
 // 8-bit LD Instructions
 void z80cpu::LD_register_immediate() {
     t_state_cycles = 7;
 
     // bit mask the opcode to find the register value
-    uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
-
-    *register_table[destination_register_bit] = rom_read(program_counter);
+    // destination_register_bit = (opcode & BIT_MASK_1) >> 3;
+    *register_table[(opcode & BIT_MASK_1) >> 3] = rom_read(program_counter);
 
     // Increment program counter again to avoid instruction cycle from mistaking 'n' value for an opcode
     program_counter++;
@@ -18,38 +19,37 @@ void z80cpu::LD_register_register() {
     t_state_cycles = 4;
 
     // bit mask the opcode to find the register destination value and source register value
-    uint8_t destination_register_bit = (opcode & BIT_MASK_1) >> 3;
-    uint8_t source_register_bit = (opcode & BIT_MASK_2);
+    // destination_register_bit = (opcode & BIT_MASK_1) >> 3;
+    // source_register_bit = (opcode & BIT_MASK_2);
 
-    *register_table[destination_register_bit] = *register_table[source_register_bit];
+    *register_table[(opcode & BIT_MASK_1) >> 3] = *register_table[(opcode & BIT_MASK_2)];
 }
 
 
 void z80cpu::LD_register_register_indirect() {
     t_state_cycles = 7;
 
-    // LD r, (HL) opcode ends with 0b110, while LD A, (BC) and LD A, (DE) end with 0b010
-    uint8_t opcode_bit = (opcode & BIT_MASK_2);
-    uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
+    // bit mask the opcode to find the register value
+    // destination_register_bit = (opcode & BIT_MASK_1) >> 3;
+    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    *register_table[(opcode & BIT_MASK_1) >> 3] = ram_read(memory_address);
+}
 
-    if (opcode_bit == 0x02) {
-        if (register_bit == 0x01) {
-            // LD A, (BC)
-            memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
-            accumulator = ram_read(memory_address);
 
-        }
-        else {
-            // LD A, (DE)
-            memory_address = (static_cast<uint16_t>(D_register) << 8) | E_register;
-            accumulator = ram_read(memory_address);
-        }
-    }
-    else {
-        // LD r, (HL)
-        memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-        *register_table[register_bit] = ram_read(memory_address);
-    }
+void z80cpu::LD_register_register_indirect_BC() {
+    t_state_cycles = 7;
+
+    // TODO: Uses WZ_register and gets a +1 for some reason.
+    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    accumulator = ram_read(memory_address);
+}
+
+
+void z80cpu::LD_register_register_indirect_DE() {
+    t_state_cycles = 7;
+
+    memory_address = (static_cast<uint16_t>(D_register) << 8) | E_register;
+    accumulator = ram_read(memory_address);
 }
 
 
@@ -99,8 +99,8 @@ void z80cpu::LD_register_indexed_ix() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
 
     // add the value in index register x with the twos-complement signed value
-    memory_address = index_register_x + static_cast<int16_t>(displacement);
-    *register_table[register_bit] = ram_read(memory_address);
+    WZ_register = index_register_x + static_cast<int16_t>(displacement);
+    *register_table[register_bit] = ram_read(WZ_register);
 
     program_counter++;
 }
@@ -116,8 +116,8 @@ void z80cpu::LD_register_indexed_iy() {
 
     // add the value in ind
     // ex register x with the twos-complement signed value
-    memory_address = index_register_y + static_cast<int16_t>(displacement);
-    *register_table[register_bit] = ram_read(memory_address);
+    WZ_register = index_register_y + static_cast<int16_t>(displacement);
+    *register_table[register_bit] = ram_read(WZ_register);
 }
 
 
@@ -180,9 +180,9 @@ void z80cpu::LD_indexed_ix_immediate(){
     uint8_t value = rom_read(program_counter);
     program_counter++;
 
-    memory_address = index_register_x + static_cast<int16_t>(displacement);
+    WZ_register = index_register_x + static_cast<int16_t>(displacement);
 
-    ram_write(memory_address, value);
+    ram_write(WZ_register, value);
 }
 
 
@@ -195,9 +195,9 @@ void z80cpu::LD_indexed_iy_immediate() {
     uint8_t value = rom_read(program_counter);
     program_counter++;
 
-    memory_address = index_register_y + static_cast<int16_t>(displacement);
+    WZ_register = index_register_y + static_cast<int16_t>(displacement);
 
-    ram_write(memory_address, value);
+    ram_write(WZ_register, value);
 }
 
 
@@ -209,8 +209,8 @@ void z80cpu::LD_indexed_ix_register(){
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
-    memory_address = index_register_x + static_cast<int16_t>(displacement);
-    ram_write(memory_address, *register_table[register_bit]);
+    WZ_register = index_register_x + static_cast<int16_t>(displacement);
+    ram_write(WZ_register, *register_table[register_bit]);
 }
 
 
@@ -222,8 +222,8 @@ void z80cpu::LD_indexed_iy_register(){
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
-    memory_address = index_register_y + static_cast<int16_t>(displacement);
-    ram_write(memory_address, *register_table[register_bit]);
+    WZ_register = index_register_y + static_cast<int16_t>(displacement);
+    ram_write(WZ_register, *register_table[register_bit]);
 }
 
 
