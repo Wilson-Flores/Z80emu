@@ -1,7 +1,7 @@
 #include "../z80.hpp"
 
 
-// TODO: Clean up the variables and replace them with class temp values
+
 // 8-bit LD Instructions
 void z80cpu::LD_register_immediate() {
     t_state_cycles = 7;
@@ -93,14 +93,14 @@ void z80cpu::LD_register_implied() {
 
 void z80cpu::LD_register_indexed_ix() {
     t_state_cycles = 19;
-    uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
     // one-byte signed integer (-128 to +127)
     displacement = static_cast<int8_t>(rom_read(program_counter));
 
     // add the value in index register x with the twos-complement signed value
     WZ_register = index_register_x + static_cast<int16_t>(displacement);
-    *register_table[register_bit] = ram_read(WZ_register);
+    // register_bit = (opcode & BIT_MASK_1) >> 3;
+    *register_table[(opcode & BIT_MASK_1) >> 3] = ram_read(WZ_register);
 
     program_counter++;
 }
@@ -108,7 +108,6 @@ void z80cpu::LD_register_indexed_ix() {
 
 void z80cpu::LD_register_indexed_iy() {
     t_state_cycles = 19;
-    uint8_t register_bit = (opcode & BIT_MASK_1) >> 3;
 
     // one-byte signed integer (-128 to +127)
     displacement = static_cast<int8_t>(rom_read(program_counter));
@@ -117,7 +116,8 @@ void z80cpu::LD_register_indexed_iy() {
     // add the value in ind
     // ex register x with the twos-complement signed value
     WZ_register = index_register_y + static_cast<int16_t>(displacement);
-    *register_table[register_bit] = ram_read(WZ_register);
+    // register_bit = (opcode & BIT_MASK_1) >> 3;
+    *register_table[(opcode & BIT_MASK_1) >> 3] = ram_read(WZ_register);
 }
 
 
@@ -138,10 +138,10 @@ void z80cpu::LD_register_indirect_immediate() {
     t_state_cycles = 3;
 
     memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    uint8_t value = rom_read(program_counter);
+    data_8 = rom_read(program_counter);
     program_counter++;
 
-    ram_write(memory_address, value);
+    ram_write(memory_address, data_8);
 }
 
 
@@ -177,12 +177,12 @@ void z80cpu::LD_indexed_ix_immediate(){
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
-    uint8_t value = rom_read(program_counter);
+    data_8 = rom_read(program_counter);
     program_counter++;
 
     WZ_register = index_register_x + static_cast<int16_t>(displacement);
 
-    ram_write(WZ_register, value);
+    ram_write(WZ_register, data_8);
 }
 
 
@@ -192,38 +192,36 @@ void z80cpu::LD_indexed_iy_immediate() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
-    uint8_t value = rom_read(program_counter);
+    data_8 = rom_read(program_counter);
     program_counter++;
 
     WZ_register = index_register_y + static_cast<int16_t>(displacement);
 
-    ram_write(WZ_register, value);
+    ram_write(WZ_register, data_8);
 }
 
 
 void z80cpu::LD_indexed_ix_register(){
     t_state_cycles = 19;
 
-    uint8_t register_bit = (opcode & BIT_MASK_2);
-
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
     WZ_register = index_register_x + static_cast<int16_t>(displacement);
-    ram_write(WZ_register, *register_table[register_bit]);
+    // register_bit = (opcode & BIT_MASK_2);
+    ram_write(WZ_register, *register_table[opcode & BIT_MASK_2]);
 }
 
 
 void z80cpu::LD_indexed_iy_register(){
     t_state_cycles = 19;
 
-    uint8_t register_bit = (opcode & BIT_MASK_2);
-
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
 
     WZ_register = index_register_y + static_cast<int16_t>(displacement);
-    ram_write(WZ_register, *register_table[register_bit]);
+    // register_bit = (opcode & BIT_MASK_2);
+    ram_write(WZ_register, *register_table[opcode & BIT_MASK_2]);
 }
 
 
@@ -256,15 +254,15 @@ void z80cpu::LD_implied_register() {
 void z80cpu::LD_register_immediate_extended_16_bit() {
     t_state_cycles = 10;
 
-    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
+    data_8 = (opcode & BIT_MASK_3) >> 4;
 
     uint8_t low_byte = rom_read(program_counter);
     program_counter++;
     uint8_t high_byte = rom_read(program_counter);
     program_counter++;
 
-    *register_pair_table_ss[register_pair_bit].high_byte_register = high_byte;
-    *register_pair_table_ss[register_pair_bit].low_byte_register = low_byte;
+    *register_pair_table_ss[data_8].high_byte_register = high_byte;
+    *register_pair_table_ss[data_8].low_byte_register = low_byte;
 
 }
 
@@ -277,8 +275,8 @@ void z80cpu::LD_register_immediate_extended_ix() {
     uint8_t high_byte = rom_read(program_counter);
     program_counter++;
 
-    uint16_t value = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
-    index_register_x = value;
+    data_16 = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+    index_register_x = data_16;
 }
 
 
@@ -290,15 +288,15 @@ void z80cpu::LD_register_immediate_extended_iy() {
     uint8_t high_byte = rom_read(program_counter);
     program_counter++;
 
-    uint16_t value = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
-    index_register_y = value;
+    data_16 = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
+    index_register_y = data_16;
 }
 
 
 void z80cpu::LD_register_extended_16_bit() {
     t_state_cycles = 20;
 
-    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
+    data_8 = (opcode & BIT_MASK_3) >> 4;
 
     uint8_t low_byte = rom_read(program_counter);
     program_counter++;
@@ -306,8 +304,8 @@ void z80cpu::LD_register_extended_16_bit() {
     program_counter++;
     memory_address = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
 
-    *register_pair_table_ss[register_pair_bit].high_byte_register = ram_read(memory_address + 1);
-    *register_pair_table_ss[register_pair_bit].low_byte_register = ram_read(memory_address);
+    *register_pair_table_ss[data_8].high_byte_register = ram_read(memory_address + 1);
+    *register_pair_table_ss[data_8].low_byte_register = ram_read(memory_address);
 }
 
 
@@ -375,7 +373,7 @@ void z80cpu::LD_register_register_iy() {
 void z80cpu::LD_extended_register_16_bit() {
     t_state_cycles = 20;
 
-    uint8_t register_pair_bit = (opcode & BIT_MASK_3) >> 4;
+    data_8 = (opcode & BIT_MASK_3) >> 4;
 
     uint8_t low_byte = rom_read(program_counter);
     program_counter++;
@@ -383,12 +381,10 @@ void z80cpu::LD_extended_register_16_bit() {
     program_counter++;
     memory_address = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
 
-    uint8_t register_high_byte = *register_pair_table_ss[register_pair_bit].high_byte_register;
-    uint8_t register_low_byte = *register_pair_table_ss[register_pair_bit].low_byte_register;
-
-
-    ram_write(memory_address, register_low_byte);
-    ram_write(memory_address + 1, register_high_byte);
+    // register_high_byte = *register_pair_table_ss[data_8].high_byte_register;
+    // register_low_byte = *register_pair_table_ss[data_8].low_byte_register;
+    ram_write(memory_address, *register_pair_table_ss[data_8].low_byte_register);
+    ram_write(memory_address + 1, *register_pair_table_ss[data_8].high_byte_register);
 }
 
 
@@ -415,14 +411,13 @@ void z80cpu::LD_extended_register_ix() {
     program_counter++;
     memory_address = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
 
-    uint8_t ix_high_byte;
-    ix_high_byte = static_cast<uint8_t>(index_register_x >> 8);
-    uint8_t ix_low_byte;
-    ix_low_byte = static_cast<uint8_t>(index_register_x & LOW_BYTE_MASK);
 
-
-    ram_write(memory_address, ix_low_byte);
-    ram_write(memory_address + 1, ix_high_byte);
+    // ix low byte
+    data_8 = static_cast<uint8_t>(index_register_x & LOW_BYTE_MASK);
+    ram_write(memory_address, data_8);
+    // ix high byte
+    data_8 = static_cast<uint8_t>(index_register_x >> 8);
+    ram_write(memory_address + 1, data_8);
 }
 
 
@@ -435,13 +430,13 @@ void z80cpu::LD_extended_register_iy() {
     program_counter++;
     memory_address = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
 
-    uint8_t iy_high_byte;
-    iy_high_byte = static_cast<uint8_t>(index_register_y >> 8);
-    uint8_t iy_low_byte;
-    iy_low_byte = static_cast<uint8_t>(index_register_y & LOW_BYTE_MASK);
 
-    ram_write(memory_address, iy_low_byte);
-    ram_write(memory_address + 1, iy_high_byte);
+    // iy low byte
+    data_8 = static_cast<uint8_t>(index_register_y & LOW_BYTE_MASK);
+    ram_write(memory_address, data_8);
+    // iy high byte
+    data_8 = static_cast<uint8_t>(index_register_y >> 8);
+    ram_write(memory_address + 1, data_8);
 }
 
 
