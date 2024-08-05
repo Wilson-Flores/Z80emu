@@ -12,6 +12,9 @@ void z80cpu::JP_immediate() {
 
     data_16 += data_8;
     program_counter = data_16;
+
+    // WZ_registers stores the program counter value
+    WZ_register = program_counter;
 }
 
 
