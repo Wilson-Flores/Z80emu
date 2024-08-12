@@ -11,6 +11,9 @@ void z80cpu::CPI_register_indirect() {
         H_register++;
     }
 
+    // WZ_register increments after HL increments
+    WZ_register++;
+
     // decrementing BC register pair
     C_register--;
     if(C_register == 0xFF){
@@ -46,6 +49,9 @@ void z80cpu::CPIR_register_indirect() {
     if(L_register == 0x00){
         H_register++;
     }
+
+    // WZ_register increments after HL increments
+    WZ_register++;
 
     C_register--;
     if(C_register == 0xFF){
@@ -91,6 +97,9 @@ void z80cpu::CPD_register_indirect() {
         H_register--;
     }
 
+    // WZ_register decrements after HL decrements
+    WZ_register--;
+
     C_register--;
     if(C_register == 0xFF){
         B_register--;
@@ -124,6 +133,9 @@ void z80cpu::CPDR_register_indirect() {
     if(L_register == 0xFF){
         H_register--;
     }
+
+    // WZ_register decrements after HL decrements
+    WZ_register--;
 
     C_register--;
     if(C_register == 0xFF){
