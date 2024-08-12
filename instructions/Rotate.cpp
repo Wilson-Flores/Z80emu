@@ -700,6 +700,10 @@ void z80cpu::RLD_implied() {
     t_state_cycles = 18;
 
     memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+
+    // WZ registers stores the mem address + 1
+    WZ_register = memory_address + 1;
+
     data_8 = ram_read(memory_address);
 
     /* The contents of the low-order four bits (3,2,1,0) of data in memory location (HL)
@@ -747,6 +751,10 @@ void z80cpu::RRD_implied() {
     t_state_cycles = 18;
 
     memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+
+    // WZ registers stores the mem address + 1
+    WZ_register = memory_address + 1;
+
     data_8 = ram_read(memory_address);
 
     /* The contents of the low-order four bits (3,2,1,0) of data in memory location (HL)
