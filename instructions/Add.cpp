@@ -80,6 +80,9 @@ void z80cpu::ADD_implied_indexed_ix() {
     // C is set if carry from bit 7, else reset
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     accumulator = result_16;
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
@@ -110,6 +113,9 @@ void z80cpu::ADD_implied_indexed_iy() {
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     accumulator = result_16;
 
@@ -234,6 +240,9 @@ void z80cpu::ADC_implied_indexed_ix() {
     // C is set if carry from bit 7, else reset
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     accumulator = result_16;
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
@@ -266,6 +275,9 @@ void z80cpu::ADC_implied_indexed_iy() {
     set_flag(ADD_SUB_FLAG, false);
     // C is set if carry from bit 7, else reset
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     accumulator = result_16;
 
