@@ -57,6 +57,10 @@ void z80cpu::XOR_implied_indexed_ix() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     memory_address = index_register_x + static_cast<int16_t>(displacement);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     data_8 = ram_read(memory_address);
     accumulator ^= data_8;
 
@@ -85,6 +89,10 @@ void z80cpu::XOR_implied_indexed_iy() {
     displacement = static_cast<int8_t>(rom_read(program_counter));
     program_counter++;
     memory_address = index_register_y + static_cast<int16_t>(displacement);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     data_8 = ram_read(memory_address);
     accumulator ^= data_8;
 
