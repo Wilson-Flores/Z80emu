@@ -364,6 +364,11 @@ public:
     // temp memory address value
     uint16_t memory_address = 0x0000;
 
+    // LDIR/LDDR WZ register Flag
+    // This flag will indicate that the instruction loop has started.
+    // we need to grab BC's value to determine what value will be stored at WZ register.
+    // This only occurs at the start of the instruction, so we cant have it overwriting while it loops.
+    bool WZ_register_flag = false;
 
 
 private:

@@ -554,6 +554,14 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     // checking if byte counter has reached 0 or not
     memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
+    // Checks if wz_register_flag is false
+    if(!WZ_register_flag){
+        if((memory_address + 1) != 1){
+            WZ_register = program_counter + 1;
+        }
+        WZ_register_flag = true;
+    }
+
     set_flag(HALF_CARRY_FLAG, false);
     set_flag(ADD_SUB_FLAG, false);
 
@@ -577,6 +585,9 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     data_8 += accumulator;
     set_flag(Y_FLAG, data_8 & 0x02);
     set_flag(X_FLAG, data_8 & 0x08);
+
+    // reset WZ_register_flag
+    WZ_register_flag = false;
 }
 
 
@@ -653,6 +664,13 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
     // checking if byte counter has reached 0 or not
     memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
 
+    // Checks if wz_register_flag is false
+    if(!WZ_register_flag){
+        if((memory_address + 1) != 1){
+            WZ_register = program_counter + 1;
+        }
+        WZ_register_flag = true;
+    }
     if(memory_address != 0) {
         set_flag(PARITY_OVERFLOW_FLAG, true);
         t_state_cycles += 5; // 5 extra clock cycles are added at the end when the program_counter decrements by 2
@@ -669,4 +687,7 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
     data_8 += accumulator;
     set_flag(Y_FLAG, data_8 & 0x02);
     set_flag(X_FLAG, data_8 & 0x08);
+
+    // reset WZ_register_flag
+    WZ_register_flag = false;
 }
