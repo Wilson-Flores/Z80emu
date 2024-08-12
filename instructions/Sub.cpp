@@ -86,6 +86,9 @@ void z80cpu::SUB_implied_indexed_ix() {
     // C is set if borrow to bit 7, else reset
     set_flag(CARRY_FLAG, accumulator < data_8);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     accumulator = result_8;
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
@@ -118,6 +121,9 @@ void z80cpu::SUB_implied_indexed_iy() {
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
     set_flag(CARRY_FLAG, accumulator < data_8);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     accumulator = result_8;
 
@@ -255,6 +261,9 @@ void z80cpu::SBC_implied_indexed_ix() {
     // C is set if borrow to bit 7, else reset
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     accumulator = static_cast<uint8_t>(result_16);
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
@@ -291,6 +300,8 @@ void z80cpu::SBC_implied_indexed_iy() {
     // C is set if borrow to bit 7, else reset
     set_flag(CARRY_FLAG, result_16 > 0x00FF);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
     accumulator = static_cast<uint8_t>(result_16);
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
