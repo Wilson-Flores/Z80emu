@@ -352,6 +352,9 @@ void z80cpu::SBC_implied_register_extended() {
     uint16_t register_pair_data = (high_byte << 8) + low_byte;
     data_16 = (H_register << 8) + L_register;
 
+    // WZ register stores the data from HL pair + 1
+    WZ_register =  data_16 + 1;
+
     uint32_t result_32 = static_cast<uint32_t>(data_16) + static_cast<uint32_t>(~register_pair_data) +
                          static_cast<uint32_t>(~get_flag(CARRY_FLAG)) + 2;
 

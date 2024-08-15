@@ -327,6 +327,10 @@ void z80cpu::ADD_implied_register_extended() {
     uint8_t low_byte = *register_pair_table_ss[register_pair_bit].low_byte_register;
     uint16_t register_pair_data = ( high_byte << 8) + low_byte;
     data_16 = (H_register << 8) + L_register;
+
+    // WZ register stores the data from HL pair + 1
+    WZ_register = data_16 + 1;
+
     result_16 = data_16 + register_pair_data;
 
     // H is set if carry from bit 11; else reset
@@ -353,6 +357,10 @@ void z80cpu::ADD_implied_register_extended_ix() {
     uint8_t high_byte = *register_pair_table_pp[register_pair_bit].high_byte_register;
     uint8_t low_byte = *register_pair_table_pp[register_pair_bit].low_byte_register;
     uint16_t register_pair_data = ( high_byte << 8) + low_byte;
+
+    // WZ register stores the data from IX pair + 1
+    WZ_register =  index_register_x + 1;
+
     result_16 = index_register_x + register_pair_data;
 
     // H is set if carry from bit 11; else reset
@@ -378,6 +386,10 @@ void z80cpu::ADD_implied_register_extended_iy() {
     uint8_t high_byte = *register_pair_table_rr[register_pair_bit].high_byte_register;
     uint8_t low_byte = *register_pair_table_rr[register_pair_bit].low_byte_register;
     uint16_t register_pair_data = ( high_byte << 8) + low_byte;
+
+    // WZ register stores the data from IY pair + 1
+    WZ_register =  index_register_y + 1;
+
     result_16 = index_register_y + register_pair_data;
 
     // H is set if carry from bit 11; else reset
@@ -404,6 +416,10 @@ void z80cpu::ADC_implied_register_extended() {
     uint8_t low_byte = *register_pair_table_ss[register_pair_bit].low_byte_register;
     uint16_t register_pair_data = (high_byte << 8) + low_byte;
     data_16 = (H_register << 8) + L_register;
+
+    // WZ register stores the data from HL pair + 1
+    WZ_register =  data_16 + 1;
+
     uint32_t result_32 = static_cast<uint32_t>(data_16) + static_cast<uint32_t>(register_pair_data)
                          + static_cast<uint32_t>(get_flag(CARRY_FLAG));
 
