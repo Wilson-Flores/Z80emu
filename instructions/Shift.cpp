@@ -78,6 +78,9 @@ void z80cpu::SLA_indexed_ix() {
     memory_address = index_register_x + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 7th bit into carry flag bit
@@ -113,6 +116,9 @@ void z80cpu::SLA_indexed_iy() {
     // copy the data from the memory address
     memory_address = index_register_y + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -226,6 +232,9 @@ void z80cpu::SRA_indexed_ix() {
     memory_address = index_register_x + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
@@ -264,6 +273,9 @@ void z80cpu::SRA_indexed_iy() {
     // copy the data from the memory address
     memory_address = index_register_y + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -374,6 +386,9 @@ void z80cpu::SRL_indexed_ix() {
     memory_address = index_register_x + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     // clear the carry flag bit
     flag_register &= 0xFE;
     // copy data 0th bit into carry flag bit
@@ -409,6 +424,9 @@ void z80cpu::SRL_indexed_iy() {
     // copy the data from the memory address
     memory_address = index_register_y + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // clear the carry flag bit
     flag_register &= 0xFE;

@@ -103,6 +103,8 @@ void z80cpu::RLC_indexed_ix() {
     memory_address = index_register_x + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -137,6 +139,8 @@ void z80cpu::RLC_indexed_iy() {
     memory_address = index_register_y + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -268,6 +272,8 @@ void z80cpu::RRC_indexed_ix() {
     memory_address = index_register_x + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -303,6 +309,8 @@ void z80cpu::RRC_indexed_iy() {
     memory_address = index_register_y + static_cast<int16_t>(displacement);
     data_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // clear the carry flag bit
     flag_register &= 0xFE;
@@ -443,6 +451,9 @@ void z80cpu::RL_indexed_ix() {
     memory_address = index_register_x + static_cast<int16_t>(displacement);
     result_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     // temp store 7th bit value of register
     data_8 = (result_8 >> 7);
 
@@ -481,6 +492,9 @@ void z80cpu::RL_indexed_iy() {
     // copy the data from the memory address
     memory_address = index_register_y + static_cast<int16_t>(displacement);
     result_8 = ram_read(memory_address);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // temp store 7th bit value of register
     data_8 = (result_8 >> 7);
@@ -625,6 +639,9 @@ void z80cpu::RR_indexed_ix() {
     memory_address = index_register_x + static_cast<int16_t>(displacement);
     result_8 = ram_read(memory_address);
 
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
+
     // temp store 0th bit value of register
     data_8 = (result_8 & 0x01);
 
@@ -663,6 +680,9 @@ void z80cpu::RR_indexed_iy() {
     // copy the data from the memory address
     memory_address = index_register_y + static_cast<int16_t>(displacement);
     result_8 = ram_read(memory_address);
+
+    // WZ register is updated using memory address
+    WZ_register = memory_address;
 
     // temp store 0th bit value of register
     data_8 = (result_8 & 0x01);
