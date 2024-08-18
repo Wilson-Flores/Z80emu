@@ -81,7 +81,6 @@ public:
 	uint16_t index_register_x = 0x0000;
 	uint16_t index_register_y = 0x0000;
 
-    // TODO: figure out what instructions actually utilize WZ_register and which will need to have a separate temp value
 	// Other Registers
 	uint8_t interrupt_vector_register = 0x00;
 	uint8_t memory_refresh_register = 0x00;
