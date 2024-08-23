@@ -4,8 +4,8 @@
 void z80cpu::BIT_implied() {
     t_state_cycles = 8;
 
-    // data = *register_table[opcode & BIT_MASK_2]
-    // The bit place we want to check: (opcode & BIT_MASK_4) >> 3
+    // register value = *register_table[opcode & BIT_MASK_2]
+    // The bit place we want to check: (opcode & BIT_MASK_1) >> 3
     // Shift the data's bit over so the bit we want to look at is in the 0th bit place.
     // clear out the rest of the bits by doing & 0x01.
 
@@ -15,8 +15,9 @@ void z80cpu::BIT_implied() {
     // temp_data = (0x61 >> 4) = 0000 0110
     // temp_data = (0000 0110) & 0x01 = 0000 0000
 
-    data_8 = opcode & BIT_MASK_1 >> 3;
-    result_8 = (*register_table[opcode & BIT_MASK_2] >> data_8) & 0x01;
+    data_8 = (opcode & BIT_MASK_1) >> 3;
+    uint8_t register_value = *register_table[opcode & BIT_MASK_2];
+    result_8 = (register_value >> data_8) & 0x01;
 
 
     // S is set if b = 7 and tested bit is set
@@ -32,10 +33,10 @@ void z80cpu::BIT_implied() {
     set_flag(ADD_SUB_FLAG, false);
     // C is not affected
 
-    // XF is set if b = 3 and tested bit is set
-    set_flag(X_FLAG, ((data_8 == 3) && result_8 == 1));
-    // YF is set if b = 5 and tested bit is set
-    set_flag(Y_FLAG, ((data_8 == 5) && result_8 == 1));
+    // XF is set if bit 3 of the register value is set
+    set_flag(X_FLAG, register_value & 0x08);
+    // YF is set if bit 5 of the register value is set
+    set_flag(Y_FLAG, register_value & 0x20);
 }
 
 
