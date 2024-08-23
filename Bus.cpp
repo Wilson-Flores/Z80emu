@@ -72,6 +72,16 @@ void Bus::rom_reset() {
 	cpu.memory_refresh_register = 0x00;
 	cpu.stack_pointer = 0x0000;
 	cpu.program_counter = 0x0000;
+    cpu.WZ_register = 0x0000;
+    cpu.opcode = 0x00;
+    cpu.t_state_cycles = 0x00;
+
+    // Temp Values
+    cpu.displacement = 0x00;
+    cpu.data_8 = 0;
+    cpu.result_8 = 0;
+    cpu.data_16 = 0;
+    cpu.result_16 = 0;
 
 	// Interrupts
 	cpu.interrupt_enable_flip_flop_1 = false;
