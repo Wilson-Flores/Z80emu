@@ -2,7 +2,7 @@
 #include "../Bus.hpp"
 
 
-
+// TODO: fix broken test, update their expected flag values.
 int main(int argc, char* argv[]){
 
     // Initializes the Google Test framework with cmd-line arguments
