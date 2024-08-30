@@ -30,7 +30,7 @@ TEST_F(BitTest, BIT_implied_test){
 
 
     for (int i = 0; i < load_value.size(); i++){
-        for(const std::pair<const uint8_t, std::vector<uint8_t>>& pair : register_instructions){
+        for(const std::pair<uint8_t, std::vector<uint8_t>>& pair : register_instructions){
             std::vector<uint8_t> memory = {pair.first, load_value[i], 0xCB, pair.second[0], 0xCB, pair.second[1],
                                            0xCB, pair.second[2], 0xCB, pair.second[3], 0xCB, pair.second[4],
                                            0xCB, pair.second[5], 0xCB, pair.second[6], 0xCB, pair.second[7]};
@@ -96,6 +96,128 @@ TEST_F(BitTest, BIT_indirect_test){
                 0x36, 0x00, 0x00, 0x36, load_value[i], 0xCB, 0x46, 0xCB,
                 0x4E, 0xCB, 0x56, 0xCB, 0x5E, 0xCB, 0x66, 0xCB,
                 0x6E, 0xCB, 0x76, 0xCB, 0x7E
+        };
+
+        bus.rom_reset();
+
+        for (int j = 0; j < memory.size(); j++) {
+            bus.rom_write(j,memory[j]);
+        }
+
+        if(load_value[i] == 0x00){
+            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_00.size(); byte_counter++){
+                bus.cpu.instruction_cycle();
+
+                if(bus.cpu.flag_register != expected_flag_values_00[byte_counter]){
+                    compare_flag_values = true;
+                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(load_value[i]) << '\t';
+
+                    std::cout << "OPCODE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(bus.cpu.opcode) << '\t';
+
+                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+                }
+                ASSERT_EQ(compare_flag_values, false);
+            }
+        }
+        else if(load_value[i] == 0xFF){
+            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_FF.size(); byte_counter++){
+                bus.cpu.instruction_cycle();
+
+                if(bus.cpu.flag_register != expected_flag_values_FF[byte_counter]){
+                    compare_flag_values = true;
+                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(load_value[i]) << '\t';
+                    std::cout << "OPCODE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(bus.cpu.opcode) << '\t';
+
+                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+                }
+                ASSERT_EQ(compare_flag_values, false);
+            }
+        }
+    }
+}
+
+
+TEST_F(BitTest, BIT_indexed_ix_test){
+    std::vector<uint8_t> expected_flag_values_00 = {0x00, 0x00, 0x7C, 0x7C, 0x7C, 0x7C, 0x7C, 0x7C, 0x7C, 0x7C};
+    std::vector<uint8_t> expected_flag_values_FF = {0x00, 0x00, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38};
+
+    std::vector<uint8_t> load_value = {0x00, 0xFF};
+    bool compare_flag_values = false;
+
+    for (int i = 0; i < load_value.size(); i++){
+        std::vector<uint8_t> memory = {
+            0xDD, 0x21, 0x00, 0x28, 0xDD, 0x36, 0x00, load_value[i],
+            0xDD, 0xCB, 0x00, 0x46, 0xDD, 0xCB, 0x00, 0x4E,
+            0xDD, 0xCB, 0x00, 0x56, 0xDD, 0xCB, 0x00, 0x5E,
+            0xDD, 0xCB, 0x00, 0x66, 0xDD, 0xCB, 0x00, 0x6E,
+            0xDD, 0xCB, 0x00, 0x76, 0xDD, 0xCB, 0x00, 0x7E
+        };
+
+        bus.rom_reset();
+
+        for (int j = 0; j < memory.size(); j++) {
+            bus.rom_write(j,memory[j]);
+        }
+
+        if(load_value[i] == 0x00){
+            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_00.size(); byte_counter++){
+                bus.cpu.instruction_cycle();
+
+                if(bus.cpu.flag_register != expected_flag_values_00[byte_counter]){
+                    compare_flag_values = true;
+                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(load_value[i]) << '\t';
+
+                    std::cout << "OPCODE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(bus.cpu.opcode) << '\t';
+
+                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+                }
+                ASSERT_EQ(compare_flag_values, false);
+            }
+        }
+        else if(load_value[i] == 0xFF){
+            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_FF.size(); byte_counter++){
+                bus.cpu.instruction_cycle();
+
+                if(bus.cpu.flag_register != expected_flag_values_FF[byte_counter]){
+                    compare_flag_values = true;
+                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(load_value[i]) << '\t';
+                    std::cout << "OPCODE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(bus.cpu.opcode) << '\t';
+
+                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+                }
+                ASSERT_EQ(compare_flag_values, false);
+            }
+        }
+    }
+}
+
+
+TEST_F(BitTest, BIT_indexed_iy_test){
+    std::vector<uint8_t> expected_flag_values_00 = {0x00, 0x00, 0x7C, 0x7C, 0x7C, 0x7C, 0x7C, 0x7C, 0x7C, 0x7C};
+    std::vector<uint8_t> expected_flag_values_FF = {0x00, 0x00, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38, 0x38};
+
+    std::vector<uint8_t> load_value = {0x00, 0xFF};
+    bool compare_flag_values = false;
+
+    for (int i = 0; i < load_value.size(); i++){
+        std::vector<uint8_t> memory = {
+            0xFD, 0x21, 0x00, 0x28, 0xFD, 0x36, 0x00, load_value[i],
+            0xFD, 0xCB, 0x00, 0x46, 0xFD, 0xCB, 0x00, 0x4E,
+            0xFD, 0xCB, 0x00, 0x56, 0xFD, 0xCB, 0x00, 0x5E,
+            0xFD, 0xCB, 0x00, 0x66, 0xFD, 0xCB, 0x00, 0x6E,
+            0xFD, 0xCB, 0x00, 0x76, 0xFD, 0xCB, 0x00, 0x7E
         };
 
         bus.rom_reset();
