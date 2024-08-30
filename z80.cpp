@@ -191,6 +191,17 @@ z80cpu::z80cpu() {
             {reinterpret_cast<uint8_t*>(&stack_pointer) + 1,
                           reinterpret_cast<uint8_t*>(&stack_pointer)} // SP = 0b11
     };
+
+	std::vector<uint8_t> bit_masks = {
+		0x01,    //0b00000001
+		0x02,    //0b00000010
+		0x04,    //0b00000100
+		0x08,    //0b00001000
+		0x10,    //0b00010000
+		0x20,    //0b00100000
+		0x40,    //0b01000000
+		0x80     //0b10000000
+	};
 }
 
 

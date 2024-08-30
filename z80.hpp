@@ -278,6 +278,12 @@ public:
     void BIT_indexed_ix();                                                   // [BIT b, (IX+d)]
     void BIT_indexed_iy();                                                   // [BIT b, (IY+d)]
 
+	// Set Instructions
+	void SET_implied();                                                      // [SET b, r]
+	void SET_indirect();                                                     // [SET b, (HL)]
+	void SET_indexed_ix();                                                   // [SET b, (IX+d)]
+	void SET_indexed_iy();                                                   // [SET b, (IY+d)]
+
     // Jump Instructions
     void JP_immediate();                                                     // [JP nn]
     void JP_cc_immediate();                                                  // [JP cc, nn]
@@ -423,6 +429,8 @@ private:
     std::vector<REGISTER_PAIR> register_pair_table_pp;
     std::vector<REGISTER_PAIR> register_pair_table_rr;
 
+	// Bit Masks for individual bit values
+	std::vector<uint8_t> bit_masks;
 
 };
 

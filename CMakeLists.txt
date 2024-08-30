@@ -30,6 +30,7 @@ set(SOURCES
         instructions/Shift.cpp
         instructions/Bit.cpp
         instructions/Jump.cpp
+        instructions/Set.cpp
 )
 
 # List of test source files
