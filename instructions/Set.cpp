@@ -11,7 +11,7 @@ void z80cpu::SET_implied() {
     // we will perform an OR operation with the desired bit value.
     // ex. SET 6, A; where A = 0x80
     //  0b10000000 | 0b01000000 = 0b11000000
-    *register_table[opcode & BIT_MASK_2] |= bit_masks[data_8];
+    *register_table[opcode & BIT_MASK_2] |= BIT_MASKS[data_8];
 
     // No flag conditions affected
 }

@@ -93,10 +93,10 @@ z80cpu::z80cpu() {
             {"90", nullptr }, {"91", nullptr }, {"92", nullptr }, {"93", nullptr }, {"94", nullptr }, {"95", nullptr }, {"96", nullptr }, {"97", nullptr }, {"98", nullptr }, {"99", nullptr }, {"9A", nullptr }, {"9B", nullptr }, {"9C", nullptr }, {"9D", nullptr }, {"9E", nullptr }, {"9F", nullptr },
             {"A0", nullptr }, {"A1", nullptr }, {"A2", nullptr }, {"A3", nullptr }, {"A4", nullptr }, {"A5", nullptr }, {"A6", nullptr }, {"A7", nullptr }, {"A8", nullptr }, {"A9", nullptr }, {"AA", nullptr }, {"AB", nullptr }, {"AC", nullptr }, {"AD", nullptr }, {"AE", nullptr }, {"AF", nullptr },
             {"B0", nullptr }, {"B1", nullptr }, {"B2", nullptr }, {"B3", nullptr }, {"B4", nullptr }, {"B5", nullptr }, {"B6", nullptr }, {"B7", nullptr }, {"B8", nullptr }, {"B9", nullptr }, {"BA", nullptr }, {"BB", nullptr }, {"BC", nullptr }, {"BD", nullptr }, {"BE", nullptr }, {"BF", nullptr },
-            {"C0", nullptr }, {"C1", nullptr }, {"C2", nullptr }, {"C3", nullptr }, {"C4", nullptr }, {"C5", nullptr }, {"C6", nullptr }, {"C7", nullptr }, {"C8", nullptr }, {"C9", nullptr }, {"CA", nullptr }, {"CB", nullptr }, {"CC", nullptr }, {"CD", nullptr }, {"CE", nullptr }, {"CF", nullptr },
-            {"D0", nullptr }, {"D1", nullptr }, {"D2", nullptr }, {"D3", nullptr }, {"D4", nullptr }, {"D5", nullptr }, {"D6", nullptr }, {"D7", nullptr }, {"D8", nullptr }, {"D9", nullptr }, {"DA", nullptr }, {"DB", nullptr }, {"DC", nullptr }, {"DD", nullptr }, {"DE", nullptr }, {"DF", nullptr },
-            {"E0", nullptr }, {"E1", nullptr }, {"E2", nullptr }, {"E3", nullptr }, {"E4", nullptr }, {"E5", nullptr }, {"E6", nullptr }, {"E7", nullptr }, {"E8", nullptr }, {"E9", nullptr }, {"EA", nullptr }, {"EB", nullptr }, {"EC", nullptr }, {"ED", nullptr }, {"EE", nullptr }, {"EF", nullptr },
-            {"F0", nullptr }, {"F1", nullptr }, {"F2", nullptr }, {"F3", nullptr }, {"F4", nullptr }, {"F5", nullptr }, {"F6", nullptr }, {"F7", nullptr }, {"F8", nullptr }, {"F9", nullptr }, {"FA", nullptr }, {"FB", nullptr }, {"FC", nullptr }, {"FD", nullptr }, {"FE", nullptr }, {"FF", nullptr }
+            {"C0", &z::SET_implied }, {"C1", &z::SET_implied }, {"C2", &z::SET_implied }, {"C3", &z::SET_implied }, {"C4", &z::SET_implied }, {"C5", &z::SET_implied }, {"C6", nullptr }, {"C7", &z::SET_implied }, {"C8", &z::SET_implied }, {"C9", &z::SET_implied }, {"CA", &z::SET_implied }, {"CB", &z::SET_implied }, {"CC", &z::SET_implied }, {"CD", &z::SET_implied }, {"CE", nullptr }, {"CF", &z::SET_implied },
+            {"D0", &z::SET_implied }, {"D1", &z::SET_implied }, {"D2", &z::SET_implied }, {"D3", &z::SET_implied }, {"D4", &z::SET_implied }, {"D5", &z::SET_implied }, {"D6", nullptr }, {"D7", &z::SET_implied }, {"D8", &z::SET_implied }, {"D9", &z::SET_implied }, {"DA", &z::SET_implied }, {"DB", &z::SET_implied }, {"DC", &z::SET_implied }, {"DD", &z::SET_implied }, {"DE", nullptr }, {"DF", &z::SET_implied },
+            {"E0", &z::SET_implied }, {"E1", &z::SET_implied }, {"E2", &z::SET_implied }, {"E3", &z::SET_implied }, {"E4", &z::SET_implied }, {"E5", &z::SET_implied }, {"E6", nullptr }, {"E7", &z::SET_implied }, {"E8", &z::SET_implied }, {"E9", &z::SET_implied }, {"EA", &z::SET_implied }, {"EB", &z::SET_implied }, {"EC", &z::SET_implied }, {"ED", &z::SET_implied }, {"EE", nullptr }, {"EF", &z::SET_implied },
+            {"F0", &z::SET_implied }, {"F1", &z::SET_implied }, {"F2", &z::SET_implied }, {"F3", &z::SET_implied }, {"F4", &z::SET_implied }, {"F5", &z::SET_implied }, {"F6", nullptr }, {"F7", &z::SET_implied }, {"F8", &z::SET_implied }, {"F9", &z::SET_implied }, {"FA", &z::SET_implied }, {"FB", &z::SET_implied }, {"FC", &z::SET_implied }, {"FD", &z::SET_implied }, {"FE", nullptr }, {"FF", &z::SET_implied }
     };
 
     ix_bit_instruction_table = {
@@ -191,17 +191,6 @@ z80cpu::z80cpu() {
             {reinterpret_cast<uint8_t*>(&stack_pointer) + 1,
                           reinterpret_cast<uint8_t*>(&stack_pointer)} // SP = 0b11
     };
-
-	std::vector<uint8_t> bit_masks = {
-		0x01,    //0b00000001
-		0x02,    //0b00000010
-		0x04,    //0b00000100
-		0x08,    //0b00001000
-		0x10,    //0b00010000
-		0x20,    //0b00100000
-		0x40,    //0b01000000
-		0x80     //0b10000000
-	};
 }
 
 
