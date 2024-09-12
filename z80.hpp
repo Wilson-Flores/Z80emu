@@ -12,6 +12,18 @@ constexpr uint8_t BIT_MASK_2 = 0x07;      // 0000 0111 binary value
 constexpr uint8_t BIT_MASK_3 = 0x30;      // 0011 0000 binary value
 constexpr uint8_t LOW_BYTE_MASK = 0xFF;   // 1111 1111 binary value
 
+//For Set instructions, we use these bit masks with OR operation to set the desired bit in the value
+constexpr uint8_t BIT_MASKS[8] = {
+	0x01,    //0b00000001
+	0x02,    //0b00000010
+	0x04,    //0b00000100
+	0x08,    //0b00001000
+	0x10,    //0b00010000
+	0x20,    //0b00100000
+	0x40,    //0b01000000
+	0x80     //0b10000000
+	};
+
 // lookup table for the parity of any value from 0-255. Used for P/V flag
 // 0: Odd, 1: Even
 constexpr uint8_t PARITY_TABLE[256] = {
@@ -428,9 +440,6 @@ private:
     std::vector<REGISTER_PAIR> register_pair_table_ss;
     std::vector<REGISTER_PAIR> register_pair_table_pp;
     std::vector<REGISTER_PAIR> register_pair_table_rr;
-
-	// Bit Masks for individual bit values
-	std::vector<uint8_t> bit_masks;
 
 };
 
