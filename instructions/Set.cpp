@@ -10,7 +10,7 @@ void z80cpu::SET_implied() {
     // we will perform an OR operation with the desired bit value.
     // ex. SET 6, A; where A = 0x80
     //  0b10000000 | 0b01000000 = 0b11000000
-    *register_table[opcode & BIT_MASK_2] |= BIT_MASKS[data_8];
+    *register_table[opcode & BIT_MASK_2] |= SET_BIT_MASKS[data_8];
 
     // No flag conditions affected
 }
@@ -27,7 +27,7 @@ void z80cpu::SET_indirect() {
     result_8 = ram_read(memory_address);
 
     // we will perform an OR operation with the desired bit value.
-    result_8 |= BIT_MASKS[data_8];
+    result_8 |= SET_BIT_MASKS[data_8];
 
     // re-write the value at the memory address
     ram_write(memory_address, result_8);
@@ -48,7 +48,7 @@ void z80cpu::SET_indexed_ix() {
     WZ_register = memory_address;
 
     // we will perform an OR operation with the desired bit value.
-    result_8 |= BIT_MASKS[data_8];
+    result_8 |= SET_BIT_MASKS[data_8];
 
     // re-write the value at the memory address
     ram_write(memory_address, result_8);
@@ -69,7 +69,7 @@ void z80cpu::SET_indexed_iy() {
     WZ_register = memory_address;
 
     // we will perform an OR operation with the desired bit value.
-    result_8 |= BIT_MASKS[data_8];
+    result_8 |= SET_BIT_MASKS[data_8];
 
     // re-write the value at the memory address
     ram_write(memory_address, result_8);

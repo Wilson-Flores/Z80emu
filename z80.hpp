@@ -13,7 +13,7 @@ constexpr uint8_t BIT_MASK_3 = 0x30;      // 0011 0000 binary value
 constexpr uint8_t LOW_BYTE_MASK = 0xFF;   // 1111 1111 binary value
 
 //For Set instructions, we use these bit masks with OR operation to set the desired bit in the value
-constexpr uint8_t BIT_MASKS[8] = {
+constexpr uint8_t SET_BIT_MASKS[8] = {
 	0x01,    //0b00000001
 	0x02,    //0b00000010
 	0x04,    //0b00000100
@@ -22,6 +22,18 @@ constexpr uint8_t BIT_MASKS[8] = {
 	0x20,    //0b00100000
 	0x40,    //0b01000000
 	0x80     //0b10000000
+	};
+
+//For Reset instructions, we use these bit masks with AND operation to set the desired bit in the value
+constexpr uint8_t RES_BIT_MASKS[8] = {
+	0xFE,    //0b11111110
+	0xFD,    //0b11111101
+	0xFB,    //0b11111011
+	0xF7,    //0b11110111
+	0xEF,    //0b11101111
+	0xDF,    //0b11011111
+	0xBF,    //0b10111111
+	0x7F     //0b01111111
 	};
 
 // lookup table for the parity of any value from 0-255. Used for P/V flag
