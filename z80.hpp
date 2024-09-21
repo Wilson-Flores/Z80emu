@@ -296,6 +296,12 @@ public:
 	void SET_indexed_ix();                                                   // [SET b, (IX+d)]
 	void SET_indexed_iy();                                                   // [SET b, (IY+d)]
 
+	// Reset Instructions
+	void RES_implied();                                                      // [RES b, r]
+	void RES_indirect();                                                     // [RES b, (HL)]
+	void RES_indexed_ix();                                                   // [RES b, (IX+d)]
+	void RES_indexed_iy();                                                   // [RES b, (IY+d)]
+
     // Jump Instructions
     void JP_immediate();                                                     // [JP nn]
     void JP_cc_immediate();                                                  // [JP cc, nn]
