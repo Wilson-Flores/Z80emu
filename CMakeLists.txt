@@ -42,6 +42,7 @@ set(TEST_SOURCES
         test-cases/test_inc.cpp
         test-cases/test_bit.cpp
         test-cases/test_set.cpp
+        test-cases/test_reset.cpp
 )
 
 add_executable(z80emu
