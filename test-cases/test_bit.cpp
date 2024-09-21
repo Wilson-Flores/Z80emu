@@ -1,13 +1,4 @@
-#include "../Bus.hpp"
-#include "gtest/gtest.h"
-
-
-//Define a test fixture class
-class BitTest : public ::testing::Test {
-protected:
-    Bus bus;
-};
-
+#include "test_main.hpp"
 
 
 TEST_F(BitTest, BIT_implied_test){

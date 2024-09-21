@@ -1,5 +1,4 @@
-#include "../Bus.hpp"
-#include "gtest/gtest.h"
+#include "test_main.hpp"
 
 //TODO: implement loop instructions first,
 // then come back so we can loop through 0x00-0xFF and load them to registers.

@@ -1,12 +1,4 @@
-#include "../Bus.hpp"
-#include "gtest/gtest.h"
-
-
-//Define a test fixture class
-class SetTest : public ::testing::Test {
-protected:
-    Bus bus;
-};
+#include "test_main.hpp"
 
 
 TEST_F(SetTest, SET_implied_test)

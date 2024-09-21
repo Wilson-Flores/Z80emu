@@ -1,12 +1,5 @@
-#include "../Bus.hpp"
-#include "gtest/gtest.h"
+#include "test_main.hpp"
 
-
-//Define a test fixture class
-class ShiftTest : public ::testing::Test {
-protected:
-    Bus bus;
-};
 
 TEST_F(ShiftTest, SLA_implied_test){
     // {first, second}

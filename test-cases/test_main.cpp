@@ -1,5 +1,4 @@
-#include "gtest/gtest.h"
-#include "../Bus.hpp"
+#include "test_main.hpp"
 
 
 // TODO: fix broken test, update their expected flag values.
