@@ -21,7 +21,7 @@ void z80cpu::JP_immediate() {
 void z80cpu::JP_cc_immediate() {
     t_state_cycles = 10;
     
-    uint8_t cc_bit = (opcode & BIT_MASK_1) >> 3;
+    result_8 = (opcode & BIT_MASK_1) >> 3;
 
     data_8 = rom_read(program_counter);
     program_counter++;
@@ -31,7 +31,7 @@ void z80cpu::JP_cc_immediate() {
 
     data_16 += data_8;
 
-    switch (cc_bit) {
+    switch (result_8) {
         case 0:
             if(get_flag(ZERO_FLAG) == 0){
                 program_counter = data_16;
@@ -72,5 +72,9 @@ void z80cpu::JP_cc_immediate() {
                 program_counter = data_16;
             }
             break;
+        default: break;
     }
+
+    // WZ_registers stores the program counter value
+    WZ_register = program_counter;
 }
