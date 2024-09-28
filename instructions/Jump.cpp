@@ -7,10 +7,9 @@ void z80cpu::JP_immediate() {
     data_8 = rom_read(program_counter);
     program_counter++;
 
-    data_16 = static_cast<uint16_t>(rom_read(program_counter)) << 8;
+    data_16 = (static_cast<uint16_t>(rom_read(program_counter)) << 8) + data_8;
     program_counter++;
 
-    data_16 += data_8;
     program_counter = data_16;
 
     // WZ_registers stores the program counter value
