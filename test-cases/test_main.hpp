@@ -44,5 +44,6 @@ using ShiftTest = BusTest;
 using BitTest = BusTest;
 using SetTest = BusTest;
 using ResetTest = BusTest;
+using JumpTest = BusTest;
 
 #endif
