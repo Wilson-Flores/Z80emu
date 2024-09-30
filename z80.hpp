@@ -10,6 +10,7 @@
 constexpr uint8_t BIT_MASK_1 = 0x38;      // 0011 1000 binary value
 constexpr uint8_t BIT_MASK_2 = 0x07;      // 0000 0111 binary value
 constexpr uint8_t BIT_MASK_3 = 0x30;      // 0011 0000 binary value
+constexpr uint8_t BIT_MASK_4 = 0x18;      // 0001 1000 binary value
 constexpr uint8_t LOW_BYTE_MASK = 0xFF;   // 1111 1111 binary value
 
 //For Set instructions, we use these bit masks with OR operation to set the desired bit in the value
@@ -317,6 +318,9 @@ public:
     // Jump Instructions
     void JP_immediate();                                                     // [JP nn]
     void JP_cc_immediate();                                                  // [JP cc, nn]
+	void JR_relative();                                                      // [JR e]
+	void JR_cc_relative();                                                   // [JR cc, e]
+
 
     // NOP Instruction
     void NOP_implied();                                                      // [NOP]

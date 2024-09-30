@@ -77,3 +77,80 @@ void z80cpu::JP_cc_immediate() {
     // WZ_registers stores the program counter value
     WZ_register = program_counter;
 }
+
+
+void z80cpu::JR_relative() {
+    t_state_cycles = 12;
+
+    // How this originally works
+    // PC = (PC + 2) + displacement
+    // (PC + 2): PC is the program counter value before the instruction cycle starts.
+
+    // Instruction cycle increments PC by 1.
+    // We increment again after reading the displacement value
+
+    // we just preform a regular PC += displacement
+    displacement = static_cast<int8_t>(rom_read(program_counter));
+    program_counter++;
+
+    program_counter += static_cast<int16_t>(displacement);
+    WZ_register = program_counter;
+}
+
+
+void z80cpu::JR_cc_relative() {
+// T cycles will be decided if conditions are met or not
+
+    result_8 = (opcode & BIT_MASK_4) >> 3;
+    displacement = static_cast<int8_t>(rom_read(program_counter));
+    program_counter++;
+
+    switch (result_8)
+    {
+    case 0:
+        if(get_flag(ZERO_FLAG) == 0){
+            t_state_cycles = 12;
+            program_counter += static_cast<int16_t>(displacement);
+            WZ_register = program_counter;
+        }
+        else
+        {
+            t_state_cycles = 7;
+        }
+        break;
+    case 1:
+        if(get_flag(ZERO_FLAG) == 1){
+            t_state_cycles = 12;
+            program_counter += static_cast<int16_t>(displacement);
+            WZ_register = program_counter;
+        }
+        else
+        {
+            t_state_cycles = 7;
+        }
+        break;
+    case 2:
+        if(get_flag(CARRY_FLAG) == 0){
+            t_state_cycles = 12;
+            program_counter += static_cast<int16_t>(displacement);
+            WZ_register = program_counter;
+        }
+        else
+        {
+            t_state_cycles = 7;
+        }
+        break;
+    case 3:
+        if(get_flag(CARRY_FLAG) == 1){
+            t_state_cycles = 12;
+            program_counter += static_cast<int16_t>(displacement);
+            WZ_register = program_counter;
+        }
+        else
+        {
+            t_state_cycles = 7;
+        }
+        break;
+    default: break;
+    }
+}
