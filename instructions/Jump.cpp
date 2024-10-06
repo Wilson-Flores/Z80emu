@@ -156,9 +156,23 @@ void z80cpu::JR_cc_relative() {
 }
 
 
-void z80cpu::JP_implict(){
+void z80cpu::JP_implict() {
     t_state_cycles = 4;
 
     memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
     program_counter = memory_address;
+}
+
+
+void z80cpu::JP_implict_ix() {
+    t_state_cycles = 8;
+
+    program_counter = index_register_x;
+}
+
+
+void z80cpu::JP_implict_iy() {
+    t_state_cycles = 8;
+
+    program_counter = index_register_y;
 }
