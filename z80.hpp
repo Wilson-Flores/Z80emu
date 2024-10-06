@@ -320,6 +320,7 @@ public:
     void JP_cc_immediate();                                                  // [JP cc, nn]
 	void JR_relative();                                                      // [JR e]
 	void JR_cc_relative();                                                   // [JR cc, e]
+	void JP_implict();                                                       // [JP (HL)]
 
 
     // NOP Instruction
