@@ -323,6 +323,7 @@ public:
 	void JP_implict();                                                       // [JP (HL)]
 	void JP_implict_ix();                                                    // [JP (IX)]
 	void JP_implict_iy();                                                    // [JP (IY)]
+	void DJNZ_immediate();                                                   // [DJNZ e]
 
 
     // NOP Instruction

@@ -176,3 +176,34 @@ void z80cpu::JP_implict_iy() {
 
     program_counter = index_register_y;
 }
+
+
+void z80cpu::DJNZ_immediate() {
+    // the amount of cycles will be determined after finding out the value of register B
+
+    // first we decrement the b register.
+    B_register--;
+
+    // we have to retrieve the offset value before we do anything to push the program counter forward.
+    // How this originally works
+    // PC = (PC + 2) + displacement
+    // (PC + 2): PC is the program counter value before the instruction cycle starts.
+
+    // Instruction cycle increments PC by 1.
+    // We increment again after reading the displacement value
+    // we just preform a regular PC += displacement
+    displacement = static_cast<int8_t>(rom_read(program_counter));
+    program_counter++;
+
+    if(B_register != 0)
+    {
+        t_state_cycles = 13;
+        program_counter += static_cast<int16_t>(displacement);
+        WZ_register = program_counter;
+    }
+    else
+    {
+        // when B == 0, we do nothing.
+        t_state_cycles = 8;
+    }
+}
