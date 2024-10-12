@@ -37,7 +37,10 @@ TEST_F(JumpTest, JP_cc_immediate_test)
 
 TEST_F(JumpTest, JR_relative_test)
 {
+    const std::vector<uint8_t> expected_register_values = { 0x00, 0x00, 0x01 };
+    const std::vector<uint8_t> memory = { 0x06, 0x01, 0x10, 0x02, 0x3E, 0x01, 0x10 };
 
+    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
 }
 
 
