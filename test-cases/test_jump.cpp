@@ -33,3 +33,19 @@ TEST_F(JumpTest, JP_cc_immediate_test)
     TestRegister(memory_A, bus.cpu.accumulator, expected_register_values_A);
     TestRegister(memory_B, bus.cpu.accumulator, expected_register_values_B);
 }
+
+
+TEST_F(JumpTest, JR_relative_test)
+{
+
+}
+
+
+TEST_F(JumpTest, DJNZ_immediate_test)
+{
+    const std::vector<uint8_t> expected_register_values = { 0x00, 0x00, 0x01, 0x01, 0x02 };
+
+    const std::vector<uint8_t> memory = { 0x06, 0x01, 0x10, 0x02, 0x3E, 0x01, 0x10, 0x02, 0x3E, 0x28, 0x3E, 0x02 };
+
+    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+}
