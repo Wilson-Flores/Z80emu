@@ -63,6 +63,16 @@ TEST_F(JumpTest, JR_cc_relative_test)
 }
 
 
+
+TEST_F(JumpTest, JP_implict_test)
+{
+    const std::vector<uint8_t> expected_register_values = { 0x00, 0x03, 0x00, 0x00, 0x00, 0x01 };
+    const std::vector<uint8_t> memory = { 0x3F, 0xED, 0x5F, 0x3E, 0x00, 0x21, 0x0B, 0x00, 0xE9, 0x3E, 0x28, 0x3E, 0x01 };
+
+    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+}
+
+
 TEST_F(JumpTest, DJNZ_immediate_test)
 {
     const std::vector<uint8_t> expected_register_values = { 0x00, 0x00, 0x01, 0x01, 0x02 };
