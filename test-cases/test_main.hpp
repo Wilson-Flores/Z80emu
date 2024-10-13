@@ -31,6 +31,8 @@ protected:
                           << static_cast<int>(bus.cpu.opcode) << '\t';
                 std::cout << "REG VALUE: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
                           << static_cast<int>(reg) << '\n';
+                std::cout << "EXPECTED REG VALUE: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+          << static_cast<int>(expected_reg_value) << '\n';
             }
             ASSERT_EQ(compare_reg_values, false);
         }
