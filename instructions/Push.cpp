@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Push.hpp"
 
 void z80cpu::PUSH_register_indirect_register() {
     t_state_cycles = 11;

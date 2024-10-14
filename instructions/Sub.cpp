@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Sub.hpp"
 
 void z80cpu::SUB_implied_register() {
     t_state_cycles = 4;

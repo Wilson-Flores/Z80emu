@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Misc.hpp"
 
 void z80cpu::CCF_implied(){
     // Complement carry flag

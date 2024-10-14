@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Or.hpp"
 
 
 void z80cpu::OR_implied_register() {

@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Pop.hpp"
 
 void z80cpu::POP_register_indirect_register() {
     t_state_cycles = 10;

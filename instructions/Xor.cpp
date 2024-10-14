@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Xor.hpp"
 
 
 void z80cpu::XOR_implied_register() {

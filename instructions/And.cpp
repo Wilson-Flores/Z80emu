@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "And.hpp"
 
 
 void z80cpu::AND_implied_register() {

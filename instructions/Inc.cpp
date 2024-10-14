@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Inc.hpp"
 
 
 void z80cpu::INC_implied_register() {

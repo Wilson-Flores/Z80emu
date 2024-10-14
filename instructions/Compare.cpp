@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Compare.hpp"
 
 void z80cpu::CPI_register_indirect() {
     t_state_cycles = 16;

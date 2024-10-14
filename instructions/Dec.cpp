@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Dec.hpp"
 
 
 void z80cpu::DEC_implied_register() {

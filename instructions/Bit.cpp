@@ -1,4 +1,4 @@
-#include "../z80.hpp"
+#include "Bit.hpp"
 
 
 void z80cpu::BIT_implied() {

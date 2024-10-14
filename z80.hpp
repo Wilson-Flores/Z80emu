@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include <iostream>
 #include <iomanip>
 
 constexpr uint8_t BIT_MASK_1 = 0x38;      // 0011 1000 binary value
