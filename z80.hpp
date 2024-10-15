@@ -161,11 +161,6 @@ private:
 	uint8_t get_flag(FLAGSZ80 flag) const;
 	void set_flag(FLAGSZ80 flag, bool setFlag);
 
-	struct INSTRUCTION {
-		std::string opcode;
-		void(z80cpu::* instruction)() = nullptr;
-	};
-
 
 	//Function tables
 	void bit_instructions();
@@ -175,6 +170,11 @@ private:
 	void iy_instructions();
 	void iy_bit_instructions();
 
+	//Insturction tables
+	struct INSTRUCTION {
+		std::string opcode;
+		void(*instruction)() = nullptr;
+	};
 
 	std::vector<INSTRUCTION> main_instruction_table;
 	std::vector<INSTRUCTION> bit_instruction_table;			// opcode: CB
