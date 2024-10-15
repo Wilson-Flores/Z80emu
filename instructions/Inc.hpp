@@ -1,8 +1,6 @@
 #ifndef Inc_hpp
 #define Inc_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 void INC_implied_register();                                            // [INC r]

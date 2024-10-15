@@ -1,8 +1,6 @@
 #ifndef Reset_hpp
 #define Reset_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 void RES_implied();                                                      // [RES b, r]

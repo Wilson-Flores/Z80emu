@@ -1,8 +1,6 @@
 #ifndef Compare_hpp
 #define Compare_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 // Block Search Instructions

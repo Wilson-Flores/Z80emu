@@ -1,8 +1,6 @@
 #ifndef Pop_hpp
 #define Pop_hpp
 
-#include "../z80.hpp"
-
 
 // 16-bit Instructions
 void POP_register_indirect_register();                                   // [POP qq]

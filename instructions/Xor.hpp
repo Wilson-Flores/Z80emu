@@ -1,8 +1,6 @@
 #ifndef Xor_hpp
 #define Xor_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 // Arithmetic Instructions

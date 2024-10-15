@@ -1,8 +1,6 @@
 #ifndef Exchange_hpp
 #define Exchange_hpp
 
-#include "../z80.hpp"
-
 
 // 16-bit Instructions
 void EX_implied_implied_af();                                            // [EX AF, AF']

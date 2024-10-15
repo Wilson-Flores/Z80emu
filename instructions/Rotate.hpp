@@ -1,8 +1,6 @@
 #ifndef Rotate_hpp
 #define Rotate_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 // Rotate Left Circular Instructions

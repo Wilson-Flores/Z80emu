@@ -1,8 +1,6 @@
 #ifndef Bit_hpp
 #define Bit_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 void BIT_implied();                                                      // [BIT b, r]

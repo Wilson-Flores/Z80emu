@@ -1,8 +1,6 @@
 #ifndef Set_hpp
 #define Set_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 void SET_implied();                                                      // [SET b, r]

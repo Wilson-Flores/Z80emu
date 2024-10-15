@@ -1,8 +1,6 @@
 #ifndef Sub_hpp
 #define Sub_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 // Arithmetic Instructions

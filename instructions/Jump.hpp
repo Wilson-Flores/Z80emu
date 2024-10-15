@@ -1,8 +1,6 @@
 #ifndef Jump_hpp
 #define Jump_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 void JP_immediate();                                                     // [JP nn]

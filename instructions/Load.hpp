@@ -1,8 +1,6 @@
 #ifndef Load_hpp
 #define Load_hpp
 
-#include "../z80.hpp"
-
 
 // 8-bit Instructions
 void LD_register_immediate();                                           // [LD r, n]
