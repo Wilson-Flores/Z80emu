@@ -162,29 +162,6 @@ private:
 	void set_flag(FLAGSZ80 flag, bool setFlag);
 
 
-	//Function tables
-	void bit_instructions();
-	void ix_instructions();
-	void ix_bit_instructions();
-	void misc_instructions();
-	void iy_instructions();
-	void iy_bit_instructions();
-
-	//Insturction tables
-	struct INSTRUCTION {
-		std::string opcode;
-		void(*instruction)() = nullptr;
-	};
-
-	std::vector<INSTRUCTION> main_instruction_table;
-	std::vector<INSTRUCTION> bit_instruction_table;			// opcode: CB
-	std::vector<INSTRUCTION> ix_instruction_table;			// opcode: DD
-	std::vector<INSTRUCTION> ix_bit_instruction_table;		// opcode: DD CB
-	std::vector<INSTRUCTION> misc_instruction_table;		// opcode: ED
-	std::vector<INSTRUCTION> iy_instruction_table;			// opcode: FD
-	std::vector<INSTRUCTION> iy_bit_instruction_table;		// opcode: FD CB
-
-
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
     std::vector<uint8_t*> register_table;
     std::vector<uint8_t*> alt_register_table;
