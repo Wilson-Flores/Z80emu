@@ -65,7 +65,6 @@ class z80cpu {
 public:
 	z80cpu();
 
-
 	// connect to Bus
 	void connect_bus(Bus* n) { bus = n; }
 
@@ -80,6 +79,15 @@ public:
 		ZERO_FLAG = (1 << 6),                     // Z
 		SIGN_FLAG = (1 << 7)                      // S
 	};
+
+	void software_maskable_interrupt(); // INT
+	void non_maskable_interrupt(); // NMI
+
+	void instruction_cycle();
+
+
+private:
+	Bus* bus = nullptr;
 
 	// Main Registers
 	uint8_t accumulator = 0x00;
@@ -108,49 +116,56 @@ public:
 	// Other Registers
 	uint8_t interrupt_vector_register = 0x00;
 	uint8_t memory_refresh_register = 0x00;
-    uint16_t WZ_register = 0x0000;
-
-	void memory_refresh_counter();
+	uint16_t WZ_register = 0x0000;
 
 	uint16_t stack_pointer = 0x0000;
 	uint16_t program_counter = 0x0000;
 
-	// Interrupts
-	bool interrupt_enable_flip_flop_1 = false;
-	bool interrupt_enable_flip_flop_2 = false;
-	void software_maskable_interrupt(); // INT
-	void non_maskable_interrupt(); // NMI
-
-
-	void instruction_cycle();
-
 	uint8_t opcode = 0x00;
 	uint8_t t_state_cycles = 0;
 
-    // variables that temporarily store values while executing certain instructions
-    int8_t displacement = 0x00;
+	// variables that temporarily store values while executing certain instructions
+	int8_t displacement = 0x00;
 
-    // 8-bit temp values
-    uint8_t data_8 = 0;
-    uint8_t result_8 = 0;
+	// 8-bit temp values
+	uint8_t data_8 = 0;
+	uint8_t result_8 = 0;
 
-    // 16-bit temp values
-    uint16_t data_16 = 0;
-    uint16_t result_16 = 0;
+	// 16-bit temp values
+	uint16_t data_16 = 0;
+	uint16_t result_16 = 0;
 
-    // temp memory address value
-    uint16_t memory_address = 0x0000;
+	// temp memory address value
+	uint16_t memory_address = 0x0000;
 
-    // LDIR/LDDR WZ register Flag
-    // This flag will indicate that the instruction loop has started.
-    // we need to grab BC's value to determine what value will be stored at WZ register.
-    // This only occurs at the start of the instruction, so we cant have it overwriting while it loops.
-    bool WZ_register_flag = false;
+	// LDIR/LDDR WZ register Flag
+	// This flag will indicate that the instruction loop has started.
+	// we need to grab BC's value to determine what value will be stored at WZ register.
+	// This only occurs at the start of the instruction, so we cant have it overwriting while it loops.
+	bool WZ_register_flag = false;
+
+	// each register has a correlating bit value that is used to determine what register to use in the instruction.
+	std::vector<uint8_t*> register_table;
+	std::vector<uint8_t*> alt_register_table;
+
+	// Interrupts
+	bool interrupt_enable_flip_flop_1 = false;
+	bool interrupt_enable_flip_flop_2 = false;
 
 
-private:
-	Bus* bus = nullptr;
+	// each register pair has a correlating bit value
+	struct REGISTER_PAIR{
+		uint8_t* high_byte_register;
+		uint8_t* low_byte_register;
+	};
 
+	std::vector<REGISTER_PAIR> register_pair_table_qq;
+	std::vector<REGISTER_PAIR> register_pair_table_ss;
+	std::vector<REGISTER_PAIR> register_pair_table_pp;
+	std::vector<REGISTER_PAIR> register_pair_table_rr;
+
+
+	void memory_refresh_counter();
 
 	uint8_t rom_read(uint16_t address);
 
@@ -159,24 +174,7 @@ private:
 
 
 	uint8_t get_flag(FLAGSZ80 flag) const;
-	void set_flag(FLAGSZ80 flag, bool setFlag);
-
-
-	// each register has a correlating bit value that is used to determine what register to use in the instruction.
-    std::vector<uint8_t*> register_table;
-    std::vector<uint8_t*> alt_register_table;
-
-
-    // each register pair has a correlating bit value
-    struct REGISTER_PAIR{
-        uint8_t* high_byte_register;
-        uint8_t* low_byte_register;
-    };
-
-	std::vector<REGISTER_PAIR> register_pair_table_qq;
-    std::vector<REGISTER_PAIR> register_pair_table_ss;
-    std::vector<REGISTER_PAIR> register_pair_table_pp;
-    std::vector<REGISTER_PAIR> register_pair_table_rr;
+	void set_flag(FLAGSZ80 flag, bool setFlag)
 
 };
 
