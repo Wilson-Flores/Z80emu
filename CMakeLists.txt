@@ -32,6 +32,7 @@ set(SOURCES
         instructions/Jump.cpp
         instructions/Set.cpp
         instructions/Reset.cpp
+        instructions/InstructionTable.cpp
 )
 
 # List of test source files
