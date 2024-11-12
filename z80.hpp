@@ -59,6 +59,9 @@ constexpr uint8_t PARITY_TABLE[256] = {
 };
 
 
+
+
+
 class Bus;
 
 
@@ -387,6 +390,13 @@ public:
     void DEC_implied_register_extended_iy();                                 // [DEC IY]
 
 
+    //Function tables
+    void bit_instructions();
+    void ix_instructions();
+    void ix_bit_instructions();
+    void misc_instructions();
+    void iy_instructions();
+    void iy_bit_instructions();
 
 	void instruction_cycle();
 
@@ -426,29 +436,6 @@ private:
 
 	uint8_t get_flag(FLAGSZ80 flag) const;
 	void set_flag(FLAGSZ80 flag, bool setFlag);
-
-	struct INSTRUCTION {
-		std::string opcode;
-		void(z80cpu::* instruction)() = nullptr;
-	};
-
-
-	//Function tables
-	void bit_instructions();
-	void ix_instructions();
-	void ix_bit_instructions();
-	void misc_instructions();
-	void iy_instructions();
-	void iy_bit_instructions();
-
-
-	std::vector<INSTRUCTION> main_instruction_table;
-	std::vector<INSTRUCTION> bit_instruction_table;			// opcode: CB
-	std::vector<INSTRUCTION> ix_instruction_table;			// opcode: DD
-	std::vector<INSTRUCTION> ix_bit_instruction_table;		// opcode: DD CB
-	std::vector<INSTRUCTION> misc_instruction_table;		// opcode: ED
-	std::vector<INSTRUCTION> iy_instruction_table;			// opcode: FD
-	std::vector<INSTRUCTION> iy_bit_instruction_table;		// opcode: FD CB
 
 
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
