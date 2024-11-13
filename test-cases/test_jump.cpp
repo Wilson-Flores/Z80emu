@@ -6,7 +6,7 @@ TEST_F(JumpTest, JP_immediate_test)
 
     const std::vector<uint8_t> memory = {0xC3, 0x05, 0x00, 0x3E, 0x28, 0x3E, 0xFF};
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -30,8 +30,8 @@ TEST_F(JumpTest, JP_cc_immediate_test)
         0x28, 0x3E, 0x04
     };
 
-    TestRegister(memory_A, bus.cpu.accumulator, expected_register_values_A);
-    TestRegister(memory_B, bus.cpu.accumulator, expected_register_values_B);
+    TestRegister(memory_A, bus.cpu.get_accumulator_address(), expected_register_values_A);
+    TestRegister(memory_B, bus.cpu.get_accumulator_address(), expected_register_values_B);
 }
 
 
@@ -40,7 +40,7 @@ TEST_F(JumpTest, JR_relative_test)
     const std::vector<uint8_t> expected_register_values = { 0x00, 0x00, 0x01 };
     const std::vector<uint8_t> memory = { 0x3E, 0x00, 0x18, 0x02, 0x3E, 0x28, 0x3E, 0x01 };
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -58,8 +58,8 @@ TEST_F(JumpTest, JR_cc_relative_test)
         0x00, 0xB7, 0x28, 0x02, 0x3E, 0x28, 0x3E, 0x02
     };
 
-    TestRegister(memory_A, bus.cpu.accumulator, expected_register_values_A);
-    TestRegister(memory_B, bus.cpu.accumulator, expected_register_values_B);
+    TestRegister(memory_A, bus.cpu.get_accumulator_address(), expected_register_values_A);
+    TestRegister(memory_B, bus.cpu.get_accumulator_address(), expected_register_values_B);
 }
 
 
@@ -69,7 +69,7 @@ TEST_F(JumpTest, JP_implict_test)
     const std::vector<uint8_t> expected_register_values = { 0x00, 0x03, 0x00, 0x00, 0x00, 0x01 };
     const std::vector<uint8_t> memory = { 0x3F, 0xED, 0x5F, 0x3E, 0x00, 0x21, 0x0B, 0x00, 0xE9, 0x3E, 0x28, 0x3E, 0x01 };
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -78,7 +78,7 @@ TEST_F(JumpTest, JP_implict_ix_test)
     const std::vector<uint8_t> expected_register_values = { 0x00, 0x03, 0x00, 0x00, 0x00, 0x01 };
     const std::vector<uint8_t> memory = { 0x3F, 0xED, 0x5F, 0x3E, 0x00, 0xDD, 0x21, 0x0D, 0x00, 0xDD, 0xE9, 0x3E, 0x28, 0x3E, 0x01 };
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -87,7 +87,7 @@ TEST_F(JumpTest, JP_implict_iy_test)
     const std::vector<uint8_t> expected_register_values = { 0x00, 0x03, 0x00, 0x00, 0x00, 0x01 };
     const std::vector<uint8_t> memory = { 0x3F, 0xED, 0x5F, 0x3E, 0x00, 0xFD, 0x21, 0x0D, 0x00, 0xFD, 0xE9, 0x3E, 0x28, 0x3E, 0x01 };
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -97,5 +97,5 @@ TEST_F(JumpTest, DJNZ_immediate_test)
 
     const std::vector<uint8_t> memory = { 0x06, 0x01, 0x10, 0x02, 0x3E, 0x01, 0x10, 0x02, 0x3E, 0x28, 0x3E, 0x02 };
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }

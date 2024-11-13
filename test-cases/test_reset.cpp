@@ -28,13 +28,13 @@ TEST_F(ResetTest, RES_implied_test)
                                            0xCB, 0xA5, 0xCB, 0xAD, 0xCB, 0xB5, 0xCB, 0xBD};
 
     // Run tests for each register
-    TestRegister(memory_A, bus.cpu.accumulator, expected_register_values);
-    TestRegister(memory_B, bus.cpu.B_register, expected_register_values);
-    TestRegister(memory_C, bus.cpu.C_register, expected_register_values);
-    TestRegister(memory_D, bus.cpu.D_register, expected_register_values);
-    TestRegister(memory_E, bus.cpu.E_register, expected_register_values);
-    TestRegister(memory_H, bus.cpu.H_register, expected_register_values);
-    TestRegister(memory_L, bus.cpu.L_register, expected_register_values);
+    TestRegister(memory_A, bus.cpu.get_accumulator_address(), expected_register_values);
+    TestRegister(memory_B, bus.cpu.get_registerB_address(), expected_register_values);
+    TestRegister(memory_C, bus.cpu.get_registerC_address(), expected_register_values);
+    TestRegister(memory_D, bus.cpu.get_registerD_address(), expected_register_values);
+    TestRegister(memory_E, bus.cpu.get_registerE_address(), expected_register_values);
+    TestRegister(memory_H, bus.cpu.get_registerH_address(), expected_register_values);
+    TestRegister(memory_L, bus.cpu.get_registerL_address(), expected_register_values);
 }
 
 
@@ -55,7 +55,7 @@ TEST_F(ResetTest, RES_indirect_test)
         0xB6, 0x7E, 0xCB, 0xBE, 0x7E
     };
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -79,7 +79,7 @@ TEST_F(ResetTest, RES_indexed_ix_test)
         0x7E
     };
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -103,5 +103,5 @@ TEST_F(ResetTest, RES_indexed_iy_test)
         0x7E
     };
 
-    TestRegister(memory, bus.cpu.accumulator, expected_register_values);
+    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
 }
