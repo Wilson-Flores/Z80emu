@@ -42,7 +42,7 @@
 //
 //        // PUSH HL Instruction
 //        if(bus.cpu.opcode == 0xE5){
-//            if(bus.cpu.flag_register != expected_flag_values[byte_counter]){
+//            if(bus.cpu.get_flag_register_value() != expected_flag_values[byte_counter]){
 //                compare_flag_values = true;
 //
 //                std::cout << "HEX Value: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
@@ -52,10 +52,10 @@
 //                          << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                          << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                          << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //            }
 //
-//            if(bus.cpu.accumulator == 0x00){
+//            if(bus.cpu.get_registerA_value() == 0x00){
 //                accumulator_cycle = true;
 //            }
 //            byte_counter++;

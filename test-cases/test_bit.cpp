@@ -36,7 +36,7 @@
 //                for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_00.size(); byte_counter++){
 //                    bus.cpu.instruction_cycle();
 //
-//                    if(bus.cpu.flag_register != expected_flag_values_00[byte_counter]){
+//                    if(bus.cpu.get_flag_register_value() != expected_flag_values_00[byte_counter]){
 //                        compare_flag_values = true;
 //                        std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
 //                                  << static_cast<int>(load_value[i]) << '\t';
@@ -45,7 +45,7 @@
 //                                  << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                        std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                                  << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                                  << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //                    }
 //                    ASSERT_EQ(compare_flag_values, false);
 //                }
@@ -54,7 +54,7 @@
 //                for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_FF.size(); byte_counter++){
 //                    bus.cpu.instruction_cycle();
 //
-//                    if(bus.cpu.flag_register != expected_flag_values_FF[byte_counter]){
+//                    if(bus.cpu.get_flag_register_value() != expected_flag_values_FF[byte_counter]){
 //                        compare_flag_values = true;
 //                        std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
 //                                  << static_cast<int>(load_value[i]) << '\t';
@@ -62,7 +62,7 @@
 //                                  << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                        std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                                  << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                                  << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //                    }
 //                    ASSERT_EQ(compare_flag_values, false);
 //                }
@@ -99,7 +99,7 @@
 //            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_00.size(); byte_counter++){
 //                bus.cpu.instruction_cycle();
 //
-//                if(bus.cpu.flag_register != expected_flag_values_00[byte_counter]){
+//                if(bus.cpu.get_flag_register_value() != expected_flag_values_00[byte_counter]){
 //                    compare_flag_values = true;
 //                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
 //                              << static_cast<int>(load_value[i]) << '\t';
@@ -108,7 +108,7 @@
 //                              << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                              << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //                }
 //                ASSERT_EQ(compare_flag_values, false);
 //            }
@@ -117,7 +117,7 @@
 //            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_FF.size(); byte_counter++){
 //                bus.cpu.instruction_cycle();
 //
-//                if(bus.cpu.flag_register != expected_flag_values_FF[byte_counter]){
+//                if(bus.cpu.get_flag_register_value() != expected_flag_values_FF[byte_counter]){
 //                    compare_flag_values = true;
 //                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
 //                              << static_cast<int>(load_value[i]) << '\t';
@@ -125,7 +125,7 @@
 //                              << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                              << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //                }
 //                ASSERT_EQ(compare_flag_values, false);
 //            }
@@ -160,7 +160,7 @@
 //            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_00.size(); byte_counter++){
 //                bus.cpu.instruction_cycle();
 //
-//                if(bus.cpu.flag_register != expected_flag_values_00[byte_counter]){
+//                if(bus.cpu.get_flag_register_value() != expected_flag_values_00[byte_counter]){
 //                    compare_flag_values = true;
 //                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
 //                              << static_cast<int>(load_value[i]) << '\t';
@@ -169,7 +169,7 @@
 //                              << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                              << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //                }
 //                ASSERT_EQ(compare_flag_values, false);
 //            }
@@ -178,7 +178,7 @@
 //            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_FF.size(); byte_counter++){
 //                bus.cpu.instruction_cycle();
 //
-//                if(bus.cpu.flag_register != expected_flag_values_FF[byte_counter]){
+//                if(bus.cpu.get_flag_register_value() != expected_flag_values_FF[byte_counter]){
 //                    compare_flag_values = true;
 //                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
 //                              << static_cast<int>(load_value[i]) << '\t';
@@ -186,7 +186,7 @@
 //                              << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                              << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //                }
 //                ASSERT_EQ(compare_flag_values, false);
 //            }
@@ -221,7 +221,7 @@
 //            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_00.size(); byte_counter++){
 //                bus.cpu.instruction_cycle();
 //
-//                if(bus.cpu.flag_register != expected_flag_values_00[byte_counter]){
+//                if(bus.cpu.get_flag_register_value() != expected_flag_values_00[byte_counter]){
 //                    compare_flag_values = true;
 //                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
 //                              << static_cast<int>(load_value[i]) << '\t';
@@ -230,7 +230,7 @@
 //                              << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                              << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //                }
 //                ASSERT_EQ(compare_flag_values, false);
 //            }
@@ -239,7 +239,7 @@
 //            for(uint16_t byte_counter = 0; byte_counter < expected_flag_values_FF.size(); byte_counter++){
 //                bus.cpu.instruction_cycle();
 //
-//                if(bus.cpu.flag_register != expected_flag_values_FF[byte_counter]){
+//                if(bus.cpu.get_flag_register_value() != expected_flag_values_FF[byte_counter]){
 //                    compare_flag_values = true;
 //                    std::cout << "VALUE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
 //                              << static_cast<int>(load_value[i]) << '\t';
@@ -247,7 +247,7 @@
 //                              << static_cast<int>(bus.cpu.opcode) << '\t';
 //
 //                    std::cout << "Flag: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-//                              << static_cast<int>(bus.cpu.flag_register) << '\n';
+//                              << static_cast<int>(bus.cpu.get_flag_register_value()) << '\n';
 //                }
 //                ASSERT_EQ(compare_flag_values, false);
 //            }
