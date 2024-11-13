@@ -11,7 +11,7 @@ class BusTest : public ::testing::Test {
 protected:
     Bus bus;
 
-    void TestRegister(const std::vector<uint8_t>& memory, uint8_t& reg,
+    void TestRegister(const std::vector<uint8_t>& memory, const uint8_t& reg,
         const std::vector<uint8_t>& expected_register_values) {
 
         bool compare_reg_values = false;
