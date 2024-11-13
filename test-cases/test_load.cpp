@@ -36,7 +36,7 @@ TEST_F(LoadTest, LD_register_immediate_test){
 
         bus.cpu.instruction_cycle();
 
-        if(bus.cpu.flag_register != flag_value){
+        if(bus.cpu.get_flag_register_value() != flag_value){
             compare_flag_values = true;
         }
         ASSERT_EQ(compare_flag_values, false);
