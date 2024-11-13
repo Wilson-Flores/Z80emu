@@ -70,6 +70,12 @@ enum FLAGSZ80 {
     SIGN_FLAG = (1 << 7)                      // S
 };
 
+// each register pair has a correlating bit value
+struct REGISTER_PAIR{
+	uint8_t* high_byte_register;
+	uint8_t* low_byte_register;
+};
+
 
 class Bus;
 
@@ -451,11 +457,6 @@ private:
     std::vector<uint8_t*> alt_register_table;
 
 
-    // each register pair has a correlating bit value
-    struct REGISTER_PAIR{
-        uint8_t* high_byte_register;
-        uint8_t* low_byte_register;
-    };
 
 	std::vector<REGISTER_PAIR> register_pair_table_qq;
     std::vector<REGISTER_PAIR> register_pair_table_ss;
