@@ -85,7 +85,7 @@ void z80cpu::set_flag(FLAGSZ80 flag, bool set_flag) {
 	}
 }
 
-uint8_t z80cpu::get_flag(z80cpu::FLAGSZ80 flag) const {
+uint8_t z80cpu::get_flag(FLAGSZ80 flag) const {
     return ((flag_register & flag) > 0) ? 1 : 0;
 }
 
@@ -175,3 +175,58 @@ void z80cpu::iy_bit_instructions() {
 
     (this->*iy_bit_instruction_table[opcode].instruction)();
 }
+
+void z80cpu::reset() {
+    // General Purpose Registers
+    accumulator = 0x00;
+    B_register = 0x00;
+    C_register = 0x00;
+    D_register = 0x00;
+    E_register = 0x00;
+    H_register = 0x00;
+    L_register = 0x00;
+    flag_register = 0x00;
+
+    // Alternate Registers
+    alt_accumulator = 0x00;
+    alt_B_register = 0x00;
+    alt_C_register = 0x00;
+    alt_D_register = 0x00;
+    alt_E_register = 0x00;
+    alt_H_register = 0x00;
+    alt_L_register = 0x00;
+    alt_flag_register = 0x00;
+
+    // Index Registers
+    index_register_x = 0x0000;
+    index_register_y = 0x0000;
+
+    // Other Registers
+    interrupt_vector_register = 0x00;
+    memory_refresh_register = 0x00;
+    stack_pointer = 0x0000;
+    program_counter = 0x0000;
+    WZ_register = 0x0000;
+    opcode = 0x00;
+    t_state_cycles = 0x00;
+
+    // Temporary Values
+    displacement = 0x00;
+    data_8 = 0;
+    result_8 = 0;
+    data_16 = 0;
+    result_16 = 0;
+
+    // Interrupts
+    interrupt_enable_flip_flop_1 = false;
+    interrupt_enable_flip_flop_2 = false;
+}
+
+const uint8_t& z80cpu::get_flag_register_address() const { return flag_register; }
+const uint8_t& z80cpu::get_accumulator_address() const { return accumulator; }
+const uint8_t& z80cpu::get_registerB_address() const { return B_register; }
+const uint8_t& z80cpu::get_registerC_address() const { return C_register; }
+const uint8_t& z80cpu::get_registerD_address() const { return D_register; }
+const uint8_t& z80cpu::get_registerE_address() const { return E_register; }
+const uint8_t& z80cpu::get_registerH_address() const { return H_register; }
+const uint8_t& z80cpu::get_registerL_address() const { return L_register; }
