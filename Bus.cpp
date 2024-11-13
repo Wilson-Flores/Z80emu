@@ -43,47 +43,6 @@ void Bus::rom_reset() {
 		i = 0x00;
 	}
 
-	cpu.accumulator = 0x00;
-	cpu.B_register = 0x00;
-	cpu.C_register = 0x00;
-	cpu.D_register = 0x00;
-	cpu.E_register = 0x00;
-	cpu.H_register = 0x00;
-	cpu.L_register = 0x00;
-	cpu.flag_register = 0x00;
+    cpu.reset();
 
-
-	// Alternate Registers
-	cpu.alt_accumulator = 0x00;
-	cpu.alt_B_register = 0x00;
-	cpu.alt_C_register = 0x00;
-	cpu.alt_D_register = 0x00;
-	cpu.alt_E_register = 0x00;
-	cpu.alt_H_register = 0x00;
-	cpu.alt_L_register = 0x00;
-	cpu.alt_flag_register = 0x00;
-
-	// Index Registers
-	cpu.index_register_x = 0x0000;
-	cpu.index_register_y = 0x0000;
-
-	// Other Registers
-	cpu.interrupt_vector_register = 0x00;
-	cpu.memory_refresh_register = 0x00;
-	cpu.stack_pointer = 0x0000;
-	cpu.program_counter = 0x0000;
-    cpu.WZ_register = 0x0000;
-    cpu.opcode = 0x00;
-    cpu.t_state_cycles = 0x00;
-
-    // Temp Values
-    cpu.displacement = 0x00;
-    cpu.data_8 = 0;
-    cpu.result_8 = 0;
-    cpu.data_16 = 0;
-    cpu.result_16 = 0;
-
-	// Interrupts
-	cpu.interrupt_enable_flip_flop_1 = false;
-	cpu.interrupt_enable_flip_flop_2 = false;
 }

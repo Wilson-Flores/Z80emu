@@ -58,8 +58,17 @@ constexpr uint8_t PARITY_TABLE[256] = {
     1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1
 };
 
-
-
+// Status Register
+enum FLAGSZ80 {
+    CARRY_FLAG = (1 << 0),                    // C
+    ADD_SUB_FLAG = (1 << 1),                  // N
+    PARITY_OVERFLOW_FLAG = (1 << 2),          // P/V
+    X_FLAG = (1 << 3),                        // X
+    HALF_CARRY_FLAG = (1 << 4),               // H
+    Y_FLAG = (1 << 5),                        // Y
+    ZERO_FLAG = (1 << 6),                     // Z
+    SIGN_FLAG = (1 << 7)                      // S
+};
 
 
 class Bus;
@@ -69,61 +78,22 @@ class z80cpu {
 public:
 	z80cpu();
 
-
 	// connect to Bus
 	void connect_bus(Bus* n) { bus = n; }
 
-	// Status Register
-	enum FLAGSZ80 {
-		CARRY_FLAG = (1 << 0),                    // C
-		ADD_SUB_FLAG = (1 << 1),                  // N
-		PARITY_OVERFLOW_FLAG = (1 << 2),          // P/V
-		X_FLAG = (1 << 3),                        // X
-		HALF_CARRY_FLAG = (1 << 4),               // H
-		Y_FLAG = (1 << 5),                        // Y
-		ZERO_FLAG = (1 << 6),                     // Z
-		SIGN_FLAG = (1 << 7)                      // S
-	};
+    //Debug Functions:
+    // Reset values
+    void reset();
+    // Get register values
+    const uint8_t& get_flag_register_address() const;
+    const uint8_t& get_accumulator_address() const;
+    const uint8_t& get_registerB_address() const;
+    const uint8_t& get_registerC_address() const;
+    const uint8_t& get_registerD_address() const;
+    const uint8_t& get_registerE_address() const;
+    const uint8_t& get_registerH_address() const;
+    const uint8_t& get_registerL_address() const;
 
-	// Main Registers
-	uint8_t accumulator = 0x00;
-	uint8_t B_register = 0x00;
-	uint8_t C_register = 0x00;
-	uint8_t D_register = 0x00;
-	uint8_t E_register = 0x00;
-	uint8_t H_register = 0x00;
-	uint8_t L_register = 0x00;
-	uint8_t flag_register = 0x00;
-
-	// Alternate Registers
-	uint8_t alt_accumulator = 0x00;
-	uint8_t alt_B_register = 0x00;
-	uint8_t alt_C_register = 0x00;
-	uint8_t alt_D_register = 0x00;
-	uint8_t alt_E_register = 0x00;
-	uint8_t alt_H_register = 0x00;
-	uint8_t alt_L_register = 0x00;
-	uint8_t alt_flag_register = 0x00;
-
-	// Index Registers
-	uint16_t index_register_x = 0x0000;
-	uint16_t index_register_y = 0x0000;
-
-	// Other Registers
-	uint8_t interrupt_vector_register = 0x00;
-	uint8_t memory_refresh_register = 0x00;
-    uint16_t WZ_register = 0x0000;
-
-	void memory_refresh_counter();
-
-	uint16_t stack_pointer = 0x0000;
-	uint16_t program_counter = 0x0000;
-
-	// Interrupts
-	bool interrupt_enable_flip_flop_1 = false;
-	bool interrupt_enable_flip_flop_2 = false;
-	void software_maskable_interrupt(); // INT
-	void non_maskable_interrupt(); // NMI
 
 	// 8-bit Instructions
 	// LD Instructions
@@ -427,6 +397,43 @@ public:
 private:
 	Bus* bus = nullptr;
 
+    // Main Registers
+    uint8_t accumulator = 0x00;
+    uint8_t B_register = 0x00;
+    uint8_t C_register = 0x00;
+    uint8_t D_register = 0x00;
+    uint8_t E_register = 0x00;
+    uint8_t H_register = 0x00;
+    uint8_t L_register = 0x00;
+    uint8_t flag_register = 0x00;
+
+    // Alternate Registers
+    uint8_t alt_accumulator = 0x00;
+    uint8_t alt_B_register = 0x00;
+    uint8_t alt_C_register = 0x00;
+    uint8_t alt_D_register = 0x00;
+    uint8_t alt_E_register = 0x00;
+    uint8_t alt_H_register = 0x00;
+    uint8_t alt_L_register = 0x00;
+    uint8_t alt_flag_register = 0x00;
+
+    // Index Registers
+    uint16_t index_register_x = 0x0000;
+    uint16_t index_register_y = 0x0000;
+
+    // Other Registers
+    uint8_t interrupt_vector_register = 0x00;
+    uint8_t memory_refresh_register = 0x00;
+    uint16_t WZ_register = 0x0000;
+    uint16_t stack_pointer = 0x0000;
+    uint16_t program_counter = 0x0000;
+
+    // Interrupts
+    bool interrupt_enable_flip_flop_1 = false;
+    bool interrupt_enable_flip_flop_2 = false;
+    void software_maskable_interrupt(); // INT
+    void non_maskable_interrupt(); // NMI
+
 
 	uint8_t rom_read(uint16_t address);
 
@@ -437,6 +444,7 @@ private:
 	uint8_t get_flag(FLAGSZ80 flag) const;
 	void set_flag(FLAGSZ80 flag, bool setFlag);
 
+    void memory_refresh_counter();
 
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
     std::vector<uint8_t*> register_table;
