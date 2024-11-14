@@ -230,3 +230,6 @@ const uint8_t& z80cpu::get_registerD_address() const { return D_register; }
 const uint8_t& z80cpu::get_registerE_address() const { return E_register; }
 const uint8_t& z80cpu::get_registerH_address() const { return H_register; }
 const uint8_t& z80cpu::get_registerL_address() const { return L_register; }
+
+
+const uint8_t& z80cpu::get_opcode_address() const { return opcode; }

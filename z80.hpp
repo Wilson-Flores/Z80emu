@@ -87,6 +87,18 @@ public:
 	// connect to Bus
 	void connect_bus(Bus* n) { bus = n; }
 
+	// This is what will read the opcode and then proceed to execute the proper instruction function.
+	void instruction_cycle();
+
+	//Function tables
+	void bit_instructions();
+	void ix_instructions();
+	void ix_bit_instructions();
+	void misc_instructions();
+	void iy_instructions();
+	void iy_bit_instructions();
+
+
     //Debug Functions:
     // Reset values
     void reset();
@@ -99,6 +111,8 @@ public:
     const uint8_t& get_registerE_address() const;
     const uint8_t& get_registerH_address() const;
     const uint8_t& get_registerL_address() const;
+	// Get Opcode value
+	const uint8_t& get_opcode_address() const;
 
 
 	// 8-bit Instructions
@@ -366,40 +380,6 @@ public:
     void DEC_implied_register_extended_iy();                                 // [DEC IY]
 
 
-    //Function tables
-    void bit_instructions();
-    void ix_instructions();
-    void ix_bit_instructions();
-    void misc_instructions();
-    void iy_instructions();
-    void iy_bit_instructions();
-
-	void instruction_cycle();
-
-	uint8_t opcode = 0x00;
-	uint8_t t_state_cycles = 0;
-
-    // variables that temporarily store values while executing certain instructions
-    int8_t displacement = 0x00;
-
-    // 8-bit temp values
-    uint8_t data_8 = 0;
-    uint8_t result_8 = 0;
-
-    // 16-bit temp values
-    uint16_t data_16 = 0;
-    uint16_t result_16 = 0;
-
-    // temp memory address value
-    uint16_t memory_address = 0x0000;
-
-    // LDIR/LDDR WZ register Flag
-    // This flag will indicate that the instruction loop has started.
-    // we need to grab BC's value to determine what value will be stored at WZ register.
-    // This only occurs at the start of the instruction, so we cant have it overwriting while it loops.
-    bool WZ_register_flag = false;
-
-
 private:
 	Bus* bus = nullptr;
 
@@ -434,6 +414,29 @@ private:
     uint16_t stack_pointer = 0x0000;
     uint16_t program_counter = 0x0000;
 
+	uint8_t opcode = 0x00;
+	uint8_t t_state_cycles = 0;
+
+	// variables that temporarily store values while executing certain instructions
+	int8_t displacement = 0x00;
+
+	// 8-bit temp values
+	uint8_t data_8 = 0;
+	uint8_t result_8 = 0;
+
+	// 16-bit temp values
+	uint16_t data_16 = 0;
+	uint16_t result_16 = 0;
+
+	// temp memory address value
+	uint16_t memory_address = 0x0000;
+
+	// LDIR/LDDR WZ register Flag
+	// This flag will indicate that the instruction loop has started.
+	// we need to grab BC's value to determine what value will be stored at WZ register.
+	// This only occurs at the start of the instruction, so we cant have it overwriting while it loops.
+	bool WZ_register_flag = false;
+
     // Interrupts
     bool interrupt_enable_flip_flop_1 = false;
     bool interrupt_enable_flip_flop_2 = false;
@@ -456,8 +459,7 @@ private:
     std::vector<uint8_t*> register_table;
     std::vector<uint8_t*> alt_register_table;
 
-
-
+	// each register pair has a correlating bit value
 	std::vector<REGISTER_PAIR> register_pair_table_qq;
     std::vector<REGISTER_PAIR> register_pair_table_ss;
     std::vector<REGISTER_PAIR> register_pair_table_pp;
