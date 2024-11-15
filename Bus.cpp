@@ -4,45 +4,45 @@
 Bus::Bus() {
     uint8_t value = 0;
    //TODO: add a real way to load ram, create ram class.
-    for(uint8_t& i : ram){
+    for(uint8_t& i : ram_){
         i = value;
         value++;
     }
 
 
-    for (uint8_t& i : rom) {
+    for (uint8_t& i : rom_) {
         i = 0x00;
     }
 
-	cpu.connect_bus(this);
+	cpu_.connect_bus(this);
 }
 
 
 void Bus::ram_write(uint16_t address, uint8_t data) {
-    ram[address] = data;
+    ram_[address] = data;
 }
 
 
 uint8_t Bus::ram_read(uint16_t address) {
-    return ram[address];
+    return ram_[address];
 }
 
 
 void Bus::rom_write(uint16_t address, uint8_t data) {
-    rom[address] = data;
+    rom_[address] = data;
 }
 
 
 uint8_t Bus::rom_read(uint16_t address) {
-    return rom[address];
+    return rom_[address];
 }
 
 
 void Bus::rom_reset() {
-	for (uint8_t& i : rom) {
+	for (uint8_t& i : rom_) {
 		i = 0x00;
 	}
 
-    cpu.reset();
+    cpu_.reset();
 
 }

@@ -24,11 +24,11 @@ protected:
 
         // Test register values
         for (const uint8_t expected_reg_value : expected_register_values) {
-            bus.cpu.instruction_cycle();
+            bus.cpu_.instruction_cycle();
             if (reg != expected_reg_value) {
                 compare_reg_values = true;
                 std::cout << "OPCODE: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
-                          << static_cast<int>(bus.cpu.get_opcode_address()) << '\t';
+                          << static_cast<int>(bus.cpu_.get_opcode_address()) << '\t';
                 std::cout << "REG VALUE: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
                           << static_cast<int>(reg) << '\n';
                 std::cout << "EXPECTED REG VALUE: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
