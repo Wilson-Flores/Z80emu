@@ -28,13 +28,13 @@ TEST_F(SetTest, SET_implied_test)
 
 
     // Run tests for each register
-    TestRegister(memory_A, bus.cpu.get_accumulator_address(), expected_register_values);
-    TestRegister(memory_B, bus.cpu.get_registerB_address(), expected_register_values);
-    TestRegister(memory_C, bus.cpu.get_registerC_address(), expected_register_values);
-    TestRegister(memory_D, bus.cpu.get_registerD_address(), expected_register_values);
-    TestRegister(memory_E, bus.cpu.get_registerE_address(), expected_register_values);
-    TestRegister(memory_H, bus.cpu.get_registerH_address(), expected_register_values);
-    TestRegister(memory_L, bus.cpu.get_registerL_address(), expected_register_values);
+    TestRegister(memory_A, bus.cpu_.get_accumulator_address(), expected_register_values);
+    TestRegister(memory_B, bus.cpu_.get_registerB_address(), expected_register_values);
+    TestRegister(memory_C, bus.cpu_.get_registerC_address(), expected_register_values);
+    TestRegister(memory_D, bus.cpu_.get_registerD_address(), expected_register_values);
+    TestRegister(memory_E, bus.cpu_.get_registerE_address(), expected_register_values);
+    TestRegister(memory_H, bus.cpu_.get_registerH_address(), expected_register_values);
+    TestRegister(memory_L, bus.cpu_.get_registerL_address(), expected_register_values);
 }
 
 
@@ -53,7 +53,7 @@ TEST_F(SetTest, SET_indirect_test)
         0xF6, 0x7E, 0xCB, 0xFE, 0x7E
     };
 
-    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -78,7 +78,7 @@ TEST_F(SetTest, SET_indexed_ix_test)
         0xCB, 0x00, 0xFE, 0x7E
     };
 
-    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_register_values);
 }
 
 
@@ -103,5 +103,5 @@ TEST_F(SetTest, SET_indexed_iy_test)
         0xCB, 0x00, 0xFE, 0x7E
     };
 
-    TestRegister(memory, bus.cpu.get_accumulator_address(), expected_register_values);
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_register_values);
 }
