@@ -14,6 +14,10 @@ protected:
     void TestRegister(const std::vector<uint8_t>& memory, const uint8_t& reg,
         const std::vector<uint8_t>& expected_register_values);
 
+
+    void TestFlag(const std::vector<uint8_t>& memory, const uint8_t& flag,
+                      const std::vector<uint8_t>& expected_flag_values);
+
 };
 
 // Use BusTest as the base class for all specific test cases
