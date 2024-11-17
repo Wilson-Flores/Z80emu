@@ -11,10 +11,12 @@ class BusTest : public ::testing::Test {
 protected:
     Bus bus;
 
+    // Use this function when you want to compare register values
     void TestRegister(const std::vector<uint8_t>& memory, const uint8_t& reg,
         const std::vector<uint8_t>& expected_register_values);
 
 
+    // Use this function to compare flag values
     void TestFlag(const std::vector<uint8_t>& memory, const uint8_t& flag,
                       const std::vector<uint8_t>& expected_flag_values);
 
