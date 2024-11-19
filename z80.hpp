@@ -315,9 +315,9 @@ public:
     void JP_cc_immediate();                                                  // [JP cc, nn]
 	void JR_relative();                                                      // [JR e]
 	void JR_cc_relative();                                                   // [JR cc, e]
-	void JP_implict();                                                       // [JP (HL)]
-	void JP_implict_ix();                                                    // [JP (IX)]
-	void JP_implict_iy();                                                    // [JP (IY)]
+	void JP_implicit();                                                      // [JP (HL)]
+	void JP_implicit_ix();                                                   // [JP (IX)]
+	void JP_implicit_iy();                                                   // [JP (IY)]
 	void DJNZ_immediate();                                                   // [DJNZ e]
 
 

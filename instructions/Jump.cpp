@@ -156,7 +156,7 @@ void z80cpu::JR_cc_relative() {
 }
 
 
-void z80cpu::JP_implict() {
+void z80cpu::JP_implicit() {
     t_state_cycles_ = 4;
 
     memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
@@ -164,14 +164,14 @@ void z80cpu::JP_implict() {
 }
 
 
-void z80cpu::JP_implict_ix() {
+void z80cpu::JP_implicit_ix() {
     t_state_cycles_ = 8;
 
     program_counter_ = index_register_x_;
 }
 
 
-void z80cpu::JP_implict_iy() {
+void z80cpu::JP_implicit_iy() {
     t_state_cycles_ = 8;
 
     program_counter_ = index_register_y_;
