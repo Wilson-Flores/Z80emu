@@ -23,7 +23,7 @@ void Bus::ram_write(uint16_t address, uint8_t data) {
 }
 
 
-uint8_t Bus::ram_read(uint16_t address) {
+uint8_t Bus::ram_read(uint16_t address) const {
     return ram_[address];
 }
 
@@ -33,7 +33,7 @@ void Bus::rom_write(uint16_t address, uint8_t data) {
 }
 
 
-uint8_t Bus::rom_read(uint16_t address) {
+uint8_t Bus::rom_read(uint16_t address) const {
     return rom_[address];
 }
 

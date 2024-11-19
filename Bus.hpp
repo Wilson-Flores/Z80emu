@@ -18,11 +18,11 @@ public:
     std::array<uint8_t, MEMORY_SIZE> rom_{};
 
 	void ram_write(uint16_t address, uint8_t data);
-	uint8_t ram_read(uint16_t address);
+	uint8_t ram_read(uint16_t address) const;
 
 
     void rom_write(uint16_t address, uint8_t data);
-    uint8_t rom_read(uint16_t address);
+    uint8_t rom_read(uint16_t address) const;
 	void rom_reset();
 
 };
