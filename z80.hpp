@@ -7,11 +7,31 @@
 #include <iostream>
 #include <iomanip>
 
+// Bit Masks
 constexpr uint8_t BIT_MASK_1 = 0x38;      // 0011 1000 binary value
 constexpr uint8_t BIT_MASK_2 = 0x07;      // 0000 0111 binary value
 constexpr uint8_t BIT_MASK_3 = 0x30;      // 0011 0000 binary value
 constexpr uint8_t BIT_MASK_4 = 0x18;      // 0001 1000 binary value
 constexpr uint8_t LOW_BYTE_MASK = 0xFF;   // 1111 1111 binary value
+
+constexpr uint16_t HIGH_BYTE_MASK = 0xFF00;
+constexpr uint16_t LOW_BYTE_MASK_2 = 0x00FF;
+
+// Flags
+constexpr uint16_t SIGN_MASK = 0x0080;
+constexpr uint16_t ZERO_MASK = 0x00FF;
+constexpr uint8_t HALF_CARRY_THRESHOLD = 0x0F;
+constexpr uint16_t HALF_CARRY_THRESHOLD_2 = 0x0FFF;
+constexpr uint8_t PARITY_OVERFLOW_MASK = 0x80;
+constexpr uint16_t PARITY_OVERFLOW_MASK_2 = 0x0080;
+constexpr uint32_t PARITY_OVERFLOW_MASK_3 = 0x00008000;
+constexpr uint16_t CARRY_FLAG_THRESHOLD = 0x00FF;
+constexpr uint16_t CARRY_FLAG_THRESHOLD_2 = 0xFFFF;
+constexpr uint8_t X_FLAG_MASK = 0x08;
+constexpr uint16_t X_FLAG_MASK_2 = 0x0800;
+constexpr uint8_t Y_FLAG_MASK = 0x20;
+constexpr uint16_t Y_FLAG_MASK_2 = 0x2000;
+
 
 //For Set instructions, we use these bit masks with OR operation to set the desired bit in the value
 constexpr uint8_t SET_BIT_MASKS[8] = {
