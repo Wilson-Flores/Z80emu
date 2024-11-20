@@ -17,7 +17,7 @@ void z80cpu::BIT_implied() {
 
     data_8_ = (opcode_ & BIT_MASK_1) >> 3;
     uint8_t register_value = *register_table_[opcode_ & BIT_MASK_2];
-    result_8_ = (register_value >> data_8_) & 0x01;
+    result_8_ = (register_value >> data_8_) & BIT_MASK_5;
 
 
     // S is set if b = 7 and tested bit is set
@@ -34,9 +34,9 @@ void z80cpu::BIT_implied() {
     // C is not affected
 
     // XF is set if bit 3 of the register value is set
-    set_flag(X_FLAG, register_value & 0x08);
+    set_flag(X_FLAG, register_value & X_FLAG_MASK);
     // YF is set if bit 5 of the register value is set
-    set_flag(Y_FLAG, register_value & 0x20);
+    set_flag(Y_FLAG, register_value & Y_FLAG_MASK);
 }
 
 
@@ -51,7 +51,7 @@ void z80cpu::BIT_indirect() {
     result_8_ = ram_read(memory_address_);
 
     // we will rewrite result_8 with whatever the bit value is at data_8
-    result_8_ = (result_8_ >> data_8_) & 0x01;
+    result_8_ = (result_8_ >> data_8_) & BIT_MASK_5;
 
 
     // S is set if b = 7 and tested bit is set
@@ -68,8 +68,8 @@ void z80cpu::BIT_indirect() {
     // C is not affected
 
     // X & Y Flags are copies bit 3 & 5 of the high byte of the temporary 16bit register (WZ register)
-    set_flag(X_FLAG, WZ_register_ & 0x0800);
-    set_flag(Y_FLAG, WZ_register_ & 0x2000);
+    set_flag(X_FLAG, WZ_register_ & X_FLAG_MASK_2);
+    set_flag(Y_FLAG, WZ_register_ & Y_FLAG_MASK_2);
 }
 
 
@@ -87,7 +87,7 @@ void z80cpu::BIT_indexed_ix() {
     WZ_register_ = memory_address_;
 
     // we will rewrite result_8 with whatever the bit value is at data_8
-    result_8_ = (result_8_ >> data_8_) & 0x01;
+    result_8_ = (result_8_ >> data_8_) & BIT_MASK_5;
 
 
     // S is set if b = 7 and tested bit is set
@@ -104,8 +104,8 @@ void z80cpu::BIT_indexed_ix() {
     // C is not affected
 
     // X & Y Flags are copies bit 3 & 5 of the high byte of (IX+d)
-    set_flag(X_FLAG, memory_address_ & 0x0800);
-    set_flag(Y_FLAG, memory_address_ & 0x2000);
+    set_flag(X_FLAG, memory_address_ & X_FLAG_MASK_2);
+    set_flag(Y_FLAG, memory_address_ & Y_FLAG_MASK_2);
 }
 
 
@@ -123,7 +123,7 @@ void z80cpu::BIT_indexed_iy() {
     WZ_register_ = memory_address_;
 
     // we will rewrite result_8 with whatever the bit value is at data_8
-    result_8_ = (result_8_ >> data_8_) & 0x01;
+    result_8_ = (result_8_ >> data_8_) & BIT_MASK_5;
 
 
     // S is set if b = 7 and tested bit is set
@@ -140,6 +140,6 @@ void z80cpu::BIT_indexed_iy() {
     // C is not affected
 
     // X & Y Flags are copies bit 3 & 5 of the high byte of (IX+d)
-    set_flag(X_FLAG, memory_address_ & 0x0800);
-    set_flag(Y_FLAG, memory_address_ & 0x2000);
+    set_flag(X_FLAG, memory_address_ & X_FLAG_MASK_2);
+    set_flag(Y_FLAG, memory_address_ & Y_FLAG_MASK_2);
 }
