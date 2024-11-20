@@ -1,322 +1,322 @@
 #include "../z80.hpp"
 
 void z80cpu::CPI_register_indirect() {
-    t_state_cycles = 16;
+    t_state_cycles_ = 16;
 
     // Read data at HL address, then decrement HL
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(memory_address);
-    L_register++;
-    if(L_register == 0x00){
-        H_register++;
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    data_8_ = ram_read(memory_address_);
+    L_register_++;
+    if(L_register_ == 0x00){
+        H_register_++;
     }
 
     // WZ_register increments after HL increments
-    WZ_register++;
+    WZ_register_++;
 
     // decrementing BC register pair
-    C_register--;
-    if(C_register == 0xFF){
-        B_register--;
+    C_register_--;
+    if(C_register_ == 0xFF){
+        B_register_--;
     }
 
     // A - (HL)
     // S is set if result is negative else reset
-    result_8 = accumulator - data_8;
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    result_8_ = accumulator_ - data_8_;
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if A == (HL), else reset
-    set_flag(ZERO_FLAG, accumulator == data_8);
+    set_flag(ZERO_FLAG, accumulator_ == data_8_);
     // H is set if borrow in lower nibble, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // P/V is set if BC-1 != 0, else reset
-    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
-    set_flag(PARITY_OVERFLOW_FLAG, memory_address != 0);
+    memory_address_ = (static_cast<uint16_t>(B_register_) << 8) | C_register_;
+    set_flag(PARITY_OVERFLOW_FLAG, memory_address_ != 0);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
-    result_8 -= get_flag(HALF_CARRY_FLAG);
-    set_flag(Y_FLAG, data_8 & 0x02);
-    set_flag(X_FLAG, data_8 & 0x08);
+    result_8_ -= get_flag(HALF_CARRY_FLAG);
+    set_flag(Y_FLAG, data_8_ & 0x02);
+    set_flag(X_FLAG, data_8_ & 0x08);
 }
 
 
 void z80cpu::CPIR_register_indirect() {
-    t_state_cycles = 16;
+    t_state_cycles_ = 16;
 
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(memory_address);
-    L_register++;
-    if(L_register == 0x00){
-        H_register++;
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    data_8_ = ram_read(memory_address_);
+    L_register_++;
+    if(L_register_ == 0x00){
+        H_register_++;
     }
 
     // WZ_register increments after HL increments
-    WZ_register++;
+    WZ_register_++;
 
-    C_register--;
-    if(C_register == 0xFF){
-        B_register--;
+    C_register_--;
+    if(C_register_ == 0xFF){
+        B_register_--;
     }
 
     // S is set if result is negative else reset
-    result_8 = accumulator - data_8;
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    result_8_ = accumulator_ - data_8_;
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if A == (HL), else reset
-    set_flag(ZERO_FLAG, accumulator == data_8);
+    set_flag(ZERO_FLAG, accumulator_ == data_8_);
     // H is set if borrow in lower nibble, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
     // P/V is set if BC-1 != 0, else reset
-    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    memory_address_ = (static_cast<uint16_t>(B_register_) << 8) | C_register_;
 
-    if((memory_address != 0) && (accumulator != data_8)){
+    if((memory_address_ != 0) && (accumulator_ != data_8_)){
         set_flag(PARITY_OVERFLOW_FLAG, true);
-        t_state_cycles += 5;
-        program_counter -= 2;
+        t_state_cycles_ += 5;
+        program_counter_ -= 2;
         return;
     }
     else{
         set_flag(PARITY_OVERFLOW_FLAG, false);
     }
 
-    result_8 -= get_flag(HALF_CARRY_FLAG);
-    set_flag(Y_FLAG, data_8 & 0x02);
-    set_flag(X_FLAG, data_8 & 0x08);
+    result_8_ -= get_flag(HALF_CARRY_FLAG);
+    set_flag(Y_FLAG, data_8_ & 0x02);
+    set_flag(X_FLAG, data_8_ & 0x08);
 }
 
 
 void z80cpu::CPD_register_indirect() {
-    t_state_cycles = 16;
+    t_state_cycles_ = 16;
 
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(memory_address);
-    L_register--;
-    if(L_register == 0xFF){
-        H_register--;
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    data_8_ = ram_read(memory_address_);
+    L_register_--;
+    if(L_register_ == 0xFF){
+        H_register_--;
     }
 
     // WZ_register decrements after HL decrements
-    WZ_register--;
+    WZ_register_--;
 
-    C_register--;
-    if(C_register == 0xFF){
-        B_register--;
+    C_register_--;
+    if(C_register_ == 0xFF){
+        B_register_--;
     }
 
     // S is set if result is negative else reset
-    result_8 = accumulator - data_8;
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    result_8_ = accumulator_ - data_8_;
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if A == (HL), else reset
-    set_flag(ZERO_FLAG, accumulator == data_8);
+    set_flag(ZERO_FLAG, accumulator_ == data_8_);
     // H is set if borrow in lower nibble, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // P/V is set if BC-1 != 0, else reset
-    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
-    set_flag(PARITY_OVERFLOW_FLAG, memory_address != 0);
+    memory_address_ = (static_cast<uint16_t>(B_register_) << 8) | C_register_;
+    set_flag(PARITY_OVERFLOW_FLAG, memory_address_ != 0);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
-    result_8 -= get_flag(HALF_CARRY_FLAG);
-    set_flag(Y_FLAG, data_8 & 0x02);
-    set_flag(X_FLAG, data_8 & 0x08);
+    result_8_ -= get_flag(HALF_CARRY_FLAG);
+    set_flag(Y_FLAG, data_8_ & 0x02);
+    set_flag(X_FLAG, data_8_ & 0x08);
 }
 
 
 void z80cpu::CPDR_register_indirect() {
-    t_state_cycles = 16;
+    t_state_cycles_ = 16;
 
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(memory_address);
-    L_register--;
-    if(L_register == 0xFF){
-        H_register--;
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    data_8_ = ram_read(memory_address_);
+    L_register_--;
+    if(L_register_ == 0xFF){
+        H_register_--;
     }
 
     // WZ_register decrements after HL decrements
-    WZ_register--;
+    WZ_register_--;
 
-    C_register--;
-    if(C_register == 0xFF){
-        B_register--;
+    C_register_--;
+    if(C_register_ == 0xFF){
+        B_register_--;
     }
 
     // S is set if result is negative else reset
-    result_8 = accumulator - data_8;
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    result_8_ = accumulator_ - data_8_;
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if A == (HL), else reset
-    set_flag(ZERO_FLAG, accumulator == data_8);
+    set_flag(ZERO_FLAG, accumulator_ == data_8_);
     // H is set if borrow in lower nibble, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // N is set
     set_flag(ADD_SUB_FLAG, true);
 
     // P/V is set if BC-1 != 0, else reset
-    memory_address = (static_cast<uint16_t>(B_register) << 8) | C_register;
+    memory_address_ = (static_cast<uint16_t>(B_register_) << 8) | C_register_;
 
-    if((memory_address != 0) && (accumulator != data_8)){
+    if((memory_address_ != 0) && (accumulator_ != data_8_)){
         set_flag(PARITY_OVERFLOW_FLAG, true);
-        t_state_cycles += 5;
-        program_counter -= 2;
+        t_state_cycles_ += 5;
+        program_counter_ -= 2;
         return;
     }
     else{
         set_flag(PARITY_OVERFLOW_FLAG, false);
     }
 
-    result_8 -= get_flag(HALF_CARRY_FLAG);
-    set_flag(Y_FLAG, data_8 & 0x02);
-    set_flag(X_FLAG, data_8 & 0x08);
+    result_8_ -= get_flag(HALF_CARRY_FLAG);
+    set_flag(Y_FLAG, data_8_ & 0x02);
+    set_flag(X_FLAG, data_8_ & 0x08);
 }
 
 
 void z80cpu::CP_implied_register() {
-    t_state_cycles = 4;
+    t_state_cycles_ = 4;
 
-    data_8 = *register_table[opcode & BIT_MASK_2];
-    result_8 = accumulator - data_8;
+    data_8_ = *register_table_[opcode_ & BIT_MASK_2];
+    result_8_ = accumulator_ - data_8_;
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is set if borrow from bit 4, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data_8 + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data_8 + 0x01))) & 0x80);
+    uint8_t overflow_result = accumulator_ + (~data_8_ + 0x01);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ overflow_result) & ~(accumulator_ ^ (~data_8_ + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
-    set_flag(CARRY_FLAG, accumulator < data_8);
+    set_flag(CARRY_FLAG, accumulator_ < data_8_);
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::CP_implied_register_indirect() {
-    t_state_cycles = 7;
+    t_state_cycles_ = 7;
 
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(memory_address);
-    result_8 = accumulator - data_8;
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    data_8_ = ram_read(memory_address_);
+    result_8_ = accumulator_ - data_8_;
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is set if borrow from bit 4, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data_8 + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data_8 + 0x01))) & 0x80);
+    uint8_t overflow_result = accumulator_ + (~data_8_ + 0x01);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ overflow_result) & ~(accumulator_ ^ (~data_8_ + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
-    set_flag(CARRY_FLAG, accumulator < data_8);
+    set_flag(CARRY_FLAG, accumulator_ < data_8_);
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::CP_implied_indexed_ix() {
-    t_state_cycles = 19;
+    t_state_cycles_ = 19;
 
-    displacement = static_cast<int8_t>(rom_read(program_counter));
-    program_counter++;
-    memory_address = index_register_x + static_cast<int16_t>(displacement);
+    displacement_ = static_cast<int8_t>(rom_read(program_counter_));
+    program_counter_++;
+    memory_address_ = index_register_x_ + static_cast<int16_t>(displacement_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
-    data_8 = ram_read(memory_address);
-    result_8 = accumulator - data_8;
+    data_8_ = ram_read(memory_address_);
+    result_8_ = accumulator_ - data_8_;
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is set if borrow from bit 4, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data_8 + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data_8 + 0x01))) & 0x80);
+    uint8_t overflow_result = accumulator_ + (~data_8_ + 0x01);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ overflow_result) & ~(accumulator_ ^ (~data_8_ + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
-    set_flag(CARRY_FLAG, accumulator < data_8);
+    set_flag(CARRY_FLAG, accumulator_ < data_8_);
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::CP_implied_indexed_iy() {
-    t_state_cycles = 19;
+    t_state_cycles_ = 19;
 
-    displacement = static_cast<int8_t>(rom_read(program_counter));
-    program_counter++;
-    memory_address = index_register_y + static_cast<int16_t>(displacement);
+    displacement_ = static_cast<int8_t>(rom_read(program_counter_));
+    program_counter_++;
+    memory_address_ = index_register_y_ + static_cast<int16_t>(displacement_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
-    data_8 = ram_read(memory_address);
-    result_8 = accumulator - data_8;
+    data_8_ = ram_read(memory_address_);
+    result_8_ = accumulator_ - data_8_;
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is set if borrow from bit 4, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data_8 + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data_8 + 0x01))) & 0x80);
+    uint8_t overflow_result = accumulator_ + (~data_8_ + 0x01);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ overflow_result) & ~(accumulator_ ^ (~data_8_ + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
-    set_flag(CARRY_FLAG, accumulator < data_8);
+    set_flag(CARRY_FLAG, accumulator_ < data_8_);
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::CP_implied_immediate() {
-    t_state_cycles = 7;
+    t_state_cycles_ = 7;
 
-    data_8 = rom_read(program_counter);
-    program_counter++;
-    result_8 = accumulator - data_8;
+    data_8_ = rom_read(program_counter_);
+    program_counter_++;
+    result_8_ = accumulator_ - data_8_;
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is set if borrow from bit 4, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator & 0x0F) < (data_8 & 0x0F));
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & 0x0F) < (data_8_ & 0x0F));
     // P/V is set if overflow, else reset
     // perform 2s complement on data, reuse ADD's logic for overflow flag
-    uint8_t overflow_result = accumulator + (~data_8 + 0x01);
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator ^ overflow_result) & ~(accumulator ^ (~data_8 + 0x01))) & 0x80);
+    uint8_t overflow_result = accumulator_ + (~data_8_ + 0x01);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ overflow_result) & ~(accumulator_ ^ (~data_8_ + 0x01))) & 0x80);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if borrow to bit 7, else reset
-    set_flag(CARRY_FLAG, accumulator < data_8);
+    set_flag(CARRY_FLAG, accumulator_ < data_8_);
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }

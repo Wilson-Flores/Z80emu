@@ -58,7 +58,26 @@ constexpr uint8_t PARITY_TABLE[256] = {
     1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1
 };
 
+// Status Register
+enum FLAGSZ80 {
+    CARRY_FLAG = (1 << 0),                    // C
+    ADD_SUB_FLAG = (1 << 1),                  // N
+    PARITY_OVERFLOW_FLAG = (1 << 2),          // P/V
+    X_FLAG = (1 << 3),                        // X
+    HALF_CARRY_FLAG = (1 << 4),               // H
+    Y_FLAG = (1 << 5),                        // Y
+    ZERO_FLAG = (1 << 6),                     // Z
+    SIGN_FLAG = (1 << 7)                      // S
+};
 
+
+// each register pair has a correlating bit value
+struct REGISTER_PAIR{
+	uint8_t* high_byte_register;
+	uint8_t* low_byte_register;
+};
+
+// forward initialize Bus class when its defined else where
 class Bus;
 
 
@@ -66,62 +85,38 @@ class z80cpu {
 public:
 	z80cpu();
 
-
 	// connect to Bus
-	void connect_bus(Bus* n) { bus = n; }
+	void connect_bus(Bus* n) { bus_ = n; }
 
-	// Status Register
-	enum FLAGSZ80 {
-		CARRY_FLAG = (1 << 0),                    // C
-		ADD_SUB_FLAG = (1 << 1),                  // N
-		PARITY_OVERFLOW_FLAG = (1 << 2),          // P/V
-		X_FLAG = (1 << 3),                        // X
-		HALF_CARRY_FLAG = (1 << 4),               // H
-		Y_FLAG = (1 << 5),                        // Y
-		ZERO_FLAG = (1 << 6),                     // Z
-		SIGN_FLAG = (1 << 7)                      // S
-	};
+	// This is what will read the opcode and then proceed to execute the proper instruction function.
+	void instruction_cycle();
 
-	// Main Registers
-	uint8_t accumulator = 0x00;
-	uint8_t B_register = 0x00;
-	uint8_t C_register = 0x00;
-	uint8_t D_register = 0x00;
-	uint8_t E_register = 0x00;
-	uint8_t H_register = 0x00;
-	uint8_t L_register = 0x00;
-	uint8_t flag_register = 0x00;
+	//Function tables
+	void bit_instructions();
+	void ix_instructions();
+	void ix_bit_instructions();
+	void misc_instructions();
+	void iy_instructions();
+	void iy_bit_instructions();
 
-	// Alternate Registers
-	uint8_t alt_accumulator = 0x00;
-	uint8_t alt_B_register = 0x00;
-	uint8_t alt_C_register = 0x00;
-	uint8_t alt_D_register = 0x00;
-	uint8_t alt_E_register = 0x00;
-	uint8_t alt_H_register = 0x00;
-	uint8_t alt_L_register = 0x00;
-	uint8_t alt_flag_register = 0x00;
 
-	// Index Registers
-	uint16_t index_register_x = 0x0000;
-	uint16_t index_register_y = 0x0000;
+    //Debug Functions:
+    // Reset values
+    void reset();
+    // Get register values
+    const uint8_t& get_flag_register_address() const;
+    const uint8_t& get_accumulator_address() const;
+    const uint8_t& get_registerB_address() const;
+    const uint8_t& get_registerC_address() const;
+    const uint8_t& get_registerD_address() const;
+    const uint8_t& get_registerE_address() const;
+    const uint8_t& get_registerH_address() const;
+    const uint8_t& get_registerL_address() const;
+	// Get Opcode value
+	const uint8_t& get_opcode_address() const;
 
-	// Other Registers
-	uint8_t interrupt_vector_register = 0x00;
-	uint8_t memory_refresh_register = 0x00;
-    uint16_t WZ_register = 0x0000;
 
-	void memory_refresh_counter();
-
-	uint16_t stack_pointer = 0x0000;
-	uint16_t program_counter = 0x0000;
-
-	// Interrupts
-	bool interrupt_enable_flip_flop_1 = false;
-	bool interrupt_enable_flip_flop_2 = false;
-	void software_maskable_interrupt(); // INT
-	void non_maskable_interrupt(); // NMI
-
+    // Instruction Functions:
 	// 8-bit Instructions
 	// LD Instructions
 	void LD_register_immediate();                                           // [LD r, n]
@@ -320,9 +315,9 @@ public:
     void JP_cc_immediate();                                                  // [JP cc, nn]
 	void JR_relative();                                                      // [JR e]
 	void JR_cc_relative();                                                   // [JR cc, e]
-	void JP_implict();                                                       // [JP (HL)]
-	void JP_implict_ix();                                                    // [JP (IX)]
-	void JP_implict_iy();                                                    // [JP (IY)]
+	void JP_implicit();                                                      // [JP (HL)]
+	void JP_implicit_ix();                                                   // [JP (IX)]
+	void JP_implicit_iy();                                                   // [JP (IY)]
 	void DJNZ_immediate();                                                   // [DJNZ e]
 
 
@@ -387,35 +382,69 @@ public:
     void DEC_implied_register_extended_iy();                                 // [DEC IY]
 
 
-
-	void instruction_cycle();
-
-	uint8_t opcode = 0x00;
-	uint8_t t_state_cycles = 0;
-
-    // variables that temporarily store values while executing certain instructions
-    int8_t displacement = 0x00;
-
-    // 8-bit temp values
-    uint8_t data_8 = 0;
-    uint8_t result_8 = 0;
-
-    // 16-bit temp values
-    uint16_t data_16 = 0;
-    uint16_t result_16 = 0;
-
-    // temp memory address value
-    uint16_t memory_address = 0x0000;
-
-    // LDIR/LDDR WZ register Flag
-    // This flag will indicate that the instruction loop has started.
-    // we need to grab BC's value to determine what value will be stored at WZ register.
-    // This only occurs at the start of the instruction, so we cant have it overwriting while it loops.
-    bool WZ_register_flag = false;
-
-
 private:
-	Bus* bus = nullptr;
+	Bus* bus_ = nullptr;
+
+    // Main Registers
+    uint8_t accumulator_ = 0x00;
+    uint8_t B_register_ = 0x00;
+    uint8_t C_register_ = 0x00;
+    uint8_t D_register_ = 0x00;
+    uint8_t E_register_ = 0x00;
+    uint8_t H_register_ = 0x00;
+    uint8_t L_register_ = 0x00;
+    uint8_t flag_register_ = 0x00;
+
+    // Alternate Registers
+    uint8_t alt_accumulator_ = 0x00;
+    uint8_t alt_B_register_ = 0x00;
+    uint8_t alt_C_register_ = 0x00;
+    uint8_t alt_D_register_ = 0x00;
+    uint8_t alt_E_register_ = 0x00;
+    uint8_t alt_H_register_ = 0x00;
+    uint8_t alt_L_register_ = 0x00;
+    uint8_t alt_flag_register_ = 0x00;
+
+    // Index Registers
+    uint16_t index_register_x_ = 0x0000;
+    uint16_t index_register_y_ = 0x0000;
+
+    // Other Registers
+    uint8_t interrupt_vector_register_ = 0x00;
+    uint8_t memory_refresh_register_ = 0x00;
+    uint16_t WZ_register_ = 0x0000;
+    uint16_t stack_pointer_ = 0x0000;
+    uint16_t program_counter_ = 0x0000;
+	uint8_t opcode_ = 0x00;
+
+    // future implement of adding delays while instructions are executed.
+	uint8_t t_state_cycles_ = 0;
+
+    // signed 8-bit temp value
+	int8_t displacement_ = 0x00;
+
+	// 8-bit temp values
+	uint8_t data_8_ = 0;
+	uint8_t result_8_ = 0;
+
+	// 16-bit temp values
+	uint16_t data_16_ = 0;
+	uint16_t result_16_ = 0;
+
+	// temp memory address value
+	uint16_t memory_address_ = 0x0000;
+
+	// LDIR/LDDR WZ register Flag
+	// This flag will indicate that the instruction loop has started.
+	// we need to grab BC's value to determine what value will be stored at WZ register.
+	// This only occurs at the start of the instruction, so we cant have it overwriting while it loops.
+	bool WZ_register_flag_ = false;
+
+    // Interrupts
+    bool interrupt_enable_flip_flop_1_ = false;
+    bool interrupt_enable_flip_flop_2_ = false;
+    void software_maskable_interrupt(); // INT
+    void non_maskable_interrupt(); // NMI
 
 
 	uint8_t rom_read(uint16_t address);
@@ -427,45 +456,17 @@ private:
 	uint8_t get_flag(FLAGSZ80 flag) const;
 	void set_flag(FLAGSZ80 flag, bool setFlag);
 
-	struct INSTRUCTION {
-		std::string opcode;
-		void(z80cpu::* instruction)() = nullptr;
-	};
-
-
-	//Function tables
-	void bit_instructions();
-	void ix_instructions();
-	void ix_bit_instructions();
-	void misc_instructions();
-	void iy_instructions();
-	void iy_bit_instructions();
-
-
-	std::vector<INSTRUCTION> main_instruction_table;
-	std::vector<INSTRUCTION> bit_instruction_table;			// opcode: CB
-	std::vector<INSTRUCTION> ix_instruction_table;			// opcode: DD
-	std::vector<INSTRUCTION> ix_bit_instruction_table;		// opcode: DD CB
-	std::vector<INSTRUCTION> misc_instruction_table;		// opcode: ED
-	std::vector<INSTRUCTION> iy_instruction_table;			// opcode: FD
-	std::vector<INSTRUCTION> iy_bit_instruction_table;		// opcode: FD CB
-
+    void memory_refresh_counter();
 
 	// each register has a correlating bit value that is used to determine what register to use in the instruction.
-    std::vector<uint8_t*> register_table;
-    std::vector<uint8_t*> alt_register_table;
+    std::vector<uint8_t*> register_table_;
+    std::vector<uint8_t*> alt_register_table_;
 
-
-    // each register pair has a correlating bit value
-    struct REGISTER_PAIR{
-        uint8_t* high_byte_register;
-        uint8_t* low_byte_register;
-    };
-
-	std::vector<REGISTER_PAIR> register_pair_table_qq;
-    std::vector<REGISTER_PAIR> register_pair_table_ss;
-    std::vector<REGISTER_PAIR> register_pair_table_pp;
-    std::vector<REGISTER_PAIR> register_pair_table_rr;
+	// each register pair has a correlating bit value
+	std::vector<REGISTER_PAIR> register_pair_table_qq_;
+    std::vector<REGISTER_PAIR> register_pair_table_ss_;
+    std::vector<REGISTER_PAIR> register_pair_table_pp_;
+    std::vector<REGISTER_PAIR> register_pair_table_rr_;
 
 };
 

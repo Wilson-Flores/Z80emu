@@ -2,16 +2,16 @@
 
 
 void z80cpu::RLCA_implied() {
-    t_state_cycles = 4;
+    t_state_cycles_ = 4;
 
     // isolate leading bit in accumulator, then overwrite the carry bit in the flag register.
     // first we clear out the carry bit in the flag register,
     // then we do an or operation to copy the accumulator bit into the carry bit
-    flag_register &= 0xFE;
-    flag_register |= (accumulator >> 7);
+    flag_register_ &= 0xFE;
+    flag_register_ |= (accumulator_ >> 7);
 
     // rotate accumulator bits 1 to the left, then add 7th bit
-    accumulator = (accumulator << 1) + (accumulator >> 7);
+    accumulator_ = (accumulator_ << 1) + (accumulator_ >> 7);
 
     // S is not affected
     // Z is not affected
@@ -23,164 +23,164 @@ void z80cpu::RLCA_implied() {
     // C is data from bit 7 of Accumulator
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator & 0x08);
-    set_flag(Y_FLAG, accumulator & 0x20);
+    set_flag(X_FLAG, accumulator_ & 0x08);
+    set_flag(Y_FLAG, accumulator_ & 0x20);
 }
 
 
 void z80cpu::RLC_implied() {
-    t_state_cycles = 8;
+    t_state_cycles_ = 8;
 
     // copy the data from the register
-    data_8 = *register_table[opcode & BIT_MASK_2];
+    data_8_ = *register_table_[opcode_ & BIT_MASK_2];
 
     // clear the carry flag bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data_8 >> 7);
+    flag_register_ |= (data_8_ >> 7);
     // rotate data bits and save back into register
-    result_8 = (data_8 << 1) + (data_8 >> 7);
-    *register_table[opcode & BIT_MASK_2] = result_8;
+    result_8_ = (data_8_ << 1) + (data_8_ >> 7);
+    *register_table_[opcode_ & BIT_MASK_2] = result_8_;
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RLC_indirect() {
-    t_state_cycles = 15;
+    t_state_cycles_ = 15;
 
     // copy the data from the memory address
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(memory_address);
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    data_8_ = ram_read(memory_address_);
 
 
     // clear the carry flag bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data_8 >> 7);
+    flag_register_ |= (data_8_ >> 7);
     // rotate data bits and save back into register
-    result_8 = (data_8 << 1) + (data_8 >> 7);
-    ram_write(memory_address, result_8);
+    result_8_ = (data_8_ << 1) + (data_8_ >> 7);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RLC_indexed_ix() {
-    t_state_cycles = 23;
+    t_state_cycles_ = 23;
 
     // copy the data from the memory address
-    memory_address = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(memory_address);
+    memory_address_ = index_register_x_ + static_cast<int16_t>(displacement_);
+    data_8_ = ram_read(memory_address_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
     // clear the carry flag bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data_8 >> 7);
+    flag_register_ |= (data_8_ >> 7);
     // rotate data bits and save back into register
-    result_8 = (data_8 << 1) + (data_8 >> 7);
-    ram_write(memory_address, result_8);
+    result_8_ = (data_8_ << 1) + (data_8_ >> 7);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RLC_indexed_iy() {
-    t_state_cycles = 23;
+    t_state_cycles_ = 23;
 
-    memory_address = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(memory_address);
+    memory_address_ = index_register_y_ + static_cast<int16_t>(displacement_);
+    data_8_ = ram_read(memory_address_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
     // clear the carry flag bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
     // copy data 7th bit into carry flag bit
-    flag_register |= (data_8 >> 7);
+    flag_register_ |= (data_8_ >> 7);
     // rotate data bits and save back into register
-    result_8 = (data_8 << 1) + (data_8 >> 7);
-    ram_write(memory_address, result_8);
+    result_8_ = (data_8_ << 1) + (data_8_ >> 7);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RRCA_implied() {
-    t_state_cycles = 4;
+    t_state_cycles_ = 4;
 
     // isolate last bit in accumulator, then overwrite the carry bit in the flag register.
     // first we clear out the carry bit in the flag register,
     // then we do an or operation to copy the accumulator bit into the carry bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
 
-    flag_register |= (accumulator & 0x01);
+    flag_register_ |= (accumulator_ & 0x01);
 
     // rotate accumulator bits 1 to the right, then add 7th bit
-    accumulator = (accumulator >> 1) + ((accumulator & 0x01) << 7);
+    accumulator_ = (accumulator_ >> 1) + ((accumulator_ & 0x01) << 7);
 
     // S is not affected
     // Z is not affected
@@ -192,165 +192,165 @@ void z80cpu::RRCA_implied() {
     // C is data from bit 0 of Accumulator
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, accumulator & 0x08);
-    set_flag(Y_FLAG, accumulator & 0x20);
+    set_flag(X_FLAG, accumulator_ & 0x08);
+    set_flag(Y_FLAG, accumulator_ & 0x20);
 }
 
 
 void z80cpu::RRC_implied() {
-    t_state_cycles = 8;
+    t_state_cycles_ = 8;
 
     // copy the data from the register
-    data_8 = *register_table[opcode & BIT_MASK_2];
+    data_8_ = *register_table_[opcode_ & BIT_MASK_2];
 
     // clear the carry flag bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data_8 & 0x01);
+    flag_register_ |= (data_8_ & 0x01);
     // rotate data bits and save back into register
-    result_8 = (data_8 >> 1) + ((data_8 & 0x01) << 7);
-    *register_table[opcode & BIT_MASK_2] = result_8;
+    result_8_ = (data_8_ >> 1) + ((data_8_ & 0x01) << 7);
+    *register_table_[opcode_ & BIT_MASK_2] = result_8_;
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RRC_indirect() {
-    t_state_cycles = 15;
+    t_state_cycles_ = 15;
 
     // copy the data from the memory address
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    data_8 = ram_read(memory_address);
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    data_8_ = ram_read(memory_address_);
 
 
     // clear the carry flag bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data_8 & 0x01);
+    flag_register_ |= (data_8_ & 0x01);
     // rotate data bits and save back into register
-    result_8 = (data_8 >> 1) + ((data_8 & 0x01) << 7);
-    ram_write(memory_address, result_8);
+    result_8_ = (data_8_ >> 1) + ((data_8_ & 0x01) << 7);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RRC_indexed_ix() {
-    t_state_cycles = 23;
+    t_state_cycles_ = 23;
 
     // copy the data from the memory address
-    memory_address = index_register_x + static_cast<int16_t>(displacement);
-    data_8 = ram_read(memory_address);
+    memory_address_ = index_register_x_ + static_cast<int16_t>(displacement_);
+    data_8_ = ram_read(memory_address_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
     // clear the carry flag bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data_8 & 0x01);
+    flag_register_ |= (data_8_ & 0x01);
     // rotate data bits and save back into register
-    result_8 = (data_8 >> 1) + ((data_8 & 0x01) << 7);
-    ram_write(memory_address, result_8);
+    result_8_ = (data_8_ >> 1) + ((data_8_ & 0x01) << 7);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 
 void z80cpu::RRC_indexed_iy() {
-    t_state_cycles = 23;
+    t_state_cycles_ = 23;
 
-    memory_address = index_register_y + static_cast<int16_t>(displacement);
-    data_8 = ram_read(memory_address);
+    memory_address_ = index_register_y_ + static_cast<int16_t>(displacement_);
+    data_8_ = ram_read(memory_address_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
     // clear the carry flag bit
-    flag_register &= 0xFE;
+    flag_register_ &= 0xFE;
     // copy data 0th bit into carry flag bit
-    flag_register |= (data_8 & 0x01);
+    flag_register_ |= (data_8_ & 0x01);
     // rotate data bits and save back into register
-    result_8 = (data_8 >> 1) + ((data_8 & 0x01) << 7);
-    ram_write(memory_address, result_8);
+    result_8_ = (data_8_ >> 1) + ((data_8_ & 0x01) << 7);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RLA_implied() {
-    t_state_cycles = 4;
+    t_state_cycles_ = 4;
 
     // temp store 7th bit value of accumulator
-    data_8 = (accumulator >> 7);
+    data_8_ = (accumulator_ >> 7);
 
     // bit shift left and add carry bit
-    accumulator = (flag_register & 0x01) | (accumulator << 1);
+    accumulator_ = (flag_register_ & 0x01) | (accumulator_ << 1);
 
     // clear carry bit and then add 7th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // S is not affected
     // Z is not affected
@@ -362,184 +362,184 @@ void z80cpu::RLA_implied() {
     // C is data from bit 7 of Accumulator
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, accumulator & 0x08);
-    set_flag(Y_FLAG, accumulator & 0x20);
+    set_flag(X_FLAG, accumulator_ & 0x08);
+    set_flag(Y_FLAG, accumulator_ & 0x20);
 }
 
 
 void z80cpu::RL_implied() {
-    t_state_cycles = 8;
+    t_state_cycles_ = 8;
 
     // copy the data from the register
-    result_8 = *register_table[opcode & BIT_MASK_2];
+    result_8_ = *register_table_[opcode_ & BIT_MASK_2];
 
     // temp store 7th bit value of register
-    data_8 = (result_8 >> 7);
+    data_8_ = (result_8_ >> 7);
 
     // bit shift left and add carry bit
-    result_8 = (flag_register & 0x01) | (result_8 << 1);
+    result_8_ = (flag_register_ & 0x01) | (result_8_ << 1);
 
     // clear carry bit and then add 7th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // overwrite the register data
-    *register_table[opcode & BIT_MASK_2] = result_8;
+    *register_table_[opcode_ & BIT_MASK_2] = result_8_;
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RL_indirect() {
-    t_state_cycles = 15;
+    t_state_cycles_ = 15;
 
     // copy the data from the memory address
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    result_8 = ram_read(memory_address);
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    result_8_ = ram_read(memory_address_);
 
     // temp store 7th bit value of register
-    data_8 = (result_8 >> 7);
+    data_8_ = (result_8_ >> 7);
 
     // bit shift left and add carry bit
-    result_8 = (flag_register & 0x01) | (result_8 << 1);
+    result_8_ = (flag_register_ & 0x01) | (result_8_ << 1);
 
     // clear carry bit and then add 7th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // overwrite data
-    ram_write(memory_address, result_8);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RL_indexed_ix() {
-    t_state_cycles = 23;
+    t_state_cycles_ = 23;
 
     // copy the data from the memory address
-    memory_address = index_register_x + static_cast<int16_t>(displacement);
-    result_8 = ram_read(memory_address);
+    memory_address_ = index_register_x_ + static_cast<int16_t>(displacement_);
+    result_8_ = ram_read(memory_address_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
     // temp store 7th bit value of register
-    data_8 = (result_8 >> 7);
+    data_8_ = (result_8_ >> 7);
 
     // bit shift left and add carry bit
-    result_8 = (flag_register & 0x01) | (result_8 << 1);
+    result_8_ = (flag_register_ & 0x01) | (result_8_ << 1);
 
     // clear carry bit and then add 7th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // overwrite data
-    ram_write(memory_address, result_8);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RL_indexed_iy() {
-    t_state_cycles = 23;
+    t_state_cycles_ = 23;
 
     // copy the data from the memory address
-    memory_address = index_register_y + static_cast<int16_t>(displacement);
-    result_8 = ram_read(memory_address);
+    memory_address_ = index_register_y_ + static_cast<int16_t>(displacement_);
+    result_8_ = ram_read(memory_address_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
     // temp store 7th bit value of register
-    data_8 = (result_8 >> 7);
+    data_8_ = (result_8_ >> 7);
 
     // bit shift left and add carry bit
-    result_8 = (flag_register & 0x01) | (result_8 << 1);
+    result_8_ = (flag_register_ & 0x01) | (result_8_ << 1);
 
     // clear carry bit and then add 7th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // overwrite data
-    ram_write(memory_address, result_8);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RRA_implied() {
-    t_state_cycles = 4;
+    t_state_cycles_ = 4;
 
     // temp store 0th bit value of accumulator
-    data_8 = (accumulator & 0x01);
+    data_8_ = (accumulator_ & 0x01);
 
     // bit shift right and add carry bit
-    accumulator = ((flag_register & 0x01) << 7) | (accumulator >> 1);
+    accumulator_ = ((flag_register_ & 0x01) << 7) | (accumulator_ >> 1);
 
     // clear carry bit and then add 0th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // S is not affected
     // Z is not affected
@@ -551,180 +551,180 @@ void z80cpu::RRA_implied() {
     // C is data from bit 7 of Accumulator
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, accumulator & 0x08);
-    set_flag(Y_FLAG, accumulator & 0x20);
+    set_flag(X_FLAG, accumulator_ & 0x08);
+    set_flag(Y_FLAG, accumulator_ & 0x20);
 }
 
 void z80cpu::RR_implied() {
-    t_state_cycles = 8;
+    t_state_cycles_ = 8;
 
     // copy the data from the register
-    result_8 = *register_table[opcode & BIT_MASK_2];
+    result_8_ = *register_table_[opcode_ & BIT_MASK_2];
 
     // temp store 0th bit value of register
-    data_8 = (result_8 & 0x01);
+    data_8_ = (result_8_ & 0x01);
 
     // bit shift right and add carry bit
-    result_8 = ((flag_register & 0x01) << 7) | (result_8 >> 1);
+    result_8_ = ((flag_register_ & 0x01) << 7) | (result_8_ >> 1);
 
     // clear carry bit and then add 0th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // overwrite the register data
-    *register_table[opcode & BIT_MASK_2] = result_8;
+    *register_table_[opcode_ & BIT_MASK_2] = result_8_;
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RR_indirect() {
-    t_state_cycles = 15;
+    t_state_cycles_ = 15;
 
     // copy the data from the memory address
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
-    result_8 = ram_read(memory_address);
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    result_8_ = ram_read(memory_address_);
 
     // temp store 0th bit value of register
-    data_8 = (result_8 & 0x01);
+    data_8_ = (result_8_ & 0x01);
 
     // bit shift right and add carry bit
-    result_8 = ((flag_register & 0x01) << 7) | (result_8 >> 1);
+    result_8_ = ((flag_register_ & 0x01) << 7) | (result_8_ >> 1);
 
     // clear carry bit and then add 0th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // overwrite data
-    ram_write(memory_address, result_8);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RR_indexed_ix() {
-    t_state_cycles = 23;
+    t_state_cycles_ = 23;
 
     // copy the data from the memory address
-    memory_address = index_register_x + static_cast<int16_t>(displacement);
-    result_8 = ram_read(memory_address);
+    memory_address_ = index_register_x_ + static_cast<int16_t>(displacement_);
+    result_8_ = ram_read(memory_address_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
     // temp store 0th bit value of register
-    data_8 = (result_8 & 0x01);
+    data_8_ = (result_8_ & 0x01);
 
     // bit shift right and add carry bit
-    result_8 = ((flag_register & 0x01) << 7) | (result_8 >> 1);
+    result_8_ = ((flag_register_ & 0x01) << 7) | (result_8_ >> 1);
 
     // clear carry bit and then add 0th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // overwrite data
-    ram_write(memory_address, result_8);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RR_indexed_iy() {
-    t_state_cycles = 23;
+    t_state_cycles_ = 23;
 
     // copy the data from the memory address
-    memory_address = index_register_y + static_cast<int16_t>(displacement);
-    result_8 = ram_read(memory_address);
+    memory_address_ = index_register_y_ + static_cast<int16_t>(displacement_);
+    result_8_ = ram_read(memory_address_);
 
     // WZ register is updated using memory address
-    WZ_register = memory_address;
+    WZ_register_ = memory_address_;
 
     // temp store 0th bit value of register
-    data_8 = (result_8 & 0x01);
+    data_8_ = (result_8_ & 0x01);
 
     // bit shift right and add carry bit
-    result_8 = ((flag_register & 0x01) << 7) | (result_8 >> 1);
+    result_8_ = ((flag_register_ & 0x01) << 7) | (result_8_ >> 1);
 
     // clear carry bit and then add 0th bit value
-    flag_register &= 0xFE;
-    flag_register |= data_8;
+    flag_register_ &= 0xFE;
+    flag_register_ |= data_8_;
 
     // overwrite data
-    ram_write(memory_address, result_8);
+    ram_write(memory_address_, result_8_);
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8 & 0x80);
+    set_flag(SIGN_FLAG, result_8_ & 0x80);
     // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, result_8 == 0);
+    set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if parity even, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[result_8_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is data from bit 7 of source register
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, result_8 & 0x08);
-    set_flag(Y_FLAG, result_8 & 0x20);
+    set_flag(X_FLAG, result_8_ & 0x08);
+    set_flag(Y_FLAG, result_8_ & 0x20);
 }
 
 
 void z80cpu::RLD_implied() {
-    t_state_cycles = 18;
+    t_state_cycles_ = 18;
 
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
 
     // WZ registers stores the mem address + 1
-    WZ_register = memory_address + 1;
+    WZ_register_ = memory_address_ + 1;
 
-    data_8 = ram_read(memory_address);
+    data_8_ = ram_read(memory_address_);
 
     /* The contents of the low-order four bits (3,2,1,0) of data in memory location (HL)
      * are copied to the high-order four bits (7,6,5,4) of data in memory location (HL).
@@ -743,39 +743,39 @@ void z80cpu::RLD_implied() {
      * Step 5: Overwrite accumulator value.
      * */
 
-    result_8 = (data_8 << 4) | (accumulator & 0x0F);
-    accumulator &= 0xF0;
-    accumulator |= (data_8 >> 4);
+    result_8_ = (data_8_ << 4) | (accumulator_ & 0x0F);
+    accumulator_ &= 0xF0;
+    accumulator_ |= (data_8_ >> 4);
 
-    ram_write(memory_address, result_8);
+    ram_write(memory_address_, result_8_);
 
     // S is set if accumulator is negative after an operation, else reset
-    set_flag(SIGN_FLAG, accumulator & 0x80);
+    set_flag(SIGN_FLAG, accumulator_ & 0x80);
     // Z is set if the accumulator is 0 after an operation, else reset
-    set_flag(ZERO_FLAG, accumulator == 0);
+    set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if the parity of the accumulator is even after an operation, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[accumulator]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[accumulator_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is not affected
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, accumulator & 0x08);
-    set_flag(Y_FLAG, accumulator & 0x20);
+    set_flag(X_FLAG, accumulator_ & 0x08);
+    set_flag(Y_FLAG, accumulator_ & 0x20);
 }
 
 
 void z80cpu::RRD_implied() {
-    t_state_cycles = 18;
+    t_state_cycles_ = 18;
 
-    memory_address = (static_cast<uint16_t>(H_register) << 8) | L_register;
+    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
 
     // WZ registers stores the mem address + 1
-    WZ_register = memory_address + 1;
+    WZ_register_ = memory_address_ + 1;
 
-    data_8 = ram_read(memory_address);
+    data_8_ = ram_read(memory_address_);
 
     /* The contents of the low-order four bits (3,2,1,0) of data in memory location (HL)
      * are copied to the low-order bits of the accumulator.
@@ -793,28 +793,28 @@ void z80cpu::RRD_implied() {
      * Step 5: Overwrite accumulator value.
      * */
 
-    result_8 = (data_8 >> 4) | (accumulator << 4);
+    result_8_ = (data_8_ >> 4) | (accumulator_ << 4);
 
     // clear the low-order bits
-    accumulator &= 0xF0;
+    accumulator_ &= 0xF0;
     // 'OR' operation with data's low-order bits
-    accumulator |= (data_8 & 0x0F);
+    accumulator_ |= (data_8_ & 0x0F);
 
-    ram_write(memory_address, result_8);
+    ram_write(memory_address_, result_8_);
 
     // S is set if accumulator is negative after an operation, else reset
-    set_flag(SIGN_FLAG, accumulator & 0x80);
+    set_flag(SIGN_FLAG, accumulator_ & 0x80);
     // Z is set if the accumulator is 0 after an operation, else reset
-    set_flag(ZERO_FLAG, accumulator == 0);
+    set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
     set_flag(HALF_CARRY_FLAG, false);
     // P/V is set if the parity of the accumulator is even after an operation, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[accumulator]);
+    set_flag(PARITY_OVERFLOW_FLAG, PARITY_TABLE[accumulator_]);
     // N is reset
     set_flag(ADD_SUB_FLAG, false);
     // C is not affected
 
     //X & Y Flags are copies bit 3 & 5 of the register
-    set_flag(X_FLAG, accumulator & 0x08);
-    set_flag(Y_FLAG, accumulator & 0x20);
+    set_flag(X_FLAG, accumulator_ & 0x08);
+    set_flag(Y_FLAG, accumulator_ & 0x20);
 }

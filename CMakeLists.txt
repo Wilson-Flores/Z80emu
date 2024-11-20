@@ -32,6 +32,7 @@ set(SOURCES
         instructions/Jump.cpp
         instructions/Set.cpp
         instructions/Reset.cpp
+        instructions/InstructionTable.cpp
 )
 
 # List of test source files
@@ -44,6 +45,7 @@ set(TEST_SOURCES
         test-cases/test_set.cpp
         test-cases/test_reset.cpp
         test-cases/test_jump.cpp
+
 )
 
 add_executable(z80emu
