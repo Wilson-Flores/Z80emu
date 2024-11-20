@@ -18,6 +18,10 @@ constexpr uint8_t LOW_BYTE_MASK = 0xFF;
 constexpr uint16_t LOW_BYTE_MASK_2 = 0x00FF;
 constexpr uint16_t HIGH_BYTE_MASK = 0xFF00;
 
+// For Loops
+constexpr uint8_t MIN_BYTE = 0x00;
+constexpr uint8_t MAX_BYTE = 0xFF;
+
 // Flags
 constexpr uint8_t SIGN_MASK = 0x80;
 constexpr uint16_t SIGN_MASK_2 = 0x0080;
