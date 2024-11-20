@@ -7,7 +7,7 @@ void z80cpu::ADD_implied_register() {
     result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -35,7 +35,7 @@ void z80cpu::ADD_implied_register_indirect() {
     result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -66,7 +66,7 @@ void z80cpu::ADD_implied_indexed_ix() {
     result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -100,7 +100,7 @@ void z80cpu::ADD_implied_indexed_iy() {
     result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -132,7 +132,7 @@ void z80cpu::ADD_implied_immediate() {
     result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -161,7 +161,7 @@ void z80cpu::ADC_implied_register() {
                  static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -192,7 +192,7 @@ void z80cpu::ADC_implied_register_indirect() {
                  static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -225,7 +225,7 @@ void z80cpu::ADC_implied_indexed_ix() {
                  static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -261,7 +261,7 @@ void z80cpu::ADC_implied_indexed_iy() {
                  static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -296,7 +296,7 @@ void z80cpu::ADC_implied_immediate() {
                  static_cast<uint16_t>(get_flag(CARRY_FLAG));
 
     // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, (result_16_ & ZERO_MASK) == 0);
     // H is set if carry from bit 3, else reset
@@ -424,7 +424,7 @@ void z80cpu::ADC_implied_register_extended() {
 
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, static_cast<uint16_t>(result_32) & SIGN_MASK);
+    set_flag(SIGN_FLAG, static_cast<uint16_t>(result_32) & SIGN_MASK_2);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, static_cast<uint16_t>(result_32) == 0);
     // H is set if carry from bit 11, else reset
