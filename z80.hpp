@@ -34,6 +34,7 @@ constexpr uint16_t HALF_CARRY_THRESHOLD_2 = 0x0FFF;
 constexpr uint8_t PARITY_OVERFLOW_MASK = 0x80;
 constexpr uint16_t PARITY_OVERFLOW_MASK_2 = 0x0080;
 constexpr uint32_t PARITY_OVERFLOW_MASK_3 = 0x00008000;
+constexpr uint8_t PARITY_REG_VALUE = 0x7F;
 
 constexpr uint16_t CARRY_FLAG_THRESHOLD = 0x00FF;
 constexpr uint16_t CARRY_FLAG_THRESHOLD_2 = 0xFFFF;
