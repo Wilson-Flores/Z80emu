@@ -8,7 +8,7 @@ void z80cpu::XOR_implied_register() {
     accumulator_ ^= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & 0x80);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -21,8 +21,8 @@ void z80cpu::XOR_implied_register() {
     set_flag(CARRY_FLAG, false);
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & 0x08);
-    set_flag(Y_FLAG, accumulator_ & 0x20);
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
 }
 
 
@@ -34,7 +34,7 @@ void z80cpu::XOR_implied_register_indirect() {
     accumulator_ ^= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & 0x80);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -47,8 +47,8 @@ void z80cpu::XOR_implied_register_indirect() {
     set_flag(CARRY_FLAG, false);
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & 0x08);
-    set_flag(Y_FLAG, accumulator_ & 0x20);
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
 }
 
 void z80cpu::XOR_implied_indexed_ix() {
@@ -65,7 +65,7 @@ void z80cpu::XOR_implied_indexed_ix() {
     accumulator_ ^= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & 0x80);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -78,8 +78,8 @@ void z80cpu::XOR_implied_indexed_ix() {
     set_flag(CARRY_FLAG, false);
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & 0x08);
-    set_flag(Y_FLAG, accumulator_ & 0x20);
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
 }
 
 
@@ -97,7 +97,7 @@ void z80cpu::XOR_implied_indexed_iy() {
     accumulator_ ^= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & 0x80);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -110,8 +110,8 @@ void z80cpu::XOR_implied_indexed_iy() {
     set_flag(CARRY_FLAG, false);
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & 0x08);
-    set_flag(Y_FLAG, accumulator_ & 0x20);
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
 }
 
 void z80cpu::XOR_implied_immediate() {
@@ -122,7 +122,7 @@ void z80cpu::XOR_implied_immediate() {
     accumulator_ ^= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & 0x80);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -135,6 +135,6 @@ void z80cpu::XOR_implied_immediate() {
     set_flag(CARRY_FLAG, false);
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & 0x08);
-    set_flag(Y_FLAG, accumulator_ & 0x20);
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
 }

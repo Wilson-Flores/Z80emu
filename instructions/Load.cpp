@@ -66,15 +66,15 @@ void z80cpu::LD_register_implied_R() {
     // P/V contains contents of IFF2
     set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2_);
     // Sign Flag is set if I is negative, else it is reset.
-    set_flag(SIGN_FLAG, (memory_refresh_register_ >> 7) == 0x01);
+    set_flag(SIGN_FLAG, (memory_refresh_register_ >> 7) == 1);
     // Zero Flag is set if I equals 0, else it is reset.
-    set_flag(SIGN_FLAG, memory_refresh_register_ == 0x00);
+    set_flag(SIGN_FLAG, memory_refresh_register_ == 0);
 
     accumulator_ = memory_refresh_register_;
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & 0x08);
-    set_flag(Y_FLAG, accumulator_ & 0x20);
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
 }
 
 
@@ -88,15 +88,15 @@ void z80cpu::LD_register_implied_I() {
     // P/V contains contents of IFF2
     set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2_);
     // Sign Flag is set if I is negative, else it is reset.
-    set_flag(SIGN_FLAG, (interrupt_vector_register_ >> 7) == 0x01);
+    set_flag(SIGN_FLAG, (interrupt_vector_register_ >> 7) == 1);
     // Zero Flag is set if I equals 0, else it is reset.
-    set_flag(ZERO_FLAG, interrupt_vector_register_ == 0x00);
+    set_flag(ZERO_FLAG, interrupt_vector_register_ == 0);
 
     accumulator_ = interrupt_vector_register_;
 
     //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & 0x08);
-    set_flag(Y_FLAG, accumulator_ & 0x20);
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
 }
 
 
@@ -452,7 +452,7 @@ void z80cpu::LD_extended_register_ix() {
     WZ_register_ = memory_address_ + 1;
 
     // ix low byte
-    data_8_ = static_cast<uint8_t>(index_register_x_ & LOW_BYTE_MASK);
+    data_8_ = static_cast<uint8_t>(index_register_x_ & MAX_BYTE);
     ram_write(memory_address_, data_8_);
     // ix high byte
     data_8_ = static_cast<uint8_t>(index_register_x_ >> 8);
@@ -473,7 +473,7 @@ void z80cpu::LD_extended_register_iy() {
     WZ_register_ = memory_address_ + 1;
 
     // iy low byte
-    data_8_ = static_cast<uint8_t>(index_register_y_ & LOW_BYTE_MASK);
+    data_8_ = static_cast<uint8_t>(index_register_y_ & MAX_BYTE);
     ram_write(memory_address_, data_8_);
     // iy high byte
     data_8_ = static_cast<uint8_t>(index_register_y_ >> 8);
@@ -491,7 +491,7 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // we are taking HL register and incrementing by 1
     L_register_++;
-    if(L_register_ == 0x00){
+    if(L_register_ == MIN_BYTE){
         H_register_++;
     }
 
@@ -501,13 +501,13 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // we are taking DE register and incrementing by 1
     E_register_++;
-    if(E_register_ == 0x00){
+    if(E_register_ == MIN_BYTE){
         D_register_++;
     }
 
     // The byte counter (BC register) is decremented
     C_register_--;
-    if(C_register_ == 0xFF){
+    if(C_register_ == MAX_BYTE){
         B_register_--;
     }
 
@@ -521,8 +521,8 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // re-use data_8 as a temp
     data_8_ += accumulator_;
-    set_flag(Y_FLAG, data_8_ & 0x02);
-    set_flag(X_FLAG, data_8_ & 0x08);
+    set_flag(X_FLAG, data_8_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, data_8_ & Y_FLAG_MASK_3);
 }
 
 
@@ -533,7 +533,7 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
     data_8_ = ram_read(memory_address_);
     L_register_++;
-    if(L_register_ == 0x00){
+    if(L_register_ == MIN_BYTE){
         H_register_++;
     }
 
@@ -541,13 +541,13 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
     memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
     ram_write(memory_address_, data_8_);
     E_register_++;
-    if(E_register_ == 0x00){
+    if(E_register_ == MIN_BYTE){
         D_register_++;
     }
 
     // decrementing BC register pair
     C_register_--;
-    if(C_register_ == 0xFF){
+    if(C_register_ == MAX_BYTE){
         B_register_--;
     }
 
@@ -583,8 +583,8 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
 
     // re-use data_8 as a temp
     data_8_ += accumulator_;
-    set_flag(Y_FLAG, data_8_ & 0x02);
-    set_flag(X_FLAG, data_8_ & 0x08);
+    set_flag(X_FLAG, data_8_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, data_8_ & Y_FLAG_MASK_3);
 
     // reset WZ_register_flag
     WZ_register_flag_ = false;
@@ -598,7 +598,7 @@ void z80cpu::LDD_register_indirect_register_indirect() {
     memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
     data_8_ = ram_read(memory_address_);
     L_register_--;
-    if(L_register_ == 0xFF){
+    if(L_register_ == MAX_BYTE){
         H_register_--;
     }
 
@@ -606,13 +606,13 @@ void z80cpu::LDD_register_indirect_register_indirect() {
     memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
     ram_write(memory_address_, data_8_);
     E_register_--;
-    if(E_register_ == 0xFF){
+    if(E_register_ == MAX_BYTE){
         D_register_--;
     }
 
     // decrementing BC register pair
     C_register_--;
-    if(C_register_ == 0xFF){
+    if(C_register_ == MAX_BYTE){
         B_register_--;
     }
 
@@ -626,8 +626,8 @@ void z80cpu::LDD_register_indirect_register_indirect() {
 
     // re-use data_8 as a temp
     data_8_ += accumulator_;
-    set_flag(Y_FLAG, data_8_ & 0x02);
-    set_flag(X_FLAG, data_8_ & 0x08);
+    set_flag(X_FLAG, data_8_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, data_8_ & Y_FLAG_MASK_3);
 }
 
 
@@ -638,7 +638,7 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
     memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
     data_8_ = ram_read(memory_address_);
     L_register_--;
-    if(L_register_ == 0xFF){
+    if(L_register_ == MAX_BYTE){
         H_register_--;
     }
 
@@ -646,13 +646,13 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
     memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
     ram_write(memory_address_, data_8_);
     E_register_--;
-    if(E_register_ == 0xFF){
+    if(E_register_ == MAX_BYTE){
         D_register_--;
     }
 
     // decrementing BC register pair
     C_register_--;
-    if(C_register_ == 0xFF){
+    if(C_register_ == MAX_BYTE){
         B_register_--;
     }
 
@@ -685,8 +685,8 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
 
     // re-use data_8 as a temp
     data_8_ += accumulator_;
-    set_flag(Y_FLAG, data_8_ & 0x02);
-    set_flag(X_FLAG, data_8_ & 0x08);
+    set_flag(X_FLAG, data_8_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, data_8_ & Y_FLAG_MASK_3);
 
     // reset WZ_register_flag
     WZ_register_flag_ = false;

@@ -92,11 +92,11 @@ uint8_t z80cpu::get_flag(FLAGSZ80 flag) const {
 
 
 void z80cpu::memory_refresh_counter() {
-	if (((memory_refresh_register_ + 1) & 0x7F) < 0x7F) {
+	if (((memory_refresh_register_ + 1) & PARITY_REG_VALUE) < PARITY_REG_VALUE) {
 		memory_refresh_register_++;
 	}
 	else {
-        memory_refresh_register_ &= 0x80;
+        memory_refresh_register_ &= BIT_MASK_9;
 	}
 }
 
