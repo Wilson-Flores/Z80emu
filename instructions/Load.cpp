@@ -452,7 +452,7 @@ void z80cpu::LD_extended_register_ix() {
     WZ_register_ = memory_address_ + 1;
 
     // ix low byte
-    data_8_ = static_cast<uint8_t>(index_register_x_ & LOW_BYTE_MASK);
+    data_8_ = static_cast<uint8_t>(index_register_x_ & MAX_BYTE);
     ram_write(memory_address_, data_8_);
     // ix high byte
     data_8_ = static_cast<uint8_t>(index_register_x_ >> 8);
@@ -473,7 +473,7 @@ void z80cpu::LD_extended_register_iy() {
     WZ_register_ = memory_address_ + 1;
 
     // iy low byte
-    data_8_ = static_cast<uint8_t>(index_register_y_ & LOW_BYTE_MASK);
+    data_8_ = static_cast<uint8_t>(index_register_y_ & MAX_BYTE);
     ram_write(memory_address_, data_8_);
     // iy high byte
     data_8_ = static_cast<uint8_t>(index_register_y_ >> 8);

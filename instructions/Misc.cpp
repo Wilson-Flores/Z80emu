@@ -26,14 +26,14 @@ void z80cpu::NEG_implied() {
     result_8_ = ~accumulator_ + 1;
 
     // S is set if result is negative; otherwise it is reset
-    set_flag(SIGN_FLAG, result_8_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, result_8_ & BIT_MASK_9);
     // Z is set if result is 0, else it is reset
     set_flag(ZERO_FLAG, result_8_ == 0);
     // H is set if borrow from bit 4, else it is reset
     // 0 - (anything != 0) will always need to borrow, we can use > 0 as well.
-    set_flag(HALF_CARRY_FLAG, (accumulator_ & HALF_CARRY_THRESHOLD) > 0);
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & BIT_MASK_8) > 0);
     // P/V is set if Accumulator was 80h before operation, else it is reset
-    set_flag(PARITY_OVERFLOW_FLAG, accumulator_ == PARITY_OVERFLOW_MASK);
+    set_flag(PARITY_OVERFLOW_FLAG, accumulator_ == BIT_MASK_9);
     // N is set
     set_flag(ADD_SUB_FLAG, true);
     // C is set if Accumulator was not 00h before operation, else it is reset
@@ -246,7 +246,7 @@ void z80cpu::DAA_implied() {
     }
 
     // S is set if most significant bit of the accumulator is 1 after an operation, else reset
-    set_flag(SIGN_FLAG, data_8_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, data_8_ & BIT_MASK_9);
     // Z is set if the accumulator is 0 after an operation, else reset
     set_flag(ZERO_FLAG, data_8_ == 0);
     // P/V is set if the accumulator is an even parity after an operation, else reset

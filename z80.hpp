@@ -13,31 +13,29 @@ constexpr uint8_t BIT_MASK_2 = 0x07;      // 0000 0111 binary value
 constexpr uint8_t BIT_MASK_3 = 0x30;      // 0011 0000 binary value
 constexpr uint8_t BIT_MASK_4 = 0x18;      // 0001 1000 binary value
 constexpr uint8_t BIT_MASK_5 = 0x01;      // 0000 0001 binary value
+constexpr uint8_t BIT_MASK_6 = 0xFE;      // 1111 1110 binary value
+constexpr uint8_t BIT_MASK_7 = 0xF0;      // 1111 0000 binary value
+constexpr uint8_t BIT_MASK_8 = 0x0F;      // 0000 1111 binary value
+constexpr uint8_t BIT_MASK_9 = 0x80;
 
-constexpr uint8_t LOW_BYTE_MASK = 0xFF;
-constexpr uint16_t LOW_BYTE_MASK_2 = 0x00FF;
+constexpr uint16_t LOW_BYTE_MASK = 0x00FF;
 constexpr uint16_t HIGH_BYTE_MASK = 0xFF00;
 
 // For Loops
 constexpr uint8_t MIN_BYTE = 0x00;
-constexpr uint8_t MAX_BYTE = 0xFF;
 
+constexpr uint8_t MAX_BYTE = 0xFF;
 // Flags
-constexpr uint8_t SIGN_MASK = 0x80;
+
 constexpr uint16_t SIGN_MASK_2 = 0x0080;
 
-constexpr uint16_t ZERO_MASK = 0x00FF;
+constexpr uint16_t HALF_CARRY_THRESHOLD = 0x0FFF;
 
-constexpr uint8_t HALF_CARRY_THRESHOLD = 0x0F;
-constexpr uint16_t HALF_CARRY_THRESHOLD_2 = 0x0FFF;
-
-constexpr uint8_t PARITY_OVERFLOW_MASK = 0x80;
-constexpr uint16_t PARITY_OVERFLOW_MASK_2 = 0x0080;
-constexpr uint32_t PARITY_OVERFLOW_MASK_3 = 0x00008000;
+constexpr uint16_t PARITY_OVERFLOW_MASK = 0x0080;
+constexpr uint32_t PARITY_OVERFLOW_MASK_2 = 0x00008000;
 constexpr uint8_t PARITY_REG_VALUE = 0x7F;
 
-constexpr uint16_t CARRY_FLAG_THRESHOLD = 0x00FF;
-constexpr uint16_t CARRY_FLAG_THRESHOLD_2 = 0xFFFF;
+constexpr uint16_t CARRY_FLAG_THRESHOLD = 0xFFFF;
 
 constexpr uint8_t X_FLAG_MASK = 0x08;
 constexpr uint16_t X_FLAG_MASK_2 = 0x0800;

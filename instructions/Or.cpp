@@ -8,7 +8,7 @@ void z80cpu::OR_implied_register() {
     accumulator_ |= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -34,7 +34,7 @@ void z80cpu::OR_implied_register_indirect() {
     accumulator_ |= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -65,7 +65,7 @@ void z80cpu::OR_implied_indexed_ix() {
     accumulator_ |= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -97,7 +97,7 @@ void z80cpu::OR_implied_indexed_iy() {
     accumulator_ |= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
@@ -122,7 +122,7 @@ void z80cpu::OR_implied_immediate() {
     accumulator_ |= data_8_;
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, accumulator_ & SIGN_MASK);
+    set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, accumulator_ == 0);
     // H is reset
