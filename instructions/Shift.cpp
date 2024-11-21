@@ -93,7 +93,7 @@ void z80cpu::SLA_indexed_ix() {
     ram_write(memory_address_, result_8_);
 
     // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_8_ & BIT_MASK_8);
+    set_flag(SIGN_FLAG, result_8_ & BIT_MASK_9);
     // Z is set if result is 0, else reset
     set_flag(ZERO_FLAG, result_8_ == 0);
     // H is reset
