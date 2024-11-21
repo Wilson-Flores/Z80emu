@@ -16,7 +16,7 @@ constexpr uint8_t BIT_MASK_5 = 0x01;      // 0000 0001 binary value
 constexpr uint8_t BIT_MASK_6 = 0xFE;      // 1111 1110 binary value
 constexpr uint8_t BIT_MASK_7 = 0xF0;      // 1111 0000 binary value
 constexpr uint8_t BIT_MASK_8 = 0x0F;      // 0000 1111 binary value
-constexpr uint8_t BIT_MASK_9 = 0x80;
+constexpr uint8_t BIT_MASK_9 = 0x80;      // 1000 0000 binary value
 
 constexpr uint16_t LOW_BYTE_MASK = 0x00FF;
 constexpr uint16_t HIGH_BYTE_MASK = 0xFF00;
