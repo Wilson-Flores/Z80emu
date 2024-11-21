@@ -27,15 +27,15 @@ constexpr uint8_t MIN_BYTE = 0x00;
 constexpr uint8_t MAX_BYTE = 0xFF;
 // Flags
 
-constexpr uint16_t SIGN_MASK_2 = 0x0080;
+constexpr uint16_t SIGN_MASK = 0x0080;
+constexpr uint16_t SIGN_MASK_2 = 0x8000;
 
-constexpr uint16_t HALF_CARRY_THRESHOLD = 0x0FFF;
+constexpr uint16_t HALF_CARRY_MASK = 0x0FFF;
 
-constexpr uint16_t PARITY_OVERFLOW_MASK = 0x0080;
-constexpr uint32_t PARITY_OVERFLOW_MASK_2 = 0x00008000;
+constexpr uint32_t PARITY_OVERFLOW_MASK = 0x00008000;
 constexpr uint8_t PARITY_REG_VALUE = 0x7F;
 
-constexpr uint16_t CARRY_FLAG_THRESHOLD = 0xFFFF;
+constexpr uint16_t CARRY_MASK = 0xFFFF;
 
 constexpr uint8_t X_FLAG_MASK = 0x08;
 constexpr uint16_t X_FLAG_MASK_2 = 0x0800;
