@@ -44,6 +44,7 @@ constexpr uint16_t X_FLAG_MASK_2 = 0x0800;
 
 constexpr uint8_t Y_FLAG_MASK = 0x20;
 constexpr uint16_t Y_FLAG_MASK_2 = 0x2000;
+constexpr uint8_t Y_FLAG_MASK_3 = 0x02;
 
 
 //For Set instructions, we use these bit masks with OR operation to set the desired bit in the value
