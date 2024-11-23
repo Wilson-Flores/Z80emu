@@ -73,5 +73,6 @@ using BitTest = BusTest;
 using SetTest = BusTest;
 using ResetTest = BusTest;
 using JumpTest = BusTest;
+using LoadTest = BusTest;
 
 #endif
