@@ -143,9 +143,8 @@ void z80cpu::ADD_implied_register_extended() {
     t_state_cycles_ = 11;
 
     temp_data_8_ = (opcode_ & BIT_MASK_3) >> 4;
-    temp_high_byte_ = *register_pair_table_ss_[temp_data_8_].high_byte_register;
-    temp_low_byte_ = *register_pair_table_ss_[temp_data_8_].low_byte_register;
-    temp_reg_pair_data_ = ( temp_high_byte_ << 8) + temp_low_byte_;
+    temp_reg_pair_data_ = ( *register_pair_table_ss_[temp_data_8_].high_byte_register << 8) |
+            *register_pair_table_ss_[temp_data_8_].low_byte_register;
 
     temp_data_16_ = (static_cast<uint16_t>(H_register_) << 8) + L_register_;
     WZ_register_ = temp_data_16_ + 1;
@@ -167,11 +166,10 @@ void z80cpu::ADD_implied_register_extended_ix() {
     t_state_cycles_ = 15;
 
     temp_data_8_ = (opcode_ & BIT_MASK_3) >> 4;
-    temp_high_byte_ = *register_pair_table_pp_[temp_data_8_].high_byte_register;
-    temp_low_byte_ = *register_pair_table_pp_[temp_data_8_].low_byte_register;
-    temp_reg_pair_data_ = ( temp_high_byte_ << 8) + temp_low_byte_;
-    WZ_register_ = index_register_x_ + 1;
+    temp_reg_pair_data_ = ( *register_pair_table_pp_[temp_data_8_].high_byte_register << 8) |
+            *register_pair_table_pp_[temp_data_8_].low_byte_register;
 
+    WZ_register_ = index_register_x_ + 1;
     temp_result_16_ = index_register_x_ + temp_reg_pair_data_;
 
     set_flag(HALF_CARRY_FLAG, ((index_register_x_ & CARRY_MASK) + (temp_reg_pair_data_ & CARRY_MASK)) > CARRY_MASK);
@@ -189,11 +187,10 @@ void z80cpu::ADD_implied_register_extended_iy() {
     t_state_cycles_ = 15;
 
     temp_data_8_ = (opcode_ & BIT_MASK_3) >> 4;
-    temp_high_byte_ = *register_pair_table_rr_[temp_data_8_].high_byte_register;
-    temp_low_byte_ = *register_pair_table_rr_[temp_data_8_].low_byte_register;
-    temp_reg_pair_data_ = ( temp_high_byte_ << 8) + temp_low_byte_;
-    WZ_register_ = index_register_y_ + 1;
+    temp_reg_pair_data_ = ( *register_pair_table_rr_[temp_data_8_].high_byte_register << 8) |
+            *register_pair_table_rr_[temp_data_8_].low_byte_register;
 
+    WZ_register_ = index_register_y_ + 1;
     temp_result_16_ = index_register_y_ + temp_reg_pair_data_;
 
     set_flag(HALF_CARRY_FLAG, ((index_register_y_ & CARRY_MASK) + (temp_reg_pair_data_ & CARRY_MASK)) > CARRY_MASK);
@@ -211,10 +208,10 @@ void z80cpu::ADC_implied_register_extended() {
     t_state_cycles_ = 15;
 
     temp_data_8_ = (opcode_ & BIT_MASK_3) >> 4;
-    temp_high_byte_ = *register_pair_table_ss_[temp_data_8_].high_byte_register;
-    temp_low_byte_ = *register_pair_table_ss_[temp_data_8_].low_byte_register;
-    temp_reg_pair_data_ = (temp_high_byte_ << 8) + temp_low_byte_;
-    temp_data_16_ = (H_register_ << 8) + L_register_;
+    temp_reg_pair_data_ = (*register_pair_table_ss_[temp_data_8_].high_byte_register << 8) |
+            *register_pair_table_ss_[temp_data_8_].low_byte_register;
+
+    temp_data_16_ = (static_cast<uint16_t>(H_register_) << 8) + L_register_;
     WZ_register_ = temp_data_16_ + 1;
 
     uint32_t result_32 = static_cast<uint32_t>(temp_data_16_) + static_cast<uint32_t>(temp_reg_pair_data_)

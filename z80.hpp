@@ -454,8 +454,6 @@ private:
 	int8_t temp_displacement_ = 0;
 	uint8_t temp_data_8_ = 0;
 	uint8_t temp_result_8_ = 0;
-    uint8_t temp_high_byte_ = 0;
-    uint8_t temp_low_byte_ = 0;
 	uint16_t temp_data_16_ = 0;
 	uint16_t temp_result_16_ = 0;
     uint16_t temp_reg_pair_data_ = 0;
