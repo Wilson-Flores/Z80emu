@@ -21,21 +21,17 @@ constexpr uint8_t BIT_MASK_9 = 0x80;      // 1000 0000 binary value
 constexpr uint16_t LOW_BYTE_MASK = 0x00FF;
 constexpr uint16_t HIGH_BYTE_MASK = 0xFF00;
 
-// For Loops
 constexpr uint8_t MIN_BYTE = 0x00;
-
 constexpr uint8_t MAX_BYTE = 0xFF;
-// Flags
 
 constexpr uint16_t SIGN_MASK = 0x0080;
 constexpr uint16_t SIGN_MASK_2 = 0x8000;
 
-constexpr uint16_t HALF_CARRY_MASK = 0x0FFF;
+constexpr uint16_t CARRY_MASK = 0x0FFF;
+constexpr uint16_t CARRY_MASK_2 = 0xFFFF;
 
 constexpr uint32_t PARITY_OVERFLOW_MASK = 0x00008000;
 constexpr uint8_t PARITY_REG_VALUE = 0x7F;
-
-constexpr uint16_t CARRY_MASK = 0xFFFF;
 
 constexpr uint8_t X_FLAG_MASK = 0x08;
 constexpr uint16_t X_FLAG_MASK_2 = 0x0800;
@@ -122,7 +118,8 @@ public:
 
     // Helper Functions
     void fetch_opcode();
-    void ADD_compute_arithmetic_and_flag();
+    void ADD_helper();
+    void ADC_helper();
 
 	void instruction_cycle();
 	void bit_instructions();
@@ -419,53 +416,51 @@ private:
 	Bus* bus_ = nullptr;
 
     // Main Registers
-    uint8_t accumulator_ = 0x00;
-    uint8_t B_register_ = 0x00;
-    uint8_t C_register_ = 0x00;
-    uint8_t D_register_ = 0x00;
-    uint8_t E_register_ = 0x00;
-    uint8_t H_register_ = 0x00;
-    uint8_t L_register_ = 0x00;
-    uint8_t flag_register_ = 0x00;
+    uint8_t accumulator_ = 0;
+    uint8_t B_register_ = 0;
+    uint8_t C_register_ = 0;
+    uint8_t D_register_ = 0;
+    uint8_t E_register_ = 0;
+    uint8_t H_register_ = 0;
+    uint8_t L_register_ = 0;
+    uint8_t flag_register_ = 0;
 
     // Alternate Registers
-    uint8_t alt_accumulator_ = 0x00;
-    uint8_t alt_B_register_ = 0x00;
-    uint8_t alt_C_register_ = 0x00;
-    uint8_t alt_D_register_ = 0x00;
-    uint8_t alt_E_register_ = 0x00;
-    uint8_t alt_H_register_ = 0x00;
-    uint8_t alt_L_register_ = 0x00;
-    uint8_t alt_flag_register_ = 0x00;
+    uint8_t alt_accumulator_ = 0;
+    uint8_t alt_B_register_ = 0;
+    uint8_t alt_C_register_ = 0;
+    uint8_t alt_D_register_ = 0;
+    uint8_t alt_E_register_ = 0;
+    uint8_t alt_H_register_ = 0;
+    uint8_t alt_L_register_ = 0;
+    uint8_t alt_flag_register_ = 0;
 
     // Index Registers
-    uint16_t index_register_x_ = 0x0000;
-    uint16_t index_register_y_ = 0x0000;
+    uint16_t index_register_x_ = 0;
+    uint16_t index_register_y_ = 0;
 
     // Other Registers
-    uint8_t interrupt_vector_register_ = 0x00;
-    uint8_t memory_refresh_register_ = 0x00;
-    uint16_t WZ_register_ = 0x0000;
-    uint16_t stack_pointer_ = 0x0000;
-    uint16_t program_counter_ = 0x0000;
-	uint8_t opcode_ = 0x00;
+    uint8_t interrupt_vector_register_ = 0;
+    uint8_t memory_refresh_register_ = 0;
+    uint16_t WZ_register_ = 0;
+    uint16_t stack_pointer_ = 0;
+    uint16_t program_counter_ = 0;
+	uint8_t opcode_ = 0;
 
     // future implement of adding delays while instructions are executed.
 	uint8_t t_state_cycles_ = 0;
 
-    // signed 8-bit temp value
-	int8_t displacement_ = 0x00;
+    // temp values
+	int8_t temp_displacement_ = 0;
+	uint8_t temp_data_8_ = 0;
+	uint8_t temp_result_8_ = 0;
+    uint8_t temp_high_byte_ = 0;
+    uint8_t temp_low_byte_ = 0;
+	uint16_t temp_data_16_ = 0;
+	uint16_t temp_result_16_ = 0;
+    uint16_t temp_reg_pair_data_ = 0;
+	uint16_t temp_memory_address_ = 0;
 
-	// 8-bit temp values
-	uint8_t data_8_ = 0;
-	uint8_t result_8_ = 0;
-
-	// 16-bit temp values
-	uint16_t data_16_ = 0;
-	uint16_t result_16_ = 0;
-
-	// temp memory address value
-	uint16_t memory_address_ = 0x0000;
 
 	// LDIR/LDDR WZ register Flag
 	// This flag will indicate that the instruction loop has started.

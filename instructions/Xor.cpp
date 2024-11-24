@@ -4,8 +4,8 @@
 void z80cpu::XOR_implied_register() {
     t_state_cycles_ = 4;
 
-    data_8_ = *register_table_[opcode_ & BIT_MASK_2];
-    accumulator_ ^= data_8_;
+    temp_data_8_ = *register_table_[opcode_ & BIT_MASK_2];
+    accumulator_ ^= temp_data_8_;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
@@ -29,9 +29,9 @@ void z80cpu::XOR_implied_register() {
 void z80cpu::XOR_implied_register_indirect() {
     t_state_cycles_ = 7;
 
-    memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    data_8_ = ram_read(memory_address_);
-    accumulator_ ^= data_8_;
+    temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
+    temp_data_8_ = ram_read(temp_memory_address_);
+    accumulator_ ^= temp_data_8_;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
@@ -54,15 +54,15 @@ void z80cpu::XOR_implied_register_indirect() {
 void z80cpu::XOR_implied_indexed_ix() {
     t_state_cycles_ = 19;
 
-    displacement_ = static_cast<int8_t>(rom_read(program_counter_));
+    temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
-    memory_address_ = index_register_x_ + static_cast<int16_t>(displacement_);
+    temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
 
     // WZ register is updated using memory address
-    WZ_register_ = memory_address_;
+    WZ_register_ = temp_memory_address_;
 
-    data_8_ = ram_read(memory_address_);
-    accumulator_ ^= data_8_;
+    temp_data_8_ = ram_read(temp_memory_address_);
+    accumulator_ ^= temp_data_8_;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
@@ -86,15 +86,15 @@ void z80cpu::XOR_implied_indexed_ix() {
 void z80cpu::XOR_implied_indexed_iy() {
     t_state_cycles_ = 19;
 
-    displacement_ = static_cast<int8_t>(rom_read(program_counter_));
+    temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
-    memory_address_ = index_register_y_ + static_cast<int16_t>(displacement_);
+    temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
 
     // WZ register is updated using memory address
-    WZ_register_ = memory_address_;
+    WZ_register_ = temp_memory_address_;
 
-    data_8_ = ram_read(memory_address_);
-    accumulator_ ^= data_8_;
+    temp_data_8_ = ram_read(temp_memory_address_);
+    accumulator_ ^= temp_data_8_;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);
@@ -117,9 +117,9 @@ void z80cpu::XOR_implied_indexed_iy() {
 void z80cpu::XOR_implied_immediate() {
     t_state_cycles_ = 7;
 
-    data_8_ = rom_read(program_counter_);
+    temp_data_8_ = rom_read(program_counter_);
     program_counter_++;
-    accumulator_ ^= data_8_;
+    accumulator_ ^= temp_data_8_;
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, accumulator_ & BIT_MASK_9);

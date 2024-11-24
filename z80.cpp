@@ -142,7 +142,7 @@ void z80cpu::bit_instructions() {
 void z80cpu::ix_bit_instructions() {
     // DDCB opcodes have a displacement value placed before the final opcode
     // ex DD CB d 06
-    displacement_ = static_cast<int8_t>(rom_read(program_counter_));
+    temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
 
     fetch_opcode();
@@ -151,7 +151,7 @@ void z80cpu::ix_bit_instructions() {
 
 
 void z80cpu::iy_bit_instructions() {
-    displacement_ = static_cast<int8_t>(rom_read(program_counter_));
+    temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
 
     fetch_opcode();
@@ -194,11 +194,11 @@ void z80cpu::reset() {
     t_state_cycles_ = 0x00;
 
     // Temporary Values
-    displacement_ = 0x00;
-    data_8_ = 0;
-    result_8_ = 0;
-    data_16_ = 0;
-    result_16_ = 0;
+    temp_displacement_ = 0x00;
+    temp_data_8_ = 0;
+    temp_result_8_ = 0;
+    temp_data_16_ = 0;
+    temp_result_16_ = 0;
 
     // Interrupts
     interrupt_enable_flip_flop_1_ = false;

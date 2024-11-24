@@ -3,12 +3,12 @@
 void z80cpu::POP_register_indirect_register() {
     t_state_cycles_ = 10;
 
-    data_8_ = (opcode_ & BIT_MASK_3) >> 4;
+    temp_data_8_ = (opcode_ & BIT_MASK_3) >> 4;
 
-    *register_pair_table_qq_[data_8_].low_byte_register = ram_read(stack_pointer_);
+    *register_pair_table_qq_[temp_data_8_].low_byte_register = ram_read(stack_pointer_);
     stack_pointer_++;
 
-    *register_pair_table_qq_[data_8_].high_byte_register = ram_read(stack_pointer_);
+    *register_pair_table_qq_[temp_data_8_].high_byte_register = ram_read(stack_pointer_);
     stack_pointer_++;
 }
 
