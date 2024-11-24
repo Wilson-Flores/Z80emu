@@ -1,29 +1,26 @@
 #include "../z80.hpp"
 
+
+void z80cpu::ADD_compute_arithmetic_and_flag() {
+    result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
+
+    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
+    set_flag(ZERO_FLAG, (result_16_ & LOW_BYTE_MASK) == 0);
+    set_flag(HALF_CARRY_FLAG, (accumulator_ & BIT_MASK_8) + (data_8_ & BIT_MASK_8) > BIT_MASK_8);
+    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ result_16_) & ~(accumulator_ ^ data_8_)) & BIT_MASK_9);
+    set_flag(ADD_SUB_FLAG, false);
+    set_flag(CARRY_FLAG, result_16_ > LOW_BYTE_MASK);
+    accumulator_ = result_16_;
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
+}
+
+
 void z80cpu::ADD_implied_register() {
     t_state_cycles_ = 4;
 
     data_8_ = *register_table_[opcode_ & BIT_MASK_2];
-    result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
-
-    // S is set if result is negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
-    // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, (result_16_ & LOW_BYTE_MASK) == 0);
-    // H is set if carry from bit 3, else reset
-    set_flag(HALF_CARRY_FLAG, (accumulator_ & BIT_MASK_8) + (data_8_ & BIT_MASK_8) > BIT_MASK_8);
-    // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ result_16_) & ~(accumulator_ ^ data_8_)) & BIT_MASK_9);
-    // N is reset
-    set_flag(ADD_SUB_FLAG, false);
-    // C is set if carry from bit 7, else reset
-    set_flag(CARRY_FLAG, result_16_ > LOW_BYTE_MASK);
-
-    accumulator_ = result_16_;
-
-    // X & Y Flags are copies of bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
-    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
+    ADD_compute_arithmetic_and_flag();
 }
 
 
@@ -32,27 +29,7 @@ void z80cpu::ADD_implied_register_indirect() {
 
     memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
     data_8_ = ram_read(memory_address_);
-    result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
-
-    // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
-    // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, (result_16_ & LOW_BYTE_MASK) == 0);
-    // H is set if carry from bit 3, else reset
-    // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator_ & BIT_MASK_8) + (data_8_ & BIT_MASK_8) > BIT_MASK_8);
-    // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ result_16_) & ~(accumulator_ ^ data_8_)) & BIT_MASK_9);
-    // N is reset
-    set_flag(ADD_SUB_FLAG, false);
-    // C is set if carry from bit 7, else reset
-    set_flag(CARRY_FLAG, result_16_ > LOW_BYTE_MASK);
-
-    accumulator_ = result_16_;
-
-    //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
-    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
+    ADD_compute_arithmetic_and_flag();
 }
 
 
@@ -62,31 +39,9 @@ void z80cpu::ADD_implied_indexed_ix() {
     displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
     memory_address_ = index_register_x_ + static_cast<int16_t>(displacement_);
-    data_8_ = ram_read(memory_address_);
-    result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
-
-    // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
-    // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, (result_16_ & LOW_BYTE_MASK) == 0);
-    // H is set if carry from bit 3, else reset
-    // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator_ & BIT_MASK_8) + (data_8_ & BIT_MASK_8) > BIT_MASK_8);
-    // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ result_16_) & ~(accumulator_ ^ data_8_)) & BIT_MASK_9);
-    // N is reset
-    set_flag(ADD_SUB_FLAG, false);
-    // C is set if carry from bit 7, else reset
-    set_flag(CARRY_FLAG, result_16_ > LOW_BYTE_MASK);
-
-    // WZ register is updated using memory address
     WZ_register_ = memory_address_;
-
-    accumulator_ = result_16_;
-
-    //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
-    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
+    data_8_ = ram_read(memory_address_);
+    ADD_compute_arithmetic_and_flag();
 }
 
 
@@ -96,31 +51,9 @@ void z80cpu::ADD_implied_indexed_iy() {
     displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
     memory_address_ = index_register_y_ + static_cast<int16_t>(displacement_);
-    data_8_ = ram_read(memory_address_);
-    result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
-
-    // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
-    // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, (result_16_ & LOW_BYTE_MASK) == 0);
-    // H is set if carry from bit 3, else reset
-    // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator_ & BIT_MASK_8) + (data_8_ & BIT_MASK_8) > BIT_MASK_8);
-    // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ result_16_) & ~(accumulator_ ^ data_8_)) & BIT_MASK_9);
-    // N is reset
-    set_flag(ADD_SUB_FLAG, false);
-    // C is set if carry from bit 7, else reset
-    set_flag(CARRY_FLAG, result_16_ > LOW_BYTE_MASK);
-
-    // WZ register is updated using memory address
     WZ_register_ = memory_address_;
-
-    accumulator_ = result_16_;
-
-    //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
-    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
+    data_8_ = ram_read(memory_address_);
+    ADD_compute_arithmetic_and_flag();
 }
 
 
@@ -129,27 +62,7 @@ void z80cpu::ADD_implied_immediate() {
 
     data_8_ = rom_read(program_counter_);
     program_counter_++;
-    result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(data_8_);
-
-    // S is set if result if negative, else reset
-    set_flag(SIGN_FLAG, result_16_ & SIGN_MASK);
-    // Z is set if result is 0, else reset
-    set_flag(ZERO_FLAG, (result_16_ & LOW_BYTE_MASK) == 0);
-    // H is set if carry from bit 3, else reset
-    // h_result = (accumulator & 0x0F) + (data & 0x0F)
-    set_flag(HALF_CARRY_FLAG, (accumulator_ & BIT_MASK_8) + (data_8_ & BIT_MASK_8) > BIT_MASK_8);
-    // P/V is set if overflow, else reset
-    set_flag(PARITY_OVERFLOW_FLAG, ((accumulator_ ^ result_16_) & ~(accumulator_ ^ data_8_)) & BIT_MASK_9);
-    // N is reset
-    set_flag(ADD_SUB_FLAG, false);
-    // C is set if carry from bit 7, else reset
-    set_flag(CARRY_FLAG, result_16_ > LOW_BYTE_MASK);
-
-    accumulator_ = result_16_;
-
-    //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
-    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
+    ADD_compute_arithmetic_and_flag();
 }
 
 

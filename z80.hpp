@@ -122,6 +122,7 @@ public:
 
     // Helper Functions
     void fetch_opcode();
+    void ADD_compute_arithmetic_and_flag();
 
 	void instruction_cycle();
 	void bit_instructions();
