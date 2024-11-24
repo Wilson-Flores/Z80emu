@@ -45,6 +45,8 @@ set(TEST_SOURCES
         test-cases/test_set.cpp
         test-cases/test_reset.cpp
         test-cases/test_jump.cpp
+        test-cases/test_load.cpp
+        test-cases/test_add.cpp
 
 )
 

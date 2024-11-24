@@ -120,10 +120,11 @@ public:
 	// connect to Bus
 	void connect_bus(Bus* n) { bus_ = n; }
 
-	// This is what will read the opcode and then proceed to execute the proper instruction function.
-	void instruction_cycle();
+    // Helper Functions
+    void fetch_opcode();
+    void ADD_compute_arithmetic_and_flag();
 
-	//Function tables
+	void instruction_cycle();
 	void bit_instructions();
 	void ix_instructions();
 	void ix_bit_instructions();

@@ -101,54 +101,40 @@ void z80cpu::memory_refresh_counter() {
 }
 
 
-void z80cpu::instruction_cycle() {
-	// when t cycles reach 0, we are ready to read next instruction
-	opcode_ = rom_read(program_counter_);
-
-    // increment program counter
+void z80cpu::fetch_opcode() {
+    opcode_ = rom_read(program_counter_);
     program_counter_++;
+    memory_refresh_counter();
+}
 
-	//memory refresh register increments after pulling an opcode
-	memory_refresh_counter();
 
-	// begin going through the main instruction table
+void z80cpu::instruction_cycle() {
+    fetch_opcode();
     (this->*main_instruction_table[opcode_].instruction)();
 }
 
 
 // Function Tables
 void z80cpu::misc_instructions() {
-    opcode_ = rom_read(program_counter_);
-    program_counter_++;
-    memory_refresh_counter();
-
+    fetch_opcode();
 	(this->*misc_instruction_table[opcode_].instruction)();
 }
 
 
 void z80cpu::ix_instructions() {
-    opcode_ = rom_read(program_counter_);
-    program_counter_++;
-    memory_refresh_counter();
-
+    fetch_opcode();
     (this->*ix_instruction_table[opcode_].instruction)();
 }
 
 
 void z80cpu::iy_instructions() {
-    opcode_ = rom_read(program_counter_);
-    program_counter_++;
-    memory_refresh_counter();
-
+    fetch_opcode();
     (this->*iy_instruction_table[opcode_].instruction)();
 }
 
 
 void z80cpu::bit_instructions() {
-    opcode_ = rom_read(program_counter_);
-    program_counter_++;
-    memory_refresh_counter();
-
+    fetch_opcode();
     (this->*bit_instruction_table[opcode_].instruction)();
 }
 
@@ -159,10 +145,7 @@ void z80cpu::ix_bit_instructions() {
     displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
 
-    opcode_ = rom_read(program_counter_);
-    program_counter_++;
-    memory_refresh_counter();
-
+    fetch_opcode();
     (this->*ix_bit_instruction_table[opcode_].instruction)();
 }
 
@@ -171,10 +154,7 @@ void z80cpu::iy_bit_instructions() {
     displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
 
-    opcode_ = rom_read(program_counter_);
-    program_counter_++;
-    memory_refresh_counter();
-
+    fetch_opcode();
     (this->*iy_bit_instruction_table[opcode_].instruction)();
 }
 
