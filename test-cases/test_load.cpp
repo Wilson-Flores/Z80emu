@@ -89,3 +89,19 @@ TEST_F(LoadTest, LD_register_register_test){
     TestRegister(memoryH, bus.cpu_.get_registerH_address(), expected_reg_values_H);
     TestRegister(memoryL, bus.cpu_.get_registerL_address(), expected_reg_values_L);
 }
+
+
+TEST_F(LoadTest, LD_register_extended_test){
+    constexpr std::array<uint8_t, 1> expected_reg_value = {0xFF};
+    constexpr std::array<uint8_t, 4> memory = {0x3A, 0x03, 0x00, 0xFF};
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_value);
+}
+
+
+TEST_F(LoadTest, LD_extended_register_test){
+    constexpr std::array<uint8_t, 4> expected_reg_value = {0xFF, 0xFF, 0x00, 0xFF};
+    constexpr std::array<uint8_t, 10> memory = {0x3E, 0xFF, 0x32, 0x0A, 0x00, 0x3E, 0x00, 0x3A, 0x0A, 0x00};
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_value);
+}

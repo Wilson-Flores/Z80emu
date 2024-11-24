@@ -66,6 +66,11 @@ uint8_t z80cpu::rom_read(uint16_t address) {
 }
 
 
+void z80cpu::rom_write(uint16_t address, uint8_t data) {
+    bus_->rom_write(address, data);
+}
+
+
 uint8_t z80cpu::ram_read(uint16_t address) {
     return bus_->ram_read(address);
 }

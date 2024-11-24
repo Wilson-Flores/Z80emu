@@ -133,15 +133,14 @@ void z80cpu::LD_register_indexed_iy() {
 void z80cpu::LD_register_extended() {
     t_state_cycles_ = 4;
 
-    uint8_t low_byte = rom_read(program_counter_);
+    temp_data_8_ = rom_read(program_counter_);
     program_counter_++;
-    uint8_t high_byte = rom_read(program_counter_);
+    temp_memory_address_ = (static_cast<uint16_t>(rom_read(program_counter_)) << 8) | temp_data_8_;
     program_counter_++;
 
-    temp_memory_address_ = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
     // WZ register is (nn) address plus 1
     WZ_register_ = temp_memory_address_ + 1;
-    accumulator_ = ram_read(temp_memory_address_);
+    accumulator_ = rom_read(temp_memory_address_);
 }
 
 
@@ -244,15 +243,14 @@ void z80cpu::LD_indexed_iy_register(){
 void z80cpu::LD_extended_register() {
     t_state_cycles_ = 13;
 
-    uint8_t low_byte = rom_read(program_counter_);
+    temp_data_8_ = rom_read(program_counter_);
     program_counter_++;
-    uint8_t high_byte = rom_read(program_counter_);
+    temp_memory_address_ = (static_cast<uint16_t>(rom_read(program_counter_)) << 8) | temp_data_8_;
     program_counter_++;
 
-    temp_memory_address_ = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
     // WZ register high byte is the accumulator value, low byte is (nn)'s low byte value + 1
-    WZ_register_ = (static_cast<uint16_t>(accumulator_) << 8) | static_cast<uint16_t>(low_byte + 1);
-    ram_write(temp_memory_address_, accumulator_);
+    WZ_register_ = (static_cast<uint16_t>(accumulator_) << 8) | static_cast<uint16_t>(temp_data_8_ + 1);
+    rom_write(temp_memory_address_, accumulator_);
 }
 
 
