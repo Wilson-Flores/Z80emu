@@ -34,7 +34,7 @@ void z80cpu::SUB_implied_register_indirect() {
     t_state_cycles_ = 7;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = accumulator_ - temp_data_8_;
 
     // S is set if result if negative, else reset
@@ -67,7 +67,7 @@ void z80cpu::SUB_implied_indexed_ix() {
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = accumulator_ - temp_data_8_;
 
     // S is set if result if negative, else reset
@@ -103,7 +103,7 @@ void z80cpu::SUB_implied_indexed_iy() {
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = accumulator_ - temp_data_8_;
 
     // S is set if result if negative, else reset
@@ -208,7 +208,7 @@ void z80cpu::SBC_implied_register_indirect() {
     // A = A + (~D + 1) - C -> A = A + ~D + (1 - C)
     // take it a step further by taking the 2s complement of C: A = A + ~D + 1 + (~C + 1) -> A = A + ~D + ~C + 2
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(~temp_data_8_) + static_cast<uint16_t>(~get_flag(CARRY_FLAG)) + 2;
 
     // S is set if result if negative, else reset
@@ -244,7 +244,7 @@ void z80cpu::SBC_implied_indexed_ix() {
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(~temp_data_8_) + static_cast<uint16_t>(~get_flag(CARRY_FLAG)) + 2;
 
     // S is set if result if negative, else reset
@@ -283,7 +283,7 @@ void z80cpu::SBC_implied_indexed_iy() {
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_16_ = static_cast<uint16_t>(accumulator_) + static_cast<uint16_t>(~temp_data_8_) + static_cast<uint16_t>(~get_flag(CARRY_FLAG)) + 2;
 
     // S is set if result if negative, else reset

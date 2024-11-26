@@ -5,7 +5,7 @@ void z80cpu::CPI_register_indirect() {
 
     // Read data at HL address, then decrement HL
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     L_register_++;
     if(L_register_ == MIN_BYTE){
         H_register_++;
@@ -44,7 +44,7 @@ void z80cpu::CPIR_register_indirect() {
     t_state_cycles_ = 16;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     L_register_++;
     if(L_register_ == MIN_BYTE){
         H_register_++;
@@ -91,7 +91,7 @@ void z80cpu::CPD_register_indirect() {
     t_state_cycles_ = 16;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     L_register_--;
     if(L_register_ == MAX_BYTE){
         H_register_--;
@@ -128,7 +128,7 @@ void z80cpu::CPDR_register_indirect() {
     t_state_cycles_ = 16;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     L_register_--;
     if(L_register_ == MAX_BYTE){
         H_register_--;
@@ -202,7 +202,7 @@ void z80cpu::CP_implied_register_indirect() {
     t_state_cycles_ = 7;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = accumulator_ - temp_data_8_;
 
     // S is set if result if negative, else reset
@@ -236,7 +236,7 @@ void z80cpu::CP_implied_indexed_ix() {
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
 
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = accumulator_ - temp_data_8_;
 
     // S is set if result if negative, else reset
@@ -270,7 +270,7 @@ void z80cpu::CP_implied_indexed_iy() {
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
 
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = accumulator_ - temp_data_8_;
 
     // S is set if result if negative, else reset

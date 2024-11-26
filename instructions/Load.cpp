@@ -32,7 +32,7 @@ void z80cpu::LD_register_register_indirect() {
     // bit mask the opcode to find the register value
     // destination_register_bit = (opcode & BIT_MASK_1) >> 3;
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    *register_table_[(opcode_ & BIT_MASK_1) >> 3] = ram_read(temp_memory_address_);
+    *register_table_[(opcode_ & BIT_MASK_1) >> 3] = rom_read(temp_memory_address_);
 }
 
 
@@ -42,7 +42,7 @@ void z80cpu::LD_register_register_indirect_BC() {
     temp_memory_address_ = (static_cast<uint16_t>(B_register_) << 8) | C_register_;
     // WZ register is BC address plus 1
     WZ_register_ = temp_memory_address_ + 1;
-    accumulator_ = ram_read(temp_memory_address_);
+    accumulator_ = rom_read(temp_memory_address_);
 }
 
 
@@ -52,35 +52,15 @@ void z80cpu::LD_register_register_indirect_DE() {
     temp_memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
     // WZ register is DE address plus 1
     WZ_register_ = temp_memory_address_ + 1;
-    accumulator_ = ram_read(temp_memory_address_);
-}
-
-
-void z80cpu::LD_register_implied_R() {
-    t_state_cycles_ = 9;
-
-    // Half Carry flag is reset.
-    set_flag(HALF_CARRY_FLAG, false);
-    // Add/Subtract flag is reset.
-    set_flag(ADD_SUB_FLAG, false);
-    // P/V contains contents of IFF2
-    set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2_);
-    // Sign Flag is set if I is negative, else it is reset.
-    set_flag(SIGN_FLAG, (memory_refresh_register_ >> 7) == 1);
-    // Zero Flag is set if I equals 0, else it is reset.
-    set_flag(SIGN_FLAG, memory_refresh_register_ == 0);
-
-    accumulator_ = memory_refresh_register_;
-
-    //X & Y Flags are copies bit 3 & 5 of the accumulator
-    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
-    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
+    accumulator_ = rom_read(temp_memory_address_);
 }
 
 
 void z80cpu::LD_register_implied_I() {
     t_state_cycles_ = 9;
 
+    accumulator_ = interrupt_vector_register_;
+
     // Half Carry flag is reset.
     set_flag(HALF_CARRY_FLAG, false);
     // Add/Subtract flag is reset.
@@ -88,12 +68,30 @@ void z80cpu::LD_register_implied_I() {
     // P/V contains contents of IFF2
     set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2_);
     // Sign Flag is set if I is negative, else it is reset.
-    set_flag(SIGN_FLAG, (interrupt_vector_register_ >> 7) == 1);
+    set_flag(SIGN_FLAG, (accumulator_ >> 7) == 1);
     // Zero Flag is set if I equals 0, else it is reset.
-    set_flag(ZERO_FLAG, interrupt_vector_register_ == 0);
+    set_flag(ZERO_FLAG, accumulator_ == 0);
+    //X & Y Flags are copies bit 3 & 5 of the accumulator
+    set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
+    set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
+}
 
-    accumulator_ = interrupt_vector_register_;
 
+void z80cpu::LD_register_implied_R() {
+    t_state_cycles_ = 9;
+
+    accumulator_ = memory_refresh_register_;
+
+    // Half Carry flag is reset.
+    set_flag(HALF_CARRY_FLAG, false);
+    // Add/Subtract flag is reset.
+    set_flag(ADD_SUB_FLAG, false);
+    // P/V contains contents of IFF2
+    set_flag(PARITY_OVERFLOW_FLAG, interrupt_enable_flip_flop_2_);
+    // Sign Flag is set if I is negative, else it is reset.
+    set_flag(SIGN_FLAG, (accumulator_ >> 7) == 1);
+    // Zero Flag is set if I equals 0, else it is reset.
+    set_flag(ZERO_FLAG, accumulator_ == 0);
     //X & Y Flags are copies bit 3 & 5 of the accumulator
     set_flag(X_FLAG, accumulator_ & X_FLAG_MASK);
     set_flag(Y_FLAG, accumulator_ & Y_FLAG_MASK);
@@ -107,9 +105,10 @@ void z80cpu::LD_register_indexed_ix() {
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
 
     // add the value in index register x with the twos-complement signed value
-    WZ_register_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
+    temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
+    WZ_register_ = temp_memory_address_;
     // register_bit = (opcode & BIT_MASK_1) >> 3;
-    *register_table_[(opcode_ & BIT_MASK_1) >> 3] = ram_read(WZ_register_);
+    *register_table_[(opcode_ & BIT_MASK_1) >> 3] = rom_read(temp_memory_address_);
 
     program_counter_++;
 }
@@ -126,7 +125,7 @@ void z80cpu::LD_register_indexed_iy() {
     // ex register x with the twos-complement signed value
     WZ_register_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
     // register_bit = (opcode & BIT_MASK_1) >> 3;
-    *register_table_[(opcode_ & BIT_MASK_1) >> 3] = ram_read(WZ_register_);
+    *register_table_[(opcode_ & BIT_MASK_1) >> 3] = rom_read(WZ_register_);
 }
 
 
@@ -151,7 +150,7 @@ void z80cpu::LD_register_indirect_immediate() {
     temp_data_8_ = rom_read(program_counter_);
     program_counter_++;
 
-    ram_write(temp_memory_address_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
 }
 
 
@@ -161,7 +160,7 @@ void z80cpu::LD_register_indirect_register() {
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
     // the data from the register will be written to the address location
     // register_bit = (opcode & BIT_MASK_2);
-    ram_write(temp_memory_address_, *register_table_[(opcode_ & BIT_MASK_2)]);
+    rom_write(temp_memory_address_, *register_table_[(opcode_ & BIT_MASK_2)]);
 }
 
 
@@ -171,7 +170,7 @@ void z80cpu::LD_register_indirect_register_BC() {
     // WZ register high byte is the accumulator value, low byte is C register value + 1
     WZ_register_ = (static_cast<uint16_t>(accumulator_) << 8) | static_cast<uint16_t>(C_register_ + 1);
     temp_memory_address_ = (static_cast<uint16_t>(B_register_) << 8) | C_register_;
-    ram_write(temp_memory_address_, accumulator_);
+    rom_write(temp_memory_address_, accumulator_);
 }
 
 
@@ -181,7 +180,7 @@ void z80cpu::LD_register_indirect_register_DE() {
     // WZ register high byte is the accumulator value, low byte is E register value + 1
     WZ_register_ = (static_cast<uint16_t>(accumulator_) << 8) | static_cast<uint16_t>(E_register_ + 1);
     temp_memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
-    ram_write(temp_memory_address_, accumulator_);
+    rom_write(temp_memory_address_, accumulator_);
 
 }
 
@@ -197,7 +196,7 @@ void z80cpu::LD_indexed_ix_immediate(){
 
     WZ_register_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
 
-    ram_write(WZ_register_, temp_data_8_);
+    rom_write(WZ_register_, temp_data_8_);
 }
 
 
@@ -212,7 +211,7 @@ void z80cpu::LD_indexed_iy_immediate() {
 
     WZ_register_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
 
-    ram_write(WZ_register_, temp_data_8_);
+    rom_write(WZ_register_, temp_data_8_);
 }
 
 
@@ -224,7 +223,7 @@ void z80cpu::LD_indexed_ix_register(){
 
     WZ_register_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
     // register_bit = (opcode & BIT_MASK_2);
-    ram_write(WZ_register_, *register_table_[opcode_ & BIT_MASK_2]);
+    rom_write(WZ_register_, *register_table_[opcode_ & BIT_MASK_2]);
 }
 
 
@@ -236,7 +235,7 @@ void z80cpu::LD_indexed_iy_register(){
 
     WZ_register_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
     // register_bit = (opcode & BIT_MASK_2);
-    ram_write(WZ_register_, *register_table_[opcode_ & BIT_MASK_2]);
+    rom_write(WZ_register_, *register_table_[opcode_ & BIT_MASK_2]);
 }
 
 
@@ -324,8 +323,8 @@ void z80cpu::LD_register_extended_16_bit() {
     // wz register is the memory address + 1
     WZ_register_ = temp_memory_address_ + 1;
 
-    *register_pair_table_ss_[temp_data_8_].high_byte_register = ram_read(temp_memory_address_ + 1);
-    *register_pair_table_ss_[temp_data_8_].low_byte_register = ram_read(temp_memory_address_);
+    *register_pair_table_ss_[temp_data_8_].high_byte_register = rom_read(temp_memory_address_ + 1);
+    *register_pair_table_ss_[temp_data_8_].low_byte_register = rom_read(temp_memory_address_);
 }
 
 
@@ -341,40 +340,38 @@ void z80cpu::LD_register_extended_hl() {
     // wz register is the memory address + 1
     WZ_register_ = temp_memory_address_ + 1;
 
-    H_register_ = ram_read(temp_memory_address_ + 1);
-    L_register_ = ram_read(temp_memory_address_);
+    H_register_ = rom_read(temp_memory_address_ + 1);
+    L_register_ = rom_read(temp_memory_address_);
 }
 
 
 void z80cpu::LD_register_extended_ix() {
     t_state_cycles_ = 20;
 
-    uint8_t low_byte = rom_read(program_counter_);
+    temp_data_8_ = rom_read(program_counter_);
     program_counter_++;
-    uint8_t high_byte = rom_read(program_counter_);
+    temp_memory_address_ = (static_cast<uint16_t>(rom_read(program_counter_)) << 8) | temp_data_8_;
     program_counter_++;
-    temp_memory_address_ = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
 
     // wz register is the memory address + 1
     WZ_register_ = temp_memory_address_ + 1;
 
-    index_register_x_ = (static_cast<uint16_t>(ram_read(temp_memory_address_ + 1))) << 8 | ram_read(temp_memory_address_);
+    index_register_x_ = (static_cast<uint16_t>(rom_read(temp_memory_address_ + 1))) << 8 | rom_read(temp_memory_address_);
 }
 
 
 void z80cpu::LD_register_extended_iy() {
     t_state_cycles_ = 20;
 
-    uint8_t low_byte = rom_read(program_counter_);
+    temp_data_8_ = rom_read(program_counter_);
     program_counter_++;
-    uint8_t high_byte = rom_read(program_counter_);
+    temp_memory_address_ = (static_cast<uint16_t>(rom_read(program_counter_)) << 8) | temp_data_8_;
     program_counter_++;
-    temp_memory_address_ = (static_cast<uint16_t>(high_byte) << 8) | low_byte;
 
     // wz register is the memory address + 1
     WZ_register_ = temp_memory_address_ + 1;
 
-    index_register_y_ = (static_cast<uint16_t>(ram_read(temp_memory_address_ + 1))) << 8 | ram_read(temp_memory_address_);
+    index_register_y_ = (static_cast<uint16_t>(rom_read(temp_memory_address_ + 1))) << 8 | rom_read(temp_memory_address_);
 }
 
 
@@ -415,8 +412,8 @@ void z80cpu::LD_extended_register_16_bit() {
 
     // register_high_byte = *register_pair_table_ss[data_8].high_byte_register;
     // register_low_byte = *register_pair_table_ss[data_8].low_byte_register;
-    ram_write(temp_memory_address_, *register_pair_table_ss_[temp_data_8_].low_byte_register);
-    ram_write(temp_memory_address_ + 1, *register_pair_table_ss_[temp_data_8_].high_byte_register);
+    rom_write(temp_memory_address_, *register_pair_table_ss_[temp_data_8_].low_byte_register);
+    rom_write(temp_memory_address_ + 1, *register_pair_table_ss_[temp_data_8_].high_byte_register);
 }
 
 
@@ -432,8 +429,8 @@ void z80cpu::LD_extended_register_hl() {
     // wz register is the memory address + 1
     WZ_register_ = temp_memory_address_ + 1;
 
-    ram_write(temp_memory_address_, L_register_);
-    ram_write(temp_memory_address_ + 1, H_register_);
+    rom_write(temp_memory_address_, L_register_);
+    rom_write(temp_memory_address_ + 1, H_register_);
 }
 
 
@@ -451,10 +448,10 @@ void z80cpu::LD_extended_register_ix() {
 
     // ix low byte
     temp_data_8_ = static_cast<uint8_t>(index_register_x_ & MAX_BYTE);
-    ram_write(temp_memory_address_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
     // ix high byte
     temp_data_8_ = static_cast<uint8_t>(index_register_x_ >> 8);
-    ram_write(temp_memory_address_ + 1, temp_data_8_);
+    rom_write(temp_memory_address_ + 1, temp_data_8_);
 }
 
 
@@ -472,10 +469,10 @@ void z80cpu::LD_extended_register_iy() {
 
     // iy low byte
     temp_data_8_ = static_cast<uint8_t>(index_register_y_ & MAX_BYTE);
-    ram_write(temp_memory_address_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
     // iy high byte
     temp_data_8_ = static_cast<uint8_t>(index_register_y_ >> 8);
-    ram_write(temp_memory_address_ + 1, temp_data_8_);
+    rom_write(temp_memory_address_ + 1, temp_data_8_);
 }
 
 
@@ -485,7 +482,7 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // We get the data from the address location of HL register pair
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // we are taking HL register and incrementing by 1
     L_register_++;
@@ -495,7 +492,7 @@ void z80cpu::LDI_register_indirect_register_indirect() {
 
     // Next we write that data into the address location of DE register pair
     temp_memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
-    ram_write(temp_memory_address_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
 
     // we are taking DE register and incrementing by 1
     E_register_++;
@@ -529,7 +526,7 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     L_register_++;
     if(L_register_ == MIN_BYTE){
         H_register_++;
@@ -537,7 +534,7 @@ void z80cpu::LDIR_register_indirect_register_indirect() {
 
     // we are writing the data to address at DE register pair
     temp_memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
-    ram_write(temp_memory_address_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
     E_register_++;
     if(E_register_ == MIN_BYTE){
         D_register_++;
@@ -594,7 +591,7 @@ void z80cpu::LDD_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     L_register_--;
     if(L_register_ == MAX_BYTE){
         H_register_--;
@@ -602,7 +599,7 @@ void z80cpu::LDD_register_indirect_register_indirect() {
 
     // we are writing the data to address at DE register pair
     temp_memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
-    ram_write(temp_memory_address_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
     E_register_--;
     if(E_register_ == MAX_BYTE){
         D_register_--;
@@ -634,7 +631,7 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
 
     // we are reading the data from address at HL register pair
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     L_register_--;
     if(L_register_ == MAX_BYTE){
         H_register_--;
@@ -642,7 +639,7 @@ void z80cpu::LDDR_register_indirect_register_indirect() {
 
     // we are writing the data to address at DE register pair
     temp_memory_address_ = (static_cast<uint16_t>(D_register_) << 8) | E_register_;
-    ram_write(temp_memory_address_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
     E_register_--;
     if(E_register_ == MAX_BYTE){
         D_register_--;

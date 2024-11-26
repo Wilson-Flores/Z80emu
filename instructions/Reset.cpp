@@ -24,13 +24,13 @@ void z80cpu::RES_indirect() {
 
     // get value at (HL) memory address
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_result_8_ = ram_read(temp_memory_address_);
+    temp_result_8_ = rom_read(temp_memory_address_);
 
     // we will perform an AND operation with the desired bit value.
     temp_result_8_ &= RES_BIT_MASKS[temp_data_8_];
 
     // re-write the value at the memory address
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 }
 
 
@@ -42,7 +42,7 @@ void z80cpu::RES_indexed_ix() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
-    temp_result_8_ = ram_read(temp_memory_address_);
+    temp_result_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -51,7 +51,7 @@ void z80cpu::RES_indexed_ix() {
     temp_result_8_ &= RES_BIT_MASKS[temp_data_8_];
 
     // re-write the value at the memory address
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 }
 
 
@@ -63,7 +63,7 @@ void z80cpu::RES_indexed_iy() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
-    temp_result_8_ = ram_read(temp_memory_address_);
+    temp_result_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -72,5 +72,5 @@ void z80cpu::RES_indexed_iy() {
     temp_result_8_ &= RES_BIT_MASKS[temp_data_8_];
 
     // re-write the value at the memory address
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 }

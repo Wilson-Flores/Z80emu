@@ -39,7 +39,7 @@ void z80cpu::SLA_indirect() {
 
     // copy the data from the memory address
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // clear the carry flag bit
     flag_register_ &= BIT_MASK_6;
@@ -50,7 +50,7 @@ void z80cpu::SLA_indirect() {
     temp_result_8_ = temp_data_8_ << 1;
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
 
     // S is set if result is negative, else reset
@@ -76,7 +76,7 @@ void z80cpu::SLA_indexed_ix() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -90,7 +90,7 @@ void z80cpu::SLA_indexed_ix() {
     temp_result_8_ = temp_data_8_ << 1;
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, temp_result_8_ & BIT_MASK_9);
@@ -115,7 +115,7 @@ void z80cpu::SLA_indexed_iy() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -129,7 +129,7 @@ void z80cpu::SLA_indexed_iy() {
     temp_result_8_ = temp_data_8_ << 1;
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, temp_result_8_ & BIT_MASK_9);
@@ -190,7 +190,7 @@ void z80cpu::SRA_indirect() {
 
     // copy the data from the memory address
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // clear the carry flag bit
     flag_register_ &= 0xFE;
@@ -204,7 +204,7 @@ void z80cpu::SRA_indirect() {
     temp_result_8_ = (temp_data_8_ >> 1) | (temp_data_8_ & BIT_MASK_9);
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
 
     // S is set if result is negative, else reset
@@ -230,7 +230,7 @@ void z80cpu::SRA_indexed_ix() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -247,7 +247,7 @@ void z80cpu::SRA_indexed_ix() {
     temp_result_8_ = (temp_data_8_ >> 1) | (temp_data_8_ & BIT_MASK_9);
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, temp_result_8_ & BIT_MASK_9);
@@ -272,7 +272,7 @@ void z80cpu::SRA_indexed_iy() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -289,7 +289,7 @@ void z80cpu::SRA_indexed_iy() {
     temp_result_8_ = (temp_data_8_ >> 1) | (temp_data_8_ & BIT_MASK_9);
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
     // S is set if result is negative, else reset
     set_flag(SIGN_FLAG, temp_result_8_ & BIT_MASK_9);
@@ -347,7 +347,7 @@ void z80cpu::SRL_indirect() {
 
     // copy the data from the memory address
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // clear the carry flag bit
     flag_register_ &= 0xFE;
@@ -358,7 +358,7 @@ void z80cpu::SRL_indirect() {
     temp_result_8_ = temp_data_8_ >> 1;
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
 
     // S is reset
@@ -384,7 +384,7 @@ void z80cpu::SRL_indexed_ix() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -398,7 +398,7 @@ void z80cpu::SRL_indexed_ix() {
     temp_result_8_ = temp_data_8_ >> 1;
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
     // S is reset
     set_flag(SIGN_FLAG, false);
@@ -423,7 +423,7 @@ void z80cpu::SRL_indexed_iy() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -437,7 +437,7 @@ void z80cpu::SRL_indexed_iy() {
     temp_result_8_ = temp_data_8_ >> 1;
 
     // overwrite data
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 
     // S is reset
     set_flag(SIGN_FLAG, false);

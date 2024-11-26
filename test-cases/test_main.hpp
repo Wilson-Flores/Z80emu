@@ -39,6 +39,34 @@ protected:
         }
     }
 
+
+    template<size_t N, size_t M>
+    void TestRegister2(const std::array<uint8_t, N>& memory, const uint16_t& reg,
+                      const std::array<uint16_t, M>& expected_register_values) {
+        bool compare_reg_values = false;
+        // Write memory to the bus
+        bus.rom_reset();
+        for (int j = 0; j < memory.size(); j++) {
+            bus.rom_write(j, memory[j]);
+        }
+
+        // Test register values
+        for (const uint8_t reg_value : expected_register_values) {
+            bus.cpu_.instruction_cycle();
+            if (reg != reg_value) {
+                compare_reg_values = true;
+                std::cout << "OPCODE: " << std::setfill('0') << std::setw(4) << std::hex << std::uppercase
+                          << static_cast<int>(bus.cpu_.get_opcode_address()) << '\t';
+                std::cout << "REG VALUE: 0x" << std::setfill('0') << std::setw(2) << std::hex << std::uppercase
+                          << static_cast<int>(reg) << '\n';
+                std::cout << "EXPECTED REG VALUE: 0x" << std::setfill('0') << std::setw(4) << std::hex << std::uppercase
+                          << static_cast<int>(reg_value) << '\n';
+            }
+            ASSERT_EQ(compare_reg_values, false);
+        }
+    }
+
+
     template<size_t N, size_t M>
     void TestFlag(const std::array<uint8_t, N>& memory, const uint8_t& flag,
                            const std::array<uint8_t, M>& expected_flag_values) {

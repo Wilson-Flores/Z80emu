@@ -33,7 +33,7 @@ void z80cpu::DEC_implied_register_indirect() {
     t_state_cycles_ = 11;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = temp_data_8_ - 1;
 
     // S is set if result is negative, else reset
@@ -52,7 +52,7 @@ void z80cpu::DEC_implied_register_indirect() {
     set_flag(X_FLAG, temp_result_8_ & X_FLAG_MASK);
     set_flag(Y_FLAG, temp_result_8_ & Y_FLAG_MASK);
 
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 }
 
 
@@ -66,7 +66,7 @@ void z80cpu::DEC_implied_indexed_ix() {
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
 
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = temp_data_8_ - 1;
 
     // S is set if result is negative, else reset
@@ -85,7 +85,7 @@ void z80cpu::DEC_implied_indexed_ix() {
     set_flag(X_FLAG, temp_result_8_ & X_FLAG_MASK);
     set_flag(Y_FLAG, temp_result_8_ & Y_FLAG_MASK);
 
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 }
 
 
@@ -99,7 +99,7 @@ void z80cpu::DEC_implied_indexed_iy() {
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
 
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     temp_result_8_ = temp_data_8_ - 1;
 
     // S is set if result is negative, else reset
@@ -118,7 +118,7 @@ void z80cpu::DEC_implied_indexed_iy() {
     set_flag(X_FLAG, temp_result_8_ & X_FLAG_MASK);
     set_flag(Y_FLAG, temp_result_8_ & Y_FLAG_MASK);
 
-    ram_write(temp_memory_address_, temp_result_8_);
+    rom_write(temp_memory_address_, temp_result_8_);
 }
 
 

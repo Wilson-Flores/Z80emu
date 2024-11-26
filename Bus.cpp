@@ -18,16 +18,6 @@ Bus::Bus() {
 }
 
 
-void Bus::ram_write(uint16_t address, uint8_t data) {
-    ram_[address] = data;
-}
-
-
-uint8_t Bus::ram_read(uint16_t address) const {
-    return ram_[address];
-}
-
-
 void Bus::rom_write(uint16_t address, uint8_t data) {
     rom_[address] = data;
 }

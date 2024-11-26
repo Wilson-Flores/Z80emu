@@ -71,16 +71,6 @@ void z80cpu::rom_write(uint16_t address, uint8_t data) {
 }
 
 
-uint8_t z80cpu::ram_read(uint16_t address) {
-    return bus_->ram_read(address);
-}
-
-
-void z80cpu::ram_write(uint16_t address, uint8_t data) {
-    bus_->ram_write(address, data);
-}
-
-
 void z80cpu::set_flag(FLAGSZ80 flag, bool set_flag) {
 	if (set_flag) {
         flag_register_ |= flag;
@@ -219,6 +209,10 @@ const uint8_t& z80cpu::get_registerD_address() const { return D_register_; }
 const uint8_t& z80cpu::get_registerE_address() const { return E_register_; }
 const uint8_t& z80cpu::get_registerH_address() const { return H_register_; }
 const uint8_t& z80cpu::get_registerL_address() const { return L_register_; }
+const uint8_t& z80cpu::get_interrupt_vector_address() const { return interrupt_vector_register_; }
+const uint8_t& z80cpu::get_memory_refresh_address() const { return memory_refresh_register_; }
+const uint16_t& z80cpu::get_regIX_address() const {return index_register_x_; }
+const uint16_t& z80cpu::get_regIY_address() const {return index_register_y_; }
 
 
 const uint8_t& z80cpu::get_opcode_address() const { return opcode_; }

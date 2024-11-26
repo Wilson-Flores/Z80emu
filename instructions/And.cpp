@@ -30,7 +30,7 @@ void z80cpu::AND_implied_register_indirect() {
     t_state_cycles_ = 7;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     accumulator_ &= temp_data_8_;
 
     // S is set if result is negative, else reset
@@ -61,7 +61,7 @@ void z80cpu::AND_implied_indexed_ix() {
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
 
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     accumulator_ &= temp_data_8_;
 
     // S is set if result is negative, else reset
@@ -93,7 +93,7 @@ void z80cpu::AND_implied_indexed_iy() {
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
 
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     accumulator_ &= temp_data_8_;
 
     // S is set if result is negative, else reset

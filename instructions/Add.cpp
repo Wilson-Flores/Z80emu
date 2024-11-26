@@ -51,7 +51,7 @@ void z80cpu::ADD_implied_register_indirect() {
     t_state_cycles_ = 7;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     ADD_helper();
 }
 
@@ -63,7 +63,7 @@ void z80cpu::ADD_implied_indexed_ix() {
     program_counter_++;
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
     WZ_register_ = temp_memory_address_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     ADD_helper();
 }
 
@@ -75,7 +75,7 @@ void z80cpu::ADD_implied_indexed_iy() {
     program_counter_++;
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
     WZ_register_ = temp_memory_address_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     ADD_helper();
 }
 
@@ -101,7 +101,7 @@ void z80cpu::ADC_implied_register_indirect() {
     t_state_cycles_ = 7;
 
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     ADC_helper();
 }
 
@@ -112,7 +112,7 @@ void z80cpu::ADC_implied_indexed_ix() {
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     WZ_register_ = temp_memory_address_;
     ADC_helper();
 }
@@ -124,7 +124,7 @@ void z80cpu::ADC_implied_indexed_iy() {
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
-    temp_data_8_ = ram_read(temp_memory_address_);
+    temp_data_8_ = rom_read(temp_memory_address_);
     WZ_register_ = temp_memory_address_;
     ADC_helper();
 }

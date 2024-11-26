@@ -91,6 +91,93 @@ TEST_F(LoadTest, LD_register_register_test){
 }
 
 
+TEST_F(LoadTest, LD_register_register_indirect_test){
+    constexpr std::array<uint8_t, 37> expected_reg_values = {
+            0x01, 0x01, 0x01, 0x01, 0x00, 0x01, 0x02, 0x02,
+            0x00, 0x00, 0x02, 0x03, 0x03, 0x00, 0x00, 0x03,
+            0x04, 0x04, 0x00, 0x00, 0x04, 0x05, 0x05, 0x00,
+            0x00, 0x05, 0x06, 0x06, 0x00, 0x00, 0x06, 0x06,
+            0x07, 0x07, 0x00, 0x00, 0x07
+    };
+
+    constexpr std::array<uint8_t, 68> memory = {
+            0x3E, 0x01, 0x32, 0x50, 0x00, 0x26, 0x00, 0x2E,
+            0x50, 0x3E, 0x00, 0x7E, 0x3E, 0x02, 0x32, 0x50,
+            0x00, 0x3E, 0x00, 0x46, 0x78, 0x3E, 0x03, 0x32,
+            0x50, 0x00, 0x3E, 0x00, 0x4E, 0x79, 0x3E, 0x04,
+            0x32, 0x50, 0x00, 0x3E, 0x00, 0x56, 0x7A, 0x3E,
+            0x05, 0x32, 0x50, 0x00, 0x3E, 0x00, 0x5E, 0x7B,
+            0x3E, 0x06, 0x32, 0x50, 0x00, 0x3E, 0x00, 0x66,
+            0x7C, 0x26, 0x00, 0x3E, 0x07, 0x32, 0x50, 0x00,
+            0x3E, 0x00, 0x6E, 0x7D
+    };
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_values);
+}
+
+
+TEST_F(LoadTest, LD_register_register_indirect_BC_test){
+    constexpr std::array<uint8_t, 6> expected_reg_values = {0x01, 0x01, 0x00, 0x00, 0x00, 0x01};
+    constexpr std::array<uint8_t, 12> memory = {
+            0x3E, 0x01, 0x32, 0x50, 0x00, 0x3E, 0x00, 0x06, 0x00, 0x0E, 0x50, 0x0A};
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_values);
+}
+
+
+TEST_F(LoadTest, LD_register_register_indirect_DE_test){
+    constexpr std::array<uint8_t, 6> expected_reg_values = {0x01, 0x01, 0x00, 0x00, 0x00, 0x01};
+    constexpr std::array<uint8_t, 12> memory = {
+            0x3E, 0x01, 0x32, 0x50, 0x00, 0x3E, 0x00, 0x16, 0x00, 0x1E, 0x50, 0x1A};
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_values);
+}
+
+
+TEST_F(LoadTest, LD_register_implied_I_test){
+    constexpr std::array<uint8_t, 4> expected_reg_values = {0xA8, 0xA8, 0x00, 0xA8};
+    constexpr std::array<uint8_t, 4> expected_flag_values = {0x00, 0x00, 0x00, 0xA8};
+
+    constexpr std::array<uint8_t, 8> memory = {0x3E, 0xA8, 0xED, 0x47, 0x3E, 0x00, 0xED, 0x57};
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_values);
+    TestFlag(memory, bus.cpu_.get_flag_register_address(), expected_flag_values);
+}
+
+
+TEST_F(LoadTest, LD_register_implied_R_test){
+    constexpr std::array<uint8_t, 4> expected_regR_values = {0x01, 0xA8, 0xA9, 0xAB};
+    constexpr std::array<uint8_t, 4> expected_regA_values = {0xA8, 0xA8, 0x00, 0xAB};
+    constexpr std::array<uint8_t, 4> expected_flag_values = {0x00, 0x00, 0x00, 0xA8};
+
+    constexpr std::array<uint8_t, 8> memory = {0x3E, 0xA8, 0xED, 0x4F, 0x3E, 0x00, 0xED, 0x5F};
+
+    TestRegister(memory, bus.cpu_.get_memory_refresh_address(), expected_regR_values);
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_regA_values);
+    TestFlag(memory, bus.cpu_.get_flag_register_address(), expected_flag_values);
+}
+
+
+TEST_F(LoadTest, LD_register_indexed_ix_test){
+    constexpr std::array<uint8_t, 5> expected_reg_values = {0xFF, 0xFF, 0x00, 0x00, 0xFF};
+
+    constexpr std::array<uint8_t, 14> memory =
+            {0x3E, 0xFF, 0x32, 0x50, 0x00, 0x3E, 0x00, 0xDD, 0x21, 0x40, 0x00, 0xDD, 0x7E, 0x10};
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_values);
+}
+
+
+TEST_F(LoadTest, LD_register_indexed_iy_test){
+    constexpr std::array<uint8_t, 5> expected_reg_values = {0xFF, 0xFF, 0x00, 0x00, 0xFF};
+
+    constexpr std::array<uint8_t, 14> memory =
+            {0x3E, 0xFF, 0x32, 0x50, 0x00, 0x3E, 0x00, 0xFD, 0x21, 0x40, 0x00, 0xFD, 0x7E, 0x10};
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_values);
+}
+
+
 TEST_F(LoadTest, LD_register_extended_test){
     constexpr std::array<uint8_t, 1> expected_reg_value = {0xFF};
     constexpr std::array<uint8_t, 4> memory = {0x3A, 0x03, 0x00, 0xFF};
@@ -99,9 +186,63 @@ TEST_F(LoadTest, LD_register_extended_test){
 }
 
 
-TEST_F(LoadTest, LD_extended_register_test){
-    constexpr std::array<uint8_t, 4> expected_reg_value = {0xFF, 0xFF, 0x00, 0xFF};
-    constexpr std::array<uint8_t, 10> memory = {0x3E, 0xFF, 0x32, 0x0A, 0x00, 0x3E, 0x00, 0x3A, 0x0A, 0x00};
+TEST_F(LoadTest, LD_register_indirect_immediate_test){
+    constexpr std::array<uint8_t, 4> expected_reg_value = {0x00, 0x00, 0x00, 0xFF};
+    constexpr std::array<uint8_t, 9> memory = {0x26, 0x00, 0x2E, 0x50, 0x36, 0xFF, 0x3A, 0x50, 0x00};
 
     TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_value);
+}
+
+
+//TEST_F(LoadTest, LD_register_indirect_register_test){}
+
+
+//TEST_F(LoadTest, LD_register_indirect_register_BC_test){}
+
+
+//TEST_F(LoadTest, LD_register_indirect_register_DE_test){}
+
+
+//TEST_F(LoadTest, LD_indexed_ix_immediate_test){}
+
+
+//TEST_F(LoadTest, LD_indexed_iy_immediate_test){}
+
+
+//TEST_F(LoadTest, LD_indexed_ix_register_test){}
+
+
+//TEST_F(LoadTest, LD_indexed_iy_register_test){}
+
+
+TEST_F(LoadTest, LD_extended_register_test){
+    constexpr std::array<uint8_t, 4> expected_reg_values = {0xFF, 0xFF, 0x00, 0xFF};
+    constexpr std::array<uint8_t, 10> memory = {0x3E, 0xFF, 0x32, 0x0A, 0x00, 0x3E, 0x00, 0x3A, 0x0A, 0x00};
+
+    TestRegister(memory, bus.cpu_.get_accumulator_address(), expected_reg_values);
+}
+
+
+TEST_F(LoadTest, LD_implied_register_I_test){
+    constexpr std::array<uint8_t, 2> expected_reg_values = {0x00, 0x19};
+    constexpr std::array<uint8_t, 4> memory = {0x3E, 0x19, 0xED, 0x47};
+
+    TestRegister(memory, bus.cpu_.get_interrupt_vector_address(), expected_reg_values);
+}
+
+
+TEST_F(LoadTest, LD_implied_register_R_test){
+    constexpr std::array<uint8_t, 2> expected_reg_values = {0x01, 0x19};
+    constexpr std::array<uint8_t, 4> memory = {0x3E, 0x19, 0xED, 0x4F};
+
+    TestRegister(memory, bus.cpu_.get_memory_refresh_address(), expected_reg_values);
+}
+
+
+// 16 Bit Tests
+TEST_F(LoadTest, LD_register_extended_ix_test){
+    constexpr std::array<uint16_t, 1> expected_reg_value = {0x0040};
+    constexpr std::array<uint8_t, 4> memory = {0xDD, 0x21, 0x40, 0x00};
+
+    TestRegister2(memory, bus.cpu_.get_regIX_address(), expected_reg_value);
 }

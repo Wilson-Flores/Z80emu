@@ -142,6 +142,10 @@ public:
     const uint8_t& get_registerE_address() const;
     const uint8_t& get_registerH_address() const;
     const uint8_t& get_registerL_address() const;
+    const uint8_t& get_interrupt_vector_address() const;
+    const uint8_t& get_memory_refresh_address() const;
+    const uint16_t& get_regIX_address() const;
+    const uint16_t& get_regIY_address() const;
 	// Get Opcode value
 	const uint8_t& get_opcode_address() const;
 
@@ -473,11 +477,8 @@ private:
     void non_maskable_interrupt(); // NMI
 
 
-	uint8_t rom_read(uint16_t address);
+    uint8_t rom_read(uint16_t address);
     void rom_write(uint16_t address, uint8_t data);
-
-    uint8_t ram_read(uint16_t address);
-    void ram_write(uint16_t address, uint8_t data);
 
 
 	uint8_t get_flag(FLAGSZ80 flag) const;

@@ -48,7 +48,7 @@ void z80cpu::BIT_indirect() {
 
     // result_8 will store the data at HL address
     temp_memory_address_ = (static_cast<uint16_t>(H_register_) << 8) | L_register_;
-    temp_result_8_ = ram_read(temp_memory_address_);
+    temp_result_8_ = rom_read(temp_memory_address_);
 
     // we will rewrite result_8 with whatever the bit value is at data_8
     temp_result_8_ = (temp_result_8_ >> temp_data_8_) & BIT_MASK_5;
@@ -81,7 +81,7 @@ void z80cpu::BIT_indexed_ix() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
-    temp_result_8_ = ram_read(temp_memory_address_);
+    temp_result_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
@@ -117,7 +117,7 @@ void z80cpu::BIT_indexed_iy() {
 
     // copy the data from the memory address
     temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
-    temp_result_8_ = ram_read(temp_memory_address_);
+    temp_result_8_ = rom_read(temp_memory_address_);
 
     // WZ register is updated using memory address
     WZ_register_ = temp_memory_address_;
