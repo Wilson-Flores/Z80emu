@@ -2,14 +2,6 @@
 
 
 Bus::Bus() {
-    uint8_t value = 0;
-   //TODO: add a real way to load ram, create ram class.
-    for(uint8_t& i : ram_){
-        i = value;
-        value++;
-    }
-
-
     for (uint8_t& i : rom_) {
         i = 0x00;
     }
@@ -34,5 +26,4 @@ void Bus::rom_reset() {
 	}
 
     cpu_.reset();
-
 }

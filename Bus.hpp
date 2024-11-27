@@ -14,7 +14,6 @@ public:
 
 	z80cpu cpu_;
 
-	std::array<uint8_t, MEMORY_SIZE> ram_{};
     std::array<uint8_t, MEMORY_SIZE> rom_{};
 
 
