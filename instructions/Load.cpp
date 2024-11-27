@@ -123,9 +123,10 @@ void z80cpu::LD_register_indexed_iy() {
 
     // add the value in ind
     // ex register x with the twos-complement signed value
-    WZ_register_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
+    temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
+    WZ_register_ = temp_memory_address_;
     // register_bit = (opcode & BIT_MASK_1) >> 3;
-    *register_table_[(opcode_ & BIT_MASK_1) >> 3] = rom_read(WZ_register_);
+    *register_table_[(opcode_ & BIT_MASK_1) >> 3] = rom_read(temp_memory_address_);
 }
 
 
@@ -194,9 +195,10 @@ void z80cpu::LD_indexed_ix_immediate(){
     temp_data_8_ = rom_read(program_counter_);
     program_counter_++;
 
-    WZ_register_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
+    temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
+    WZ_register_ = temp_memory_address_;
 
-    rom_write(WZ_register_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
 }
 
 
@@ -209,9 +211,10 @@ void z80cpu::LD_indexed_iy_immediate() {
     temp_data_8_ = rom_read(program_counter_);
     program_counter_++;
 
-    WZ_register_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
+    temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
+    WZ_register_ = temp_memory_address_;
 
-    rom_write(WZ_register_, temp_data_8_);
+    rom_write(temp_memory_address_, temp_data_8_);
 }
 
 
@@ -221,9 +224,10 @@ void z80cpu::LD_indexed_ix_register(){
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
 
-    WZ_register_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
+    temp_memory_address_ = index_register_x_ + static_cast<int16_t>(temp_displacement_);
+    WZ_register_ = temp_memory_address_;
     // register_bit = (opcode & BIT_MASK_2);
-    rom_write(WZ_register_, *register_table_[opcode_ & BIT_MASK_2]);
+    rom_write(temp_memory_address_, *register_table_[opcode_ & BIT_MASK_2]);
 }
 
 
@@ -233,9 +237,10 @@ void z80cpu::LD_indexed_iy_register(){
     temp_displacement_ = static_cast<int8_t>(rom_read(program_counter_));
     program_counter_++;
 
-    WZ_register_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
+    temp_memory_address_ = index_register_y_ + static_cast<int16_t>(temp_displacement_);
+    WZ_register_ = temp_memory_address_;
     // register_bit = (opcode & BIT_MASK_2);
-    rom_write(WZ_register_, *register_table_[opcode_ & BIT_MASK_2]);
+    rom_write(temp_memory_address_, *register_table_[opcode_ & BIT_MASK_2]);
 }
 
 
